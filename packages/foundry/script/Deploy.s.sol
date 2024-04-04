@@ -16,8 +16,8 @@ contract DeployScript is ScaffoldETHDeploy {
         }
         vm.startBroadcast(deployerPrivateKey);
         YourContract yourContract = new YourContract(
-            0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
-            0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+            0x3bEc6a181d6Ef7239F699DAf2fAa5FE3A5f01Edf, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+            0x3bEc6a181d6Ef7239F699DAf2fAa5FE3A5f01Edf, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
             24420,
             24 hours
         );
