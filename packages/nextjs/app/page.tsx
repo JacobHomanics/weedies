@@ -52,6 +52,7 @@ function useUris(contract: any, tokenIds: bigint[]) {
     }
 
     setUris([...arr]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract?.address, tokenIds, uris.length]);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function useUris(contract: any, tokenIds: bigint[]) {
     }
 
     get();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract?.address, tokenIds, uris.length, refetch]);
 
   return { uris, setUris, refetch };
@@ -77,6 +79,7 @@ function useFetches(uris: string[]) {
     }
 
     setResponses([...arr]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uris.length]);
 
   useEffect(() => {
@@ -85,6 +88,7 @@ function useFetches(uris: string[]) {
     }
 
     get();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uris.length, refetch]);
 
   return { responses, refetch };
@@ -239,7 +243,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
-              <p> End Mint Timestamp: {(startMintTimestamp! + mintWindow!).toString()}</p>
+              <p> End Mint Timestamp: {((startMintTimestamp || BigInt(0)) + (mintWindow || BigInt(0))).toString()}</p>
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
