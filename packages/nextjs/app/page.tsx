@@ -271,6 +271,10 @@ const Home: NextPage = () => {
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Is Mint Active: {isMintStarted && (endDate.getTime() > new Date().getTime())?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
               <p>Mint Duration: {mintDurationFormatted?.toString()}</p>
             </div>
 
