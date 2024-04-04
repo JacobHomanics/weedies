@@ -8,21 +8,40 @@ contract YourContractTest is Test {
     YourContract public yourContract;
 
     function setUp() public {
-        yourContract = new YourContract(vm.addr(1));
-    }
-
-    function testMessageOnDeployment() public view {
-        require(
-            keccak256(bytes(yourContract.greeting()))
-                == keccak256("Building Unstoppable Apps!!!")
+        yourContract = new YourContract(
+            vm.addr(1),
+            vm.addr(1),
+            24420,
+            24 hours
         );
     }
 
-    function testSetNewMessage() public {
-        yourContract.setGreeting("Learn Scaffold-ETH 2! :)");
-        require(
-            keccak256(bytes(yourContract.greeting()))
-                == keccak256("Learn Scaffold-ETH 2! :)")
-        );
+    function testMessageOnDeployment() public {
+        yourContract.mint{value: 0}();
+        me();
+        yourContract.mint{value: 0}();
+        me();
+        yourContract.mint{value: 0}();
+        me();
+
+        yourContract.mint{value: 0}();
+        me();
+
+        yourContract.mint{value: 0}();
+        me();
+
+        yourContract.mint{value: 0.1 ether}();
+        me();
     }
+
+    function me() public view {
+        YourContract.MintingThreshold memory threshold = yourContract
+            .getAcitveMintingThreshold();
+
+        console.log(threshold.minThreshold);
+        console.log(threshold.maxThreshold);
+        console.log(threshold.mintPrice);
+    }
+
+    function testSetNewMessage() public {}
 }

@@ -1,84 +1,146 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "forge-std/console.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 
-// Use openzeppelin to inherit battle-tested implementations (ERC20, ERC721, etc)
-// import "@openzeppelin/contracts/access/Ownable.sol";
+contract YourContract is AccessControl, ERC721 {
+    error YourContract__DidNotSendEnoughEther();
+    error YourContract__PastMintWindow();
+    error YourContract__BeforeMintWindow();
+    error YourContract__MintNotStarted();
+    error YourContract__MintAlreadyStarted();
 
-/**
- * A smart contract that allows changing a state variable of the contract and tracking the changes
- * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
- */
-contract YourContract {
-    // State Variables
-    address public immutable owner;
-    string public greeting = "Building Unstoppable Apps!!!";
-    bool public premium = false;
-    uint256 public totalCounter = 0;
-    mapping(address => uint256) public userGreetingCounter;
-
-    // Events: a way to emit log statements from smart contract that can be listened to by external parties
-    event GreetingChange(
-        address indexed greetingSetter,
-        string newGreeting,
-        bool premium,
-        uint256 value
-    );
-
-    // Constructor: Called once on contract deployment
-    // Check packages/foundry/deploy/Deploy.s.sol
-    constructor(address _owner) {
-        owner = _owner;
+    struct MintingThreshold {
+        uint256 minThreshold;
+        uint256 maxThreshold;
+        uint256 mintPrice;
     }
 
-    // Modifier: used to define a set of rules that must be met before or after a function is executed
-    // Check the withdraw() function
-    modifier isOwner() {
-        // msg.sender: predefined variable that represents address of the account that called the current function
-        require(msg.sender == owner, "Not the Owner");
-        _;
+    address immutable s_mintRoyaltyRecipient;
+    uint256 immutable s_mintPrice;
+    uint256 s_mintCount;
+
+    MintingThreshold[] mintingThresholds;
+
+    uint256 s_maxMintCount;
+
+    uint256 s_mintWindow = 24 hours;
+    uint256 s_startMintTimestamp;
+
+    bool s_isMintStarted;
+
+    constructor(
+        address admin,
+        address mintRoyaltyRecipient,
+        uint256 maxMintCount,
+        uint256 mintWindow
+    ) ERC721("Weedies", "W") {
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+
+        s_mintRoyaltyRecipient = mintRoyaltyRecipient;
+        s_mintPrice = 0;
+        s_maxMintCount = maxMintCount;
+        s_mintWindow = mintWindow;
+
+        mintingThresholds.push(MintingThreshold(0, 5, 0.00069420 ether));
+        mintingThresholds.push(MintingThreshold(5, 10, .1 ether));
+        mintingThresholds.push(
+            MintingThreshold(10, type(uint256).max, 1 ether)
+        );
     }
 
-    /**
-     * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-     *
-     * @param _newGreeting (string memory) - new greeting to save on the contract
-     */
-    function setGreeting(string memory _newGreeting) public payable {
-        // Print data to the anvil chain console. Remove when deploying to a live network.
-
-        console.logString("Setting new greeting");
-        console.logString(_newGreeting);
-
-        greeting = _newGreeting;
-        totalCounter += 1;
-        userGreetingCounter[msg.sender] += 1;
-
-        // msg.value: built-in global variable that represents the amount of ether sent with the transaction
-        if (msg.value > 0) {
-            premium = true;
-        } else {
-            premium = false;
+    function startMint() external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (s_isMintStarted) {
+            revert YourContract__MintAlreadyStarted();
         }
 
-        // emit: keyword used to trigger an event
-        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
+        s_startMintTimestamp = block.timestamp;
+        s_isMintStarted = true;
     }
 
-    /**
-     * Function that allows the owner to withdraw all the Ether in the contract
-     * The function can only be called by the owner of the contract as defined by the isOwner modifier
-     */
-    function withdraw() public isOwner {
-        (bool success,) = owner.call{value: address(this).balance}("");
-        require(success, "Failed to send Ether");
+    function getIsMintStarted() external view returns (bool isMintStarted) {
+        isMintStarted = s_isMintStarted;
     }
 
-    /**
-     * Function that allows the contract to receive ETH
-     */
-    receive() external payable {}
+    function getMintWindow() external view returns (uint256 mintWindow) {
+        mintWindow = s_mintWindow;
+    }
+
+    function getStartMintTimestamp()
+        external
+        view
+        returns (uint256 startMintTimestamp)
+    {
+        startMintTimestamp = s_startMintTimestamp;
+    }
+
+    function mint() external payable {
+        if (!s_isMintStarted) {
+            revert YourContract__MintNotStarted();
+        }
+
+        if (block.timestamp < s_startMintTimestamp) {
+            revert YourContract__BeforeMintWindow();
+        }
+
+        if (block.timestamp > s_startMintTimestamp + s_mintWindow) {
+            revert YourContract__PastMintWindow();
+        }
+
+        uint256 mintPrice = getAcitveMintingThreshold().mintPrice;
+
+        if (msg.value < mintPrice) {
+            revert YourContract__DidNotSendEnoughEther();
+        }
+
+        s_mintCount++;
+        _mint(msg.sender, s_mintCount);
+    }
+
+    function withdraw() external {
+        (bool sent, ) = s_mintRoyaltyRecipient.call{
+            value: address(this).balance
+        }("");
+        require(sent, "Failed to send Ether");
+    }
+
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721, AccessControl) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function _baseURI() internal pure override returns (string memory) {
+        return
+            "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
+    }
+
+    function getMaxMintCount() external view returns (uint256 maxMintCount) {
+        maxMintCount = s_maxMintCount;
+    }
+
+    function getMintCount() external view returns (uint256 mintCount) {
+        mintCount = s_mintCount;
+    }
+
+    function getRoyaltyRecipient() external view returns (address) {
+        return s_mintRoyaltyRecipient;
+    }
+
+    function getAcitveMintingThreshold()
+        public
+        view
+        returns (MintingThreshold memory threshold)
+    {
+        for (uint256 i = 0; i < mintingThresholds.length; i++) {
+            if (
+                (s_mintCount >= mintingThresholds[i].minThreshold) &&
+                (s_mintCount < mintingThresholds[i].maxThreshold)
+            ) {
+                threshold = mintingThresholds[i];
+                break;
+            }
+        }
+    }
 }

@@ -15,11 +15,16 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        YourContract yourContract =
-            new YourContract(vm.addr(deployerPrivateKey));
+        YourContract yourContract = new YourContract(
+            0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+            0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+            24420,
+            24 hours
+        );
         console.logString(
             string.concat(
-                "YourContract deployed at: ", vm.toString(address(yourContract))
+                "YourContract deployed at: ",
+                vm.toString(address(yourContract))
             )
         );
         vm.stopBroadcast();

@@ -1,67 +1,273 @@
 "use client";
 
-import Link from "next/link";
+import { useCallback, useEffect } from "react";
+import { useMemo } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { formatEther } from "viem";
+// import { useAccount } from "wagmi";
+import { useBalance } from "wagmi";
+import { NftCard } from "~~/components/NftCard";
 import { Address } from "~~/components/scaffold-eth";
+import { useScaffoldContract, useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+
+function useTokenIds(numOfTokens: number) {
+  const refetch = useCallback(() => {
+    const tokenIds: bigint[] = [];
+
+    if (numOfTokens) {
+      for (let i = 1; i <= numOfTokens; i++) {
+        tokenIds.push(BigInt(i));
+      }
+    }
+
+    console.log(tokenIds);
+    return { tokenIds };
+  }, [numOfTokens]);
+
+  const { tokenIds } = useMemo(() => {
+    const { tokenIds } = refetch();
+    // const tokenIds: bigint[] = [];
+
+    // if (numOfTokens) {
+    //   for (let i = 1; i <= numOfTokens; i++) {
+    //     tokenIds.push(BigInt(i));
+    //   }
+    // }
+
+    return { tokenIds, refetch };
+  }, [refetch]);
+
+  return { tokenIds, refetch };
+}
+
+function useUris(contract: any, tokenIds: bigint[]) {
+  const [uris, setUris] = useState<string[]>([]);
+
+  const refetch = useCallback(async () => {
+    const arr = [];
+    for (let i = 0; i < tokenIds.length; i++) {
+      const result = await contract.read.tokenURI([tokenIds[i]]);
+      arr.push(result);
+    }
+
+    setUris([...arr]);
+  }, [contract?.address, tokenIds, uris.length]);
+
+  useEffect(() => {
+    async function get() {
+      await refetch();
+    }
+
+    get();
+  }, [contract?.address, tokenIds, uris.length, refetch]);
+
+  return { uris, setUris, refetch };
+}
+
+function useFetches(uris: string[]) {
+  const [responses, setResponses] = useState<any[]>([]);
+
+  const refetch = useCallback(async () => {
+    const arr = [];
+    for (let i = 0; i < uris.length; i++) {
+      const response = await fetch(uris[i]);
+      const responseJson = await response.json();
+      arr.push(responseJson);
+    }
+
+    setResponses([...arr]);
+  }, [uris.length]);
+
+  useEffect(() => {
+    async function get() {
+      await refetch();
+    }
+
+    get();
+  }, [uris.length, refetch]);
+
+  return { responses, refetch };
+}
 
 const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
+  // const { address: connectedAddress } = useAccount();
+  const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "mint" });
+  const { writeAsync: withdraw } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "withdraw" });
+  const { writeAsync: startMint } = useScaffoldContractWrite({
+    contractName: "YourContract",
+    functionName: "startMint",
+  });
+
+  const { data: mintCount, refetch: refetchMintCount } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getMintCount",
+  });
+
+  const { data: startMintTimestamp, refetch: refetchStartMintTimestamp } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getStartMintTimestamp",
+  });
+
+  const { data: isMintStarted, refetch: refetchIsMintStarted } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getIsMintStarted",
+  });
+
+  const { data: mintWindow, refetch: refetchGetWindow } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getMintWindow",
+  });
+
+  const { data: maxMintCount } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getMaxMintCount",
+  });
+
+  const { data: tokenName } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "name",
+  });
+
+  const { data: tokenSymbol } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "symbol",
+  });
+
+  const { data: royaltyRecipient } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getRoyaltyRecipient",
+  });
+
+  const { data: activeThreshold, refetch: refetchActiveThrehsold } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getAcitveMintingThreshold",
+  });
+
+  const { data: yourContract } = useScaffoldContract({ contractName: "YourContract" });
+  const { data: balance, refetch: refetchBalance } = useBalance({ address: yourContract?.address });
+
+  const { tokenIds, refetch: refetchTokenIds } = useTokenIds(Number(mintCount));
+
+  const { uris, refetch: refetchUris } = useUris(yourContract, tokenIds);
+
+  for (let i = 0; i < uris.length; i++) {
+    uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
+  }
+
+  const { responses, refetch: refetchResponses } = useFetches(uris);
+
+  const allNfts = responses.map((response, index) => {
+    return <NftCard key={index} data={response} />;
+  });
 
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
-          </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
-        </div>
+        <div className="px-5 items-center text-center">
+          <button
+            onClick={async () => {
+              await startMint();
+              await refetchMintCount();
+              await refetchActiveThrehsold();
+              await refetchBalance();
+              await refetchTokenIds();
+              await refetchUris();
+              await refetchResponses();
+              await refetchIsMintStarted();
+              await refetchGetWindow();
+            }}
+            className="btn btn-secondary btn-sm"
+          >
+            Start Mint
+          </button>
 
-        <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
+          <button
+            onClick={async () => {
+              await mint({ value: activeThreshold?.mintPrice });
+              await refetchMintCount();
+              await refetchActiveThrehsold();
+              await refetchBalance();
+              await refetchTokenIds();
+              await refetchUris();
+              await refetchResponses();
+              await refetchStartMintTimestamp();
+              await refetchIsMintStarted();
+              await refetchGetWindow();
+            }}
+            className="btn btn-secondary btn-sm"
+          >
+            Mint
+          </button>
+
+          <button
+            onClick={async () => {
+              await withdraw();
+              await refetchMintCount();
+              await refetchActiveThrehsold();
+              await refetchBalance();
+              await refetchTokenIds();
+              await refetchUris();
+              await refetchResponses();
+              await refetchStartMintTimestamp();
+            }}
+            className="btn btn-secondary btn-sm"
+          >
+            Withdraw
+          </button>
+
+          <div className="flex flex-col items-center mt-5">
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              {tokenName} ({tokenSymbol})
             </div>
           </div>
+          <div className="flex flex-wrap justify-center space-x-10">
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Max Mint Count: {maxMintCount?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Is Mint Started: {isMintStarted?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Mint Window: {mintWindow?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p> Start Mint Timestamp: {startMintTimestamp?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p> End Mint Timestamp: {(startMintTimestamp! + mintWindow!).toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Mint Count: {mintCount?.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Mint Price: {formatEther(activeThreshold?.mintPrice || BigInt(0)).toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>Min Threshold Mint Count: {activeThreshold?.minThreshold.toString()}</p>
+            </div>
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p className="truncate">Max Threshold Mint Count: {activeThreshold?.maxThreshold.toString()}</p>
+            </div>
+
+            <div className="bg-base-300 rounded-lg p-1 m-1">
+              <p>YourContract Balance: {balance?.formatted.toString() || "0"}</p>
+            </div>
+
+            <div className="flex flex-col items-center justify-center bg-base-300 rounded-lg p-1 m-1">
+              <p>Royalty Recipient: </p>
+              <Address address={royaltyRecipient}></Address>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div>
         </div>
       </div>
     </>
