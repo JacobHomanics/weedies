@@ -45,6 +45,8 @@ function useUris(contract: any, tokenIds: bigint[]) {
   const [uris, setUris] = useState<string[]>([]);
 
   const refetch = useCallback(async () => {
+    if (!contract) return;
+
     const arr = [];
     for (let i = 0; i < tokenIds.length; i++) {
       const result = await contract.read.tokenURI([tokenIds[i]]);
@@ -52,7 +54,6 @@ function useUris(contract: any, tokenIds: bigint[]) {
     }
 
     setUris([...arr]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract?.address, tokenIds, uris.length]);
 
   useEffect(() => {
@@ -243,7 +244,11 @@ const Home: NextPage = () => {
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
-              <p> End Mint Timestamp: {((startMintTimestamp || BigInt(0)) + (mintWindow || BigInt(0))).toString()}</p>
+              <p>
+                {" "}
+                End Mint Timestamp:{" "}
+                {startMintTimestamp && mintWindow ? (startMintTimestamp + mintWindow).toString() : 0}
+              </p>
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
