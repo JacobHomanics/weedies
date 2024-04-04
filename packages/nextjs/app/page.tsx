@@ -119,9 +119,9 @@ const Home: NextPage = () => {
     functionName: "getIsMintStarted",
   });
 
-  const { data: mintWindow, refetch: refetchGetWindow } = useScaffoldContractRead({
+  const { data: mintDuration, refetch: refetchGetWindow } = useScaffoldContractRead({
     contractName: "YourContract",
-    functionName: "getMintWindow",
+    functionName: "getMintDuration",
   });
 
   const { data: maxMintCount } = useScaffoldContractRead({
@@ -166,9 +166,44 @@ const Home: NextPage = () => {
     return <NftCard key={index} data={response} />;
   });
 
+  const date = new Date(Number(startMintTimestamp) * 1000);
+  const endDate = new Date((startMintTimestamp && mintDuration ? Number(startMintTimestamp + mintDuration) : 0) * 1000);
+
+  const startDateLocale = date.toLocaleString("en-US", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const endDateLocale = endDate.toLocaleString("en-US", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  function secondsToDhms(seconds: number) {
+    seconds = Number(seconds);
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor((seconds % (3600 * 24)) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+
+    const dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+    const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  }
+
+  const mintDurationFormatted = secondsToDhms(Number(mintDuration));
+
   return (
     <>
-      <div className="flex items-center flex-col flex-grow pt-10">
+      <div className="flex items-center flex-col flex-grow pt-10 bg-base-100">
         <div className="px-5 items-center text-center">
           <button
             onClick={async () => {
@@ -236,19 +271,15 @@ const Home: NextPage = () => {
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
-              <p>Mint Window: {mintWindow?.toString()}</p>
+              <p>Mint Duration: {mintDurationFormatted?.toString()}</p>
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
-              <p> Start Mint Timestamp: {startMintTimestamp?.toString()}</p>
+              <p>Mint Start Date: {" " + startDateLocale}</p>
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">
-              <p>
-                {" "}
-                End Mint Timestamp:{" "}
-                {startMintTimestamp && mintWindow ? (startMintTimestamp + mintWindow).toString() : 0}
-              </p>
+              <p> Mint End Date: {" " + endDateLocale}</p>
             </div>
 
             <div className="bg-base-300 rounded-lg p-1 m-1">

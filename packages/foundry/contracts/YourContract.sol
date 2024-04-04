@@ -25,7 +25,7 @@ contract YourContract is AccessControl, ERC721 {
 
     uint256 s_maxMintCount;
 
-    uint256 s_mintWindow = 24 hours;
+    uint256 s_mintDuration = 24 hours;
     uint256 s_startMintTimestamp;
 
     bool s_isMintStarted;
@@ -34,14 +34,14 @@ contract YourContract is AccessControl, ERC721 {
         address admin,
         address mintRoyaltyRecipient,
         uint256 maxMintCount,
-        uint256 mintWindow
+        uint256 mintDuration
     ) ERC721("Weedies", "W") {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
 
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_mintPrice = 0;
         s_maxMintCount = maxMintCount;
-        s_mintWindow = mintWindow;
+        s_mintDuration = mintDuration;
 
         mintingThresholds.push(MintingThreshold(0, 5, 0.00069420 ether));
         mintingThresholds.push(MintingThreshold(5, 10, .1 ether));
@@ -63,8 +63,8 @@ contract YourContract is AccessControl, ERC721 {
         isMintStarted = s_isMintStarted;
     }
 
-    function getMintWindow() external view returns (uint256 mintWindow) {
-        mintWindow = s_mintWindow;
+    function getMintDuration() external view returns (uint256 mintDuration) {
+        mintDuration = s_mintDuration;
     }
 
     function getStartMintTimestamp()
@@ -84,7 +84,7 @@ contract YourContract is AccessControl, ERC721 {
             revert YourContract__BeforeMintWindow();
         }
 
-        if (block.timestamp > s_startMintTimestamp + s_mintWindow) {
+        if (block.timestamp > s_startMintTimestamp + s_mintDuration) {
             revert YourContract__PastMintWindow();
         }
 

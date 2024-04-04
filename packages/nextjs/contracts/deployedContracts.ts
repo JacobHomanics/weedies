@@ -28,7 +28,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "mintWindow",
+              name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
             },
@@ -175,11 +175,11 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getMintWindow",
+          name: "getMintDuration",
           inputs: [],
           outputs: [
             {
-              name: "mintWindow",
+              name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
             },
@@ -834,7 +834,7 @@ const deployedContracts = {
   },
   11155111: {
     YourContract: {
-      address: "0x1c8264Cee472ef10758DFe8AE05156A1E52E6e40",
+      address: "0x136033C94f3BEb50a808f6f14a9fd35E789D8e40",
       abi: [
         {
           type: "constructor",
@@ -855,7 +855,7 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "mintWindow",
+              name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
             },
@@ -1002,11 +1002,11 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getMintWindow",
+          name: "getMintDuration",
           inputs: [],
           outputs: [
             {
-              name: "mintWindow",
+              name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
             },
