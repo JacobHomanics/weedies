@@ -17,30 +17,26 @@ contract YourContractTest is Test {
     }
 
     function testMessageOnDeployment() public {
-        yourContract.mint{value: 0}();
-        me();
-        yourContract.mint{value: 0}();
-        me();
-        yourContract.mint{value: 0}();
-        me();
-
-        yourContract.mint{value: 0}();
-        me();
-
-        yourContract.mint{value: 0}();
-        me();
-
-        yourContract.mint{value: 0.1 ether}();
-        me();
+        // yourContract.mint{value: 0}();
+        // me();
+        // yourContract.mint{value: 0}();
+        // me();
+        // yourContract.mint{value: 0}();
+        // me();
+        // yourContract.mint{value: 0}();
+        // me();
+        // yourContract.mint{value: 0}();
+        // me();
+        // yourContract.mint{value: 0.1 ether}();
+        // me();
     }
 
     function me() public view {
-        YourContract.MintingThreshold memory threshold = yourContract
-            .getAcitveMintingThreshold();
-
-        console.log(threshold.minThreshold);
-        console.log(threshold.maxThreshold);
-        console.log(threshold.mintPrice);
+        // YourContract.MintingThreshold memory threshold = yourContract
+        //     .getAcitveMintingThreshold();
+        // console.log(threshold.minThreshold);
+        // console.log(threshold.maxThreshold);
+        // console.log(threshold.mintPrice);
     }
 
     function testSetNewMessage() public {}
