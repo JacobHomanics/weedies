@@ -311,6 +311,7 @@ const Home: NextPage = () => {
             </div>
           </div>
 
+          <p className="text-center text-2xl">All Weedies</p>
           <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div>
         </div>
       </div>
