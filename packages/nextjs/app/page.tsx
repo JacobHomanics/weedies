@@ -335,7 +335,7 @@ const Home: NextPage = () => {
           }}
           className="btn btn-secondary btn-lg"
         >
-          Mint
+          Twist One Out!
         </button>
 
         {/* <button
