@@ -211,6 +211,8 @@ const Home: NextPage = () => {
 
   // const mintDurationFormatted = secondsToDhms(Number(mintDuration));
 
+  const carouselImgClassName = "border-2 border-secondary";
+
   return (
     <>
       <div className="relative">
@@ -280,19 +282,19 @@ const Home: NextPage = () => {
           swipeable
         >
           <div>
-            <img src={nounie1.src} alt="Fruits" />
+            <img src={nounie1.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div>
-            <img src={nounie2.src} alt="Fruits" />
+            <img src={nounie2.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div>
-            <img src={nounie3.src} alt="Fruits" />
+            <img src={nounie3.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div>
-            <img src={nounie4.src} alt="Fruits" />
+            <img src={nounie4.src} alt="Fruits" className={carouselImgClassName} />
           </div>
         </Carousel>
         <div className="flex items-center justify-center text-center">
