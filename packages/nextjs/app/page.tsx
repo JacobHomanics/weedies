@@ -320,23 +320,11 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <button
-          onClick={async () => {
-            await mint({ value: activeThreshold?.mintPrice });
-            await refetchMintCount();
-            await refetchActiveThrehsold();
-            // await refetchBalance();
-            await refetchTokenIds();
-            await refetchUris();
-            // await refetchResponses();
-            await refetchStartMintTimestamp();
-            // await refetchIsMintStarted();
-            await refetchGetWindow();
-          }}
-          className="btn btn-secondary btn-lg m-1"
-        >
-          Twist One Out!
-        </button>
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="font-nouns font-black text-xl">
+            {"First, roll up a weedie. If you don't like how it looks, then you can re-roll it!"}
+          </p>
+        </div>
 
         <button
           onClick={async () => {
@@ -354,6 +342,31 @@ const Home: NextPage = () => {
           className="btn btn-secondary btn-lg m-1"
         >
           Roll One!
+        </button>
+
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="font-nouns font-black text-xl">
+            {
+              "Finally, if you're satisfied with your roll job, then lick the paper, twist 'em up, and mint yourself a Weedie!"
+            }
+          </p>
+        </div>
+        <button
+          onClick={async () => {
+            await mint({ value: activeThreshold?.mintPrice });
+            await refetchMintCount();
+            await refetchActiveThrehsold();
+            // await refetchBalance();
+            await refetchTokenIds();
+            await refetchUris();
+            // await refetchResponses();
+            await refetchStartMintTimestamp();
+            // await refetchIsMintStarted();
+            await refetchGetWindow();
+          }}
+          className="btn btn-secondary btn-lg m-1"
+        >
+          Twist One Out!
         </button>
 
         {/* <button
