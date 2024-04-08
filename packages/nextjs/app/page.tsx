@@ -333,9 +333,27 @@ const Home: NextPage = () => {
             // await refetchIsMintStarted();
             await refetchGetWindow();
           }}
-          className="btn btn-secondary btn-lg"
+          className="btn btn-secondary btn-lg m-1"
         >
           Twist One Out!
+        </button>
+
+        <button
+          onClick={async () => {
+            await mint({ value: activeThreshold?.mintPrice });
+            await refetchMintCount();
+            await refetchActiveThrehsold();
+            // await refetchBalance();
+            await refetchTokenIds();
+            await refetchUris();
+            // await refetchResponses();
+            await refetchStartMintTimestamp();
+            // await refetchIsMintStarted();
+            await refetchGetWindow();
+          }}
+          className="btn btn-secondary btn-lg m-1"
+        >
+          Roll One!
         </button>
 
         {/* <button
