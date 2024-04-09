@@ -95,80 +95,6 @@ contract YourContract is AccessControl, ERC721 {
         startMintTimestamp = s_startMintTimestamp;
     }
 
-    mapping(address user => uint256 pregeneratedId) pregeneratedTokenForUser;
-    mapping(address user => bool isRolling) isUserRolling;
-
-    mapping(address user => uint256 id) rolledTokenId;
-
-    function getRolledTokenId(address user) public view returns (uint256) {
-        return rolledTokenId[user];
-    }
-
-    function getRolledTokenURI(address user)
-        public
-        view
-        returns (string memory uri)
-    {
-        uri =
-            string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
-    }
-
-    function rollOneUp() external {
-        // uint256 rn = generateRandomNumber(s_maxTokenCount);
-        // rolledTokenId[msg.sender] = rn;
-
-        // pregeneratedTokenForUser[msg.sender] = rn + 1;
-        // isUserRolling[msg.sender] = true;
-
-        // uint256[] memory allTokenIds = new uint256[](s_mintCount);
-
-        // for (uint256 i = 1; i <= s_mintCount; i++) {
-        //     allTokenIds[i - 1] = i;
-        // }
-
-        // uint256 validTokenCount = 0;
-        // for (uint256 i = 1; i <= s_mintCount; i++) {
-        //     if (i != tokenUriId[i]) {
-        //         validTokenCount++;
-        //     }
-        // }
-
-        // uint256[] memory validTokenIds = new uint256[](validTokenCount);
-
-        // for (uint256 i = 0; i < validTokenCount; i++) {
-        //     validTokenIds[i] = i;
-        // }
-
-        // while (true) {
-        //     uint256 rn = generateRandomNumber(3);
-
-        //     uint256 isInvalidCount = 0;
-        //     bool isValid = true;
-        //     for (uint256 i = 1; i <= s_mintCount; i++) {
-        //         if (rn == tokenUriId[i]) {
-        //             // try again
-        //             isInvalidCount++;
-        //         }
-        //     }
-
-        //     if (isInvalidCount == s_mintCount) {
-        //         revert();
-        //     }
-
-        //     if (isValid) {
-        //         pregeneratedTokenForUser[msg.sender] = rn + 1;
-        //         isUserRolling[msg.sender] = true;
-        //         break;
-        //     }
-        // }
-
-        // for (uint256 i = 1; i <= s_mintCount; i++) {
-        //     if (rn == tokenUriId[i]) {
-        //         // try again
-        //     }
-        // }
-    }
-
     function getPregeneratedTokenURI(address user)
         external
         view
@@ -234,33 +160,45 @@ contract YourContract is AccessControl, ERC721 {
         return super.supportsInterface(interfaceId);
     }
 
-    function generateRandomHash() public view returns (uint256 randomHash) {
-        randomHash = uint256(
-            keccak256(
-                abi.encodePacked(
-                    msg.sender, blockhash(block.number - 1), block.timestamp
-                )
-            )
-        );
+    mapping(address user => uint256 pregeneratedId) pregeneratedTokenForUser;
+    mapping(address user => bool isRolling) isUserRolling;
 
-        return randomHash;
+    mapping(address user => uint256 id) rolledTokenId;
+
+    function getRolledTokenId(address user) public view returns (uint256) {
+        return rolledTokenId[user];
     }
 
-    function generateRandomNumber(uint256 ceiling)
+    function getRolledTokenURI(address user)
         public
         view
-        returns (uint256 randomNumber)
+        returns (string memory uri)
     {
-        uint256 randomHash = generateRandomHash();
-        randomNumber = (randomHash % ceiling);
+        uri =
+            string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }
 
-    function generateRandomNumberWithIndexAccomodation(uint256 seed)
+    function rollOneUp() external {
+        uint256 result = generateRandomNumberWithFilter(s_maxMintCount);
+        rolledTokenId[msg.sender] = result;
+    }
+
+    function generateRandomNumberWithFilter(uint256 seed)
         public
-        view
-        returns (uint256 randomNumberWithIndexAccomodation)
+        returns (uint256)
     {
-        randomNumberWithIndexAccomodation = generateRandomNumber(seed) + 1;
+        (uint256 randomIndex, uint256 resultNumber) =
+            generateRandomNumberWithFilterNoWrite(seed);
+
+        // write the last number of the array to the current position.
+        // thus we take out the used number from the circulation and store the last number of the array for future use
+        s_randomNumbers[randomIndex] =
+            s_randomNumbers[s_randomNumbers.length - 1];
+
+        // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
+        s_randomNumbers.pop();
+
+        return resultNumber;
     }
 
     function generateRandomNumberWithFilterNoWrite(uint256 seed)
@@ -282,22 +220,33 @@ contract YourContract is AccessControl, ERC721 {
         resultNumber = (s_randomNumbers[randomIndex]);
     }
 
-    function generateRandomNumberWithFilter(uint256 seed)
+    function generateRandomNumberWithIndexAccomodation(uint256 seed)
         public
-        returns (uint256)
+        view
+        returns (uint256 randomNumberWithIndexAccomodation)
     {
-        (uint256 randomIndex, uint256 resultNumber) =
-            generateRandomNumberWithFilterNoWrite(seed);
+        randomNumberWithIndexAccomodation = generateRandomNumber(seed) + 1;
+    }
 
-        // write the last number of the array to the current position.
-        // thus we take out the used number from the circulation and store the last number of the array for future use
-        s_randomNumbers[randomIndex] =
-            s_randomNumbers[s_randomNumbers.length - 1];
+    function generateRandomNumber(uint256 ceiling)
+        public
+        view
+        returns (uint256 randomNumber)
+    {
+        uint256 randomHash = generateRandomHash();
+        randomNumber = (randomHash % ceiling);
+    }
 
-        // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-        s_randomNumbers.pop();
+    function generateRandomHash() public view returns (uint256 randomHash) {
+        randomHash = uint256(
+            keccak256(
+                abi.encodePacked(
+                    msg.sender, blockhash(block.number - 1), block.timestamp
+                )
+            )
+        );
 
-        return resultNumber;
+        return randomHash;
     }
 
     function tokenURI(uint256 tokenId)
