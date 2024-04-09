@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract WeediesWithImmediatePriceThreshold is Test {
     YourContract public yourContract;
 
-    address admin = vm.addr(1);
+    address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
 
     string BASE_URI =
@@ -24,7 +24,7 @@ contract WeediesWithImmediatePriceThreshold is Test {
         thresholds[0] =
             YourContract.MintingThreshold(0, type(uint256).max, MINT_PRICE);
         yourContract = new YourContract(
-            admin,
+            mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
             0,

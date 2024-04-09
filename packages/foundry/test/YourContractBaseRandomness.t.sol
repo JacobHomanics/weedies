@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 abstract contract YourContractBaseRandomness is Test {
     YourContract public yourContract;
 
-    address admin = vm.addr(1);
+    address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
 
     string BASE_URI =
@@ -40,7 +40,7 @@ abstract contract YourContractBaseRandomness is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            admin, BASE_URI, maxTokenCount, 0, 0, thresholds
+            mintRoyaltyRecipient, BASE_URI, maxTokenCount, 0, 0, thresholds
         );
     }
 

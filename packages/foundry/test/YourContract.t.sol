@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract YourContractTest is Test {
     YourContract public yourContract;
 
-    address admin = vm.addr(1);
+    address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
 
     string BASE_URI =
@@ -26,7 +26,7 @@ contract YourContractTest is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            admin,
+            mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
             MINT_START_TIMESTAMP,
@@ -138,7 +138,7 @@ contract YourContractTest is Test {
 
         bool sent = yourContract.withdraw();
         assertEq(address(yourContract).balance, 0);
-        assertEq(admin.balance, mintAmount);
+        assertEq(mintRoyaltyRecipient.balance, mintAmount);
         assertEq(sent, true);
     }
 }

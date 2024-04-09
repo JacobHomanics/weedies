@@ -215,7 +215,7 @@ contract YourContract is ERC721 {
         mintCount = s_mintCount;
     }
 
-    function getRoyaltyRecipient() external view returns (address) {
+    function getMintRoyaltyRecipient() external view returns (address) {
         return s_mintRoyaltyRecipient;
     }
 
