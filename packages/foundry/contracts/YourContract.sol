@@ -43,7 +43,6 @@ contract YourContract is AccessControl, ERC721 {
     constructor(
         address admin,
         address mintRoyaltyRecipient,
-        uint256 maxMintCount,
         uint256 mintDuration,
         string memory baseURI,
         uint256 maxTokenCount,
@@ -56,7 +55,6 @@ contract YourContract is AccessControl, ERC721 {
 
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_mintPrice = 0;
-        s_maxMintCount = maxMintCount;
         s_mintDuration = mintDuration;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -163,10 +161,10 @@ contract YourContract is AccessControl, ERC721 {
     mapping(address user => uint256 pregeneratedId) pregeneratedTokenForUser;
     mapping(address user => bool isRolling) isUserRolling;
 
-    mapping(address user => uint256 id) rolledTokenId;
+    mapping(address user => uint256 id) s_rolledTokenId;
 
     function getRolledTokenId(address user) public view returns (uint256) {
-        return rolledTokenId[user];
+        return s_rolledTokenId[user];
     }
 
     function getRolledTokenURI(address user)
@@ -178,9 +176,10 @@ contract YourContract is AccessControl, ERC721 {
             string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }
 
-    function rollOneUp() external {
-        uint256 result = generateRandomNumberWithFilter(s_maxMintCount);
-        rolledTokenId[msg.sender] = result;
+    function rollOneUp() external returns (uint256 tokenId) {
+        uint256 result = generateRandomNumberWithFilter(s_maxTokenCount);
+        s_rolledTokenId[msg.sender] = result;
+        tokenId = result;
     }
 
     function generateRandomNumberWithFilter(uint256 seed)
@@ -245,8 +244,6 @@ contract YourContract is AccessControl, ERC721 {
                 )
             )
         );
-
-        return randomHash;
     }
 
     function tokenURI(uint256 tokenId)

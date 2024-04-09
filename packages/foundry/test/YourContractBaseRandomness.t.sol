@@ -40,7 +40,7 @@ abstract contract YourContractBaseRandomness is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            admin, admin, 24420, 24 hours, BASE_URI, maxTokenCount, thresholds
+            admin, admin, 24 hours, BASE_URI, maxTokenCount, thresholds
         );
     }
 
@@ -101,6 +101,4 @@ abstract contract YourContractBaseRandomness is Test {
         vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
         yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
     }
-
-    function testSetNewMessage() public {}
 }
