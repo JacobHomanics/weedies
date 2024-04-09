@@ -40,7 +40,7 @@ abstract contract YourContractBaseRandomness is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            admin, admin, 24 hours, BASE_URI, maxTokenCount, 0, 0, thresholds
+            admin, admin, BASE_URI, maxTokenCount, 0, 0, thresholds
         );
     }
 

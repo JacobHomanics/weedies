@@ -43,7 +43,6 @@ contract YourContract is AccessControl, ERC721 {
     constructor(
         address admin,
         address mintRoyaltyRecipient,
-        uint256 mintDuration,
         string memory baseURI,
         uint256 maxTokenCount,
         uint256 mintStartTimestamp,
@@ -53,7 +52,6 @@ contract YourContract is AccessControl, ERC721 {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
 
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
-        s_mintDuration = mintDuration;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
         s_mintStartTimestamp = mintStartTimestamp;

@@ -28,7 +28,6 @@ contract YourContractTest is Test {
         yourContract = new YourContract(
             admin,
             admin,
-            24 hours,
             BASE_URI,
             s_maxTokenCount,
             MINT_START_TIMESTAMP,
@@ -130,6 +129,8 @@ contract YourContractTest is Test {
     }
 
     function testWithdrawRewards(uint256 mintAmount) public {
+        vm.deal(USER, mintAmount);
+
         vm.prank(USER);
         yourContract.rollOneUp();
         vm.prank(USER);

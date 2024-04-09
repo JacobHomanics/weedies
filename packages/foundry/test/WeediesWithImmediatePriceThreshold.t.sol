@@ -26,7 +26,6 @@ contract WeediesWithImmediatePriceThreshold is Test {
         yourContract = new YourContract(
             admin,
             admin,
-            24 hours,
             BASE_URI,
             s_maxTokenCount,
             0,
