@@ -10,6 +10,8 @@ contract YourContract is AccessControl, ERC721 {
     error Weedies__AllWeediesAreTwisted();
     error Weedies__UserNotActivelyRollingAWeedie();
     error Weedies__YouShortedTheDealer();
+    error Weedies__TheDealersNotAround();
+
     error YourContract__PastMintWindow();
     error YourContract__BeforeMintWindow();
     error YourContract__MintNotStarted();
@@ -22,16 +24,15 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     address immutable s_mintRoyaltyRecipient;
-    uint256 immutable s_maxMintCount;
     uint256 immutable s_mintDuration;
     uint256 immutable s_maxTokenCount;
+    uint256 immutable s_mintStartTimestamp;
+    uint256 immutable s_mintEndTimestamp;
     MintingThreshold[] s_mintingThresholds;
 
     uint256 s_mintCount;
 
     uint256 s_startMintTimestamp;
-
-    // bool s_isMintStarted;
 
     string s_baseURI;
 
@@ -45,6 +46,8 @@ contract YourContract is AccessControl, ERC721 {
         uint256 mintDuration,
         string memory baseURI,
         uint256 maxTokenCount,
+        uint256 mintStartTimestamp,
+        uint256 mintEndTimestamp,
         MintingThreshold[] memory mintingThresholds
     ) ERC721("Weedies", "W") {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
@@ -53,6 +56,8 @@ contract YourContract is AccessControl, ERC721 {
         s_mintDuration = mintDuration;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
+        s_mintStartTimestamp = mintStartTimestamp;
+        s_mintEndTimestamp = mintEndTimestamp;
 
         for (uint256 i = 0; i < mintingThresholds.length; i++) {
             s_mintingThresholds.push(mintingThresholds[i]);
@@ -61,90 +66,6 @@ contract YourContract is AccessControl, ERC721 {
         for (uint256 i = 1; i <= maxTokenCount; i++) {
             s_MintableTokenIds.push(i);
         }
-    }
-
-    function startMint() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        // if (s_isMintStarted) {
-        //     revert YourContract__MintAlreadyStarted();
-        // }
-
-        // s_startMintTimestamp = block.timestamp;
-        // s_isMintStarted = true;
-    }
-
-    // function getIsMintStarted() external view returns (bool isMintStarted) {
-    //     isMintStarted = s_isMintStarted;
-    // }
-
-    function getMintDuration() external view returns (uint256 mintDuration) {
-        mintDuration = s_mintDuration;
-    }
-
-    function getStartMintTimestamp()
-        external
-        view
-        returns (uint256 startMintTimestamp)
-    {
-        startMintTimestamp = s_startMintTimestamp;
-    }
-
-    function mint() external payable {
-        // if (!s_isMintStarted) {
-        //     revert YourContract__MintNotStarted();
-        // }
-
-        // if (block.timestamp < s_startMintTimestamp) {
-        //     revert YourContract__BeforeMintWindow();
-        // }
-
-        // if (block.timestamp > s_startMintTimestamp + s_mintDuration) {
-        //     revert YourContract__PastMintWindow();
-        // }
-
-        uint256 rolledTokenId = getRolledTokenId(msg.sender);
-
-        if (rolledTokenId == 0) {
-            revert Weedies__UserNotActivelyRollingAWeedie();
-        }
-
-        if (msg.value < getMintPrice()) {
-            revert Weedies__YouShortedTheDealer();
-        }
-
-        s_mintCount++;
-        mintedTokenUriId[s_mintCount] = rolledTokenId;
-        s_rolledTokenId[msg.sender] = 0;
-        _mint(msg.sender, s_mintCount);
-    }
-
-    function withdraw() external {
-        (bool sent,) =
-            s_mintRoyaltyRecipient.call{value: address(this).balance}("");
-        require(sent, "Failed to send Ether");
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, AccessControl)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
-    }
-
-    // mapping(address user => bool isRolling) isUserRolling;
-
-    function getRolledTokenId(address user) public view returns (uint256) {
-        return s_rolledTokenId[user];
-    }
-
-    function getRolledTokenURI(address user)
-        public
-        view
-        returns (string memory uri)
-    {
-        uri =
-            string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }
 
     function rollOneUp() external returns (uint256 tokenId) {
@@ -217,32 +138,59 @@ contract YourContract is AccessControl, ERC721 {
         );
     }
 
-    function tokenURI(uint256 tokenId)
+    function mint() external payable {
+        if (!isTimestampInWindow()) {
+            revert Weedies__TheDealersNotAround();
+        }
+
+        if (msg.value < getMintPrice()) {
+            revert Weedies__YouShortedTheDealer();
+        }
+
+        uint256 rolledTokenId = getRolledTokenId(msg.sender);
+
+        if (rolledTokenId == 0) {
+            revert Weedies__UserNotActivelyRollingAWeedie();
+        }
+
+        s_mintCount++;
+        mintedTokenUriId[s_mintCount] = rolledTokenId;
+        s_rolledTokenId[msg.sender] = 0;
+        _mint(msg.sender, s_mintCount);
+    }
+
+    function withdraw() external returns (bool) {
+        (bool sent,) =
+            s_mintRoyaltyRecipient.call{value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
+
+        return sent;
+    }
+
+    function getRolledTokenId(address user) public view returns (uint256) {
+        return s_rolledTokenId[user];
+    }
+
+    function getRolledTokenURI(address user)
         public
         view
-        override
-        returns (string memory i)
+        returns (string memory uri)
     {
-        _requireOwned(tokenId);
-        return string.concat(
-            _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
-        );
+        uri =
+            string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return s_baseURI;
+    function isTimestampInWindow() public view returns (bool) {
+        return block.timestamp >= getMintStartTimestamp()
+            && block.timestamp <= getMintEndTimestamp();
     }
 
-    function getMaxMintCount() external view returns (uint256 maxMintCount) {
-        maxMintCount = s_maxMintCount;
+    function getMintStartTimestamp() public view returns (uint256) {
+        return s_startMintTimestamp;
     }
 
-    function getMintCount() external view returns (uint256 mintCount) {
-        mintCount = s_mintCount;
-    }
-
-    function getRoyaltyRecipient() external view returns (address) {
-        return s_mintRoyaltyRecipient;
+    function getMintEndTimestamp() public view returns (uint256) {
+        return s_mintEndTimestamp;
     }
 
     function getMintPrice() public view returns (uint256 mintPrice) {
@@ -263,5 +211,42 @@ contract YourContract is AccessControl, ERC721 {
                 break;
             }
         }
+    }
+
+    function getMaxMintCount() external view returns (uint256 maxMintCount) {
+        maxMintCount = s_maxTokenCount;
+    }
+
+    function getMintCount() external view returns (uint256 mintCount) {
+        mintCount = s_mintCount;
+    }
+
+    function getRoyaltyRecipient() external view returns (address) {
+        return s_mintRoyaltyRecipient;
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override
+        returns (string memory i)
+    {
+        _requireOwned(tokenId);
+        return string.concat(
+            _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
+        );
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return s_baseURI;
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }

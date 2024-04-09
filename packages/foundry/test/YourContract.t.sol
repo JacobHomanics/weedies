@@ -15,6 +15,8 @@ contract YourContractTest is Test {
         "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
 
     uint256 s_maxTokenCount = 24420;
+    uint256 MINT_START_TIMESTAMP = 0;
+    uint256 MINT_END_TIMESTAMP = 100;
 
     function setUp() public {
         YourContract.MintingThreshold[] memory thresholds =
@@ -24,8 +26,20 @@ contract YourContractTest is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            admin, admin, 24 hours, BASE_URI, s_maxTokenCount, thresholds
+            admin,
+            admin,
+            24 hours,
+            BASE_URI,
+            s_maxTokenCount,
+            MINT_START_TIMESTAMP,
+            MINT_END_TIMESTAMP,
+            thresholds
         );
+    }
+
+    function testMintTimestamps() public view {
+        assertEq(yourContract.getMintStartTimestamp(), MINT_START_TIMESTAMP);
+        assertEq(yourContract.getMintEndTimestamp(), MINT_END_TIMESTAMP);
     }
 
     function testRollOneOut(uint256 blockNumber) public {
@@ -97,5 +111,34 @@ contract YourContractTest is Test {
             YourContract.Weedies__UserNotActivelyRollingAWeedie.selector
         );
         yourContract.mint();
+    }
+
+    function testRevertMintTheDealerIsNotAround(uint256 timestamp) public {
+        vm.warp(timestamp);
+
+        vm.assume(
+            timestamp < MINT_START_TIMESTAMP || timestamp > MINT_END_TIMESTAMP
+        );
+
+        vm.prank(USER);
+        yourContract.rollOneUp();
+
+        vm.expectRevert(YourContract.Weedies__TheDealersNotAround.selector);
+
+        vm.prank(USER);
+        yourContract.mint();
+    }
+
+    function testWithdrawRewards(uint256 mintAmount) public {
+        vm.prank(USER);
+        yourContract.rollOneUp();
+        vm.prank(USER);
+
+        yourContract.mint{value: mintAmount}();
+
+        bool sent = yourContract.withdraw();
+        assertEq(address(yourContract).balance, 0);
+        assertEq(admin.balance, mintAmount);
+        assertEq(sent, true);
     }
 }
