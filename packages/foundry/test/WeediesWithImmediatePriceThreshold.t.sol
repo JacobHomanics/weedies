@@ -25,7 +25,6 @@ contract WeediesWithImmediatePriceThreshold is Test {
             YourContract.MintingThreshold(0, type(uint256).max, MINT_PRICE);
         yourContract = new YourContract(
             admin,
-            admin,
             BASE_URI,
             s_maxTokenCount,
             0,

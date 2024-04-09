@@ -27,7 +27,6 @@ contract YourContractTest is Test {
         );
         yourContract = new YourContract(
             admin,
-            admin,
             BASE_URI,
             s_maxTokenCount,
             MINT_START_TIMESTAMP,

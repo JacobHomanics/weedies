@@ -2,11 +2,10 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "forge-std/Test.sol";
 
-contract YourContract is AccessControl, ERC721 {
+contract YourContract is ERC721 {
     error Weedies__AllWeediesAreTwisted();
     error Weedies__UserNotActivelyRollingAWeedie();
     error Weedies__YouShortedTheDealer();
@@ -41,7 +40,6 @@ contract YourContract is AccessControl, ERC721 {
     mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
 
     constructor(
-        address admin,
         address mintRoyaltyRecipient,
         string memory baseURI,
         uint256 maxTokenCount,
@@ -49,8 +47,6 @@ contract YourContract is AccessControl, ERC721 {
         uint256 mintEndTimestamp,
         MintingThreshold[] memory mintingThresholds
     ) ERC721("Weedies", "W") {
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -237,14 +233,5 @@ contract YourContract is AccessControl, ERC721 {
 
     function _baseURI() internal view override returns (string memory) {
         return s_baseURI;
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, AccessControl)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
     }
 }
