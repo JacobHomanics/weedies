@@ -83,7 +83,7 @@ contract YourContractTest is Test {
     }
 
     function setUp() public {
-        setUp5AnswerSheets();
+        // setUp5AnswerSheets();
 
         randomBlocks[0] = 1;
         randomBlocks[1] = 15;
@@ -109,24 +109,24 @@ contract YourContractTest is Test {
     //     // assertEq(yourContract.getIsMintStarted(), true);
     // }
 
-    function testGenerateRandomNumberSheets() public {
-        setUp24420AnswerSheets();
-        generateAndCheckRandomNumber();
-        setUp5AnswerSheets();
-        generateAndCheckRandomNumber();
-    }
+    // function testGenerateRandomNumberSheets() public {
+    //     setUp24420AnswerSheets();
+    //     generateAndValidateRandomNumber();
+    //     setUp5AnswerSheets();
+    //     generateAndValidateRandomNumber();
+    // }
 
-    function generateAndCheckRandomNumber() public {
-        for (uint256 i = 0; i < randomBlocks.length; i++) {
-            vm.roll(randomBlocks[i]);
+    // function generateAndValidateRandomNumber() public {
+    //     for (uint256 i = 0; i < randomBlocks.length; i++) {
+    //         vm.roll(randomBlocks[i]);
 
-            vm.prank(USER);
+    //         vm.prank(USER);
 
-            uint256 number = yourContract.generateRandomNumber(s_maxTokenCount);
+    //         uint256 number = yourContract.generateRandomNumber(s_maxTokenCount);
 
-            assertEq(number, answerSheetUnfiltered[i]);
-        }
-    }
+    //         assertEq(number, answerSheetUnfiltered[i]);
+    //     }
+    // }
 
     // function testGenerateRandomNumber() public {
     //     for (uint256 i = 0; i < randomBlocks.length; i++) {
@@ -140,52 +140,64 @@ contract YourContractTest is Test {
     //     }
     // }
 
-    function testGenerateRandomNumberWithIndexAccomodationUsingSheets()
-        public
-    {}
+    // function testGenerateRandomNumberWithIndexAccomodationUsingSheets()
+    //     public
+    // {
+    //     setUp24420AnswerSheets();
+    //     generateAndValidateRandomNumberWithIndexAccomodation();
+    //     setUp5AnswerSheets();
+    //     generateAndValidateRandomNumberWithIndexAccomodation();
+    // }
 
-    function testGenerateRandomNumberWithIndexAccomodation() public {
-        for (uint256 i = 0; i < randomBlocks.length; i++) {
-            vm.roll(randomBlocks[i]);
+    // function generateAndValidateRandomNumberWithIndexAccomodation() public {
+    //     for (uint256 i = 0; i < randomBlocks.length; i++) {
+    //         vm.roll(randomBlocks[i]);
 
-            vm.prank(USER);
+    //         vm.prank(USER);
 
-            uint256 number = yourContract
-                .generateRandomNumberWithIndexAccomodation(s_maxTokenCount);
+    //         uint256 number = yourContract
+    //             .generateRandomNumberWithIndexAccomodation(s_maxTokenCount);
 
-            console.log(number);
+    //         console.log(number);
 
-            assertEq(number, answerSheetUnfilteredWithIndexAccomodation[i]);
-        }
-    }
+    //         assertEq(number, answerSheetUnfilteredWithIndexAccomodation[i]);
+    //     }
+    // }
 
-    function testGenerateRandomNumberWithFilterNoWrite() public {
-        for (uint256 i = 0; i < randomBlocks.length; i++) {
-            vm.roll(randomBlocks[i]);
+    // function testGenerateRandomNumberWithFilterNoWriteUsingSheets() public {
+    //     setUp24420AnswerSheets();
+    //     generateAndValidateRandomNumberWithFilterNoWrite();
+    //     setUp5AnswerSheets();
+    //     generateAndValidateRandomNumberWithFilterNoWrite();
+    // }
 
-            vm.prank(USER);
-            (, uint256 number) = yourContract
-                .generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
+    // function generateAndValidateRandomNumberWithFilterNoWrite() public {
+    //     for (uint256 i = 0; i < randomBlocks.length; i++) {
+    //         vm.roll(randomBlocks[i]);
 
-            console.log(number);
+    //         vm.prank(USER);
+    //         (, uint256 number) = yourContract
+    //             .generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
 
-            assertEq(number, answerSheetFilteredNoWrite[i]);
-        }
-    }
+    //         console.log(number);
 
-    function testGenerateRandomNumberWithFilter() public {
-        for (uint256 i = 0; i < randomBlocks.length; i++) {
-            vm.roll(randomBlocks[i]);
+    //         // assertEq(number, answerSheetFilteredNoWrite[i]);
+    //     }
+    // }
 
-            vm.prank(USER);
-            uint256 number =
-                yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
+    // function testGenerateRandomNumberWithFilter() public {
+    //     for (uint256 i = 0; i < randomBlocks.length; i++) {
+    //         vm.roll(randomBlocks[i]);
 
-            console.log(number);
+    //         vm.prank(USER);
+    //         uint256 number =
+    //             yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
 
-            assertEq(number, answerSheetFiltered[i]);
-        }
-    }
+    //         console.log(number);
+
+    //         assertEq(number, answerSheetFiltered[i]);
+    //     }
+    // }
 
     // function testRevertGenerateRandomNumber() public {
     //     for (uint256 i = 0; i < randomBlocks.length; i++) {

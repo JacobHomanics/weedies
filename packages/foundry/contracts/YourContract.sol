@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "forge-std/Test.sol";
 
 contract YourContract is AccessControl, ERC721 {
+    error Weedies__AllWeediesAreTwisted();
+
     error YourContract__DidNotSendEnoughEther();
     error YourContract__PastMintWindow();
     error YourContract__BeforeMintWindow();
@@ -231,8 +233,6 @@ contract YourContract is AccessControl, ERC721 {
     {
         return super.supportsInterface(interfaceId);
     }
-
-    error Weedies__AllWeediesAreTwisted();
 
     function generateRandomHash() public view returns (uint256 randomHash) {
         randomHash = uint256(
