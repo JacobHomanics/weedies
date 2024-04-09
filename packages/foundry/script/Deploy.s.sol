@@ -58,7 +58,8 @@ contract DeployScript is ScaffoldETHDeploy {
 
         vm.startBroadcast(deployerPrivateKey);
         YourContract yourContract = new YourContract(
-            0x2F15D4A66D22ecC6967928b6A76Ab06897b05676, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+            0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
+            0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
             "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
             24420,
             mintStartTimestamp,

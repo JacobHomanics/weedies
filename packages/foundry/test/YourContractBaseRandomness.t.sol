@@ -10,6 +10,7 @@ abstract contract YourContractBaseRandomness is Test {
 
     address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
+    address ADMIN = vm.addr(3);
 
     string BASE_URI =
         "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
@@ -40,8 +41,17 @@ abstract contract YourContractBaseRandomness is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
-            mintRoyaltyRecipient, BASE_URI, maxTokenCount, 0, 0, thresholds
+            ADMIN,
+            mintRoyaltyRecipient,
+            BASE_URI,
+            maxTokenCount,
+            0,
+            0,
+            thresholds
         );
+
+        vm.prank(ADMIN);
+        yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
 
     function testGenerateRandomNumber() public {

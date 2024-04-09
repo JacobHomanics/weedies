@@ -10,6 +10,7 @@ contract YourContractTest is Test {
 
     address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
+    address ADMIN = vm.addr(3);
 
     string BASE_URI =
         "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
@@ -26,6 +27,7 @@ contract YourContractTest is Test {
             1000, type(uint256).max, 0.0006942 ether
         );
         yourContract = new YourContract(
+            ADMIN,
             mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
@@ -33,6 +35,9 @@ contract YourContractTest is Test {
             MINT_END_TIMESTAMP,
             thresholds
         );
+
+        vm.prank(ADMIN);
+        yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
 
     function testMintTimestamps() public view {
@@ -40,11 +45,7 @@ contract YourContractTest is Test {
         assertEq(yourContract.getMintEndTimestamp(), MINT_END_TIMESTAMP);
     }
 
-    function testRollOneOut(uint256 blockNumber) public {
-        vm.assume(blockNumber > 0);
-
-        vm.roll(blockNumber);
-
+    function testRollOneOut() public {
         vm.prank(USER);
         uint256 result = yourContract.rollOneUp();
 
@@ -55,11 +56,7 @@ contract YourContractTest is Test {
         assertEq(yourContract.getRolledTokenId(USER), result);
     }
 
-    function testRerollOneOut(uint256 blockNumber) public {
-        vm.assume(blockNumber > 0);
-
-        vm.roll(blockNumber);
-
+    function testRerollOneOut() public {
         vm.prank(USER);
         uint256 result = yourContract.rollOneUp();
 
@@ -112,11 +109,11 @@ contract YourContractTest is Test {
     }
 
     function testRevertMintTheDealerIsNotAround(uint256 timestamp) public {
-        vm.warp(timestamp);
-
         vm.assume(
             timestamp < MINT_START_TIMESTAMP || timestamp > MINT_END_TIMESTAMP
         );
+
+        vm.warp(timestamp);
 
         vm.prank(USER);
         yourContract.rollOneUp();

@@ -10,6 +10,7 @@ contract WeediesWithImmediatePriceThreshold is Test {
 
     address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
+    address ADMIN = vm.addr(3);
 
     string BASE_URI =
         "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
@@ -24,6 +25,7 @@ contract WeediesWithImmediatePriceThreshold is Test {
         thresholds[0] =
             YourContract.MintingThreshold(0, type(uint256).max, MINT_PRICE);
         yourContract = new YourContract(
+            ADMIN,
             mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
@@ -31,6 +33,9 @@ contract WeediesWithImmediatePriceThreshold is Test {
             100,
             thresholds
         );
+
+        vm.prank(ADMIN);
+        yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
 
     function testMint() public {

@@ -3,9 +3,10 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "forge-std/Test.sol";
 
-contract YourContract is ERC721 {
+contract YourContract is AccessControl, ERC721 {
     error Weedies__AllWeediesAreTwisted();
     error Weedies__UserNotActivelyRollingAWeedie();
     error Weedies__YouShortedTheDealer();
@@ -40,6 +41,7 @@ contract YourContract is ERC721 {
     mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
 
     constructor(
+        address admin,
         address mintRoyaltyRecipient,
         string memory baseURI,
         uint256 maxTokenCount,
@@ -47,6 +49,8 @@ contract YourContract is ERC721 {
         uint256 mintEndTimestamp,
         MintingThreshold[] memory mintingThresholds
     ) ERC721("Weedies", "W") {
+        _grantRole(DEFAULT_ADMIN_ROLE, admin);
+
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -56,8 +60,18 @@ contract YourContract is ERC721 {
         for (uint256 i = 0; i < mintingThresholds.length; i++) {
             s_mintingThresholds.push(mintingThresholds[i]);
         }
+    }
 
-        for (uint256 i = 1; i <= maxTokenCount; i++) {
+    function setUpMintableTokenIds(uint256 numToMake)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        uint256 lengthOfArrWithIndexAccomdation = s_MintableTokenIds.length + 1;
+
+        uint256 newEndIndex = lengthOfArrWithIndexAccomdation + numToMake;
+
+        for (uint256 i = lengthOfArrWithIndexAccomdation; i < newEndIndex; i++)
+        {
             s_MintableTokenIds.push(i);
         }
     }
@@ -233,5 +247,14 @@ contract YourContract is ERC721 {
 
     function _baseURI() internal view override returns (string memory) {
         return s_baseURI;
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, AccessControl)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 }
