@@ -42,4 +42,60 @@ contract YourContractTest is Test {
         );
         assertEq(yourContract.getRolledTokenId(USER), result);
     }
+
+    function testRerollOneOut(uint256 blockNumber) public {
+        vm.assume(blockNumber > 0);
+
+        vm.roll(blockNumber);
+
+        vm.prank(USER);
+        uint256 result = yourContract.rollOneUp();
+
+        assertEq(
+            yourContract.getRolledTokenURI(USER),
+            string.concat(BASE_URI, Strings.toString(result))
+        );
+        assertEq(yourContract.getRolledTokenId(USER), result);
+
+        vm.prank(USER);
+        uint256 result2 = yourContract.rollOneUp();
+
+        assertEq(
+            yourContract.getRolledTokenURI(USER),
+            string.concat(BASE_URI, Strings.toString(result2))
+        );
+        assertEq(yourContract.getRolledTokenId(USER), result2);
+    }
+
+    function testMint() public {
+        vm.prank(USER);
+        uint256 result = yourContract.rollOneUp();
+        vm.prank(USER);
+        yourContract.mint();
+
+        assertEq(yourContract.getMintCount(), 1);
+        assertEq(
+            yourContract.tokenURI(1),
+            string.concat(BASE_URI, Strings.toString(result))
+        );
+    }
+
+    function testRevertMintRepeatMint() public {
+        vm.prank(USER);
+        yourContract.rollOneUp();
+        vm.prank(USER);
+        yourContract.mint();
+
+        vm.expectRevert(
+            YourContract.Weedies__UserNotActivelyRollingAWeedie.selector
+        );
+        yourContract.mint();
+    }
+
+    function testRevertMintNeverRolled() public {
+        vm.expectRevert(
+            YourContract.Weedies__UserNotActivelyRollingAWeedie.selector
+        );
+        yourContract.mint();
+    }
 }

@@ -8,8 +8,8 @@ import "forge-std/Test.sol";
 
 contract YourContract is AccessControl, ERC721 {
     error Weedies__AllWeediesAreTwisted();
-
-    error YourContract__DidNotSendEnoughEther();
+    error Weedies__UserNotActivelyRollingAWeedie();
+    error Weedies__YouShortedTheDealer();
     error YourContract__PastMintWindow();
     error YourContract__BeforeMintWindow();
     error YourContract__MintNotStarted();
@@ -22,23 +22,22 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     address immutable s_mintRoyaltyRecipient;
-    uint256 immutable s_mintPrice;
-    uint256 s_mintCount;
-
+    uint256 immutable s_maxMintCount;
+    uint256 immutable s_mintDuration;
+    uint256 immutable s_maxTokenCount;
     MintingThreshold[] s_mintingThresholds;
 
-    uint256 s_maxMintCount;
+    uint256 s_mintCount;
 
-    uint256 s_mintDuration = 24 hours;
     uint256 s_startMintTimestamp;
 
-    bool s_isMintStarted;
+    // bool s_isMintStarted;
 
     string s_baseURI;
 
-    uint256 s_maxTokenCount;
-
-    uint256[] s_randomNumbers;
+    uint256[] s_MintableTokenIds;
+    mapping(address user => uint256 id) s_rolledTokenId;
+    mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
 
     constructor(
         address admin,
@@ -47,14 +46,10 @@ contract YourContract is AccessControl, ERC721 {
         string memory baseURI,
         uint256 maxTokenCount,
         MintingThreshold[] memory mintingThresholds
-    )
-        // MintingThreshold[] memory thresholds
-        ERC721("Weedies", "W")
-    {
+    ) ERC721("Weedies", "W") {
         _grantRole(DEFAULT_ADMIN_ROLE, admin);
 
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
-        s_mintPrice = 0;
         s_mintDuration = mintDuration;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -64,7 +59,7 @@ contract YourContract is AccessControl, ERC721 {
         }
 
         for (uint256 i = 1; i <= maxTokenCount; i++) {
-            s_randomNumbers.push(i);
+            s_MintableTokenIds.push(i);
         }
     }
 
@@ -77,9 +72,9 @@ contract YourContract is AccessControl, ERC721 {
         // s_isMintStarted = true;
     }
 
-    function getIsMintStarted() external view returns (bool isMintStarted) {
-        isMintStarted = s_isMintStarted;
-    }
+    // function getIsMintStarted() external view returns (bool isMintStarted) {
+    //     isMintStarted = s_isMintStarted;
+    // }
 
     function getMintDuration() external view returns (uint256 mintDuration) {
         mintDuration = s_mintDuration;
@@ -93,55 +88,34 @@ contract YourContract is AccessControl, ERC721 {
         startMintTimestamp = s_startMintTimestamp;
     }
 
-    function getPregeneratedTokenURI(address user)
-        external
-        view
-        returns (string memory uri)
-    {
-        if (getPregeneratedId(user) == 0) {
-            revert();
-        }
-
-        uri = string.concat(
-            "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
-            Strings.toString(getPregeneratedId(user))
-        );
-    }
-
-    function getPregeneratedId(address user) public view returns (uint256) {
-        return pregeneratedTokenForUser[user];
-    }
-
     function mint() external payable {
-        if (!s_isMintStarted) {
-            revert YourContract__MintNotStarted();
-        }
-
-        if (block.timestamp < s_startMintTimestamp) {
-            revert YourContract__BeforeMintWindow();
-        }
-
-        if (block.timestamp > s_startMintTimestamp + s_mintDuration) {
-            revert YourContract__PastMintWindow();
-        }
-
-        if (!isUserRolling[msg.sender]) {
-            revert();
-        }
-
-        // uint256 mintPrice = getAcitveMintingThreshold().mintPrice;
-
-        // if (msg.value < mintPrice) {
-        //     revert YourContract__DidNotSendEnoughEther();
+        // if (!s_isMintStarted) {
+        //     revert YourContract__MintNotStarted();
         // }
 
-        isUserRolling[msg.sender] = false;
-        s_mintCount++;
-        _mint(msg.sender, s_mintCount);
-        tokenUriId[s_mintCount] = getPregeneratedId(msg.sender);
-    }
+        // if (block.timestamp < s_startMintTimestamp) {
+        //     revert YourContract__BeforeMintWindow();
+        // }
 
-    mapping(uint256 tokenId => uint256 uriId) tokenUriId;
+        // if (block.timestamp > s_startMintTimestamp + s_mintDuration) {
+        //     revert YourContract__PastMintWindow();
+        // }
+
+        uint256 rolledTokenId = getRolledTokenId(msg.sender);
+
+        if (rolledTokenId == 0) {
+            revert Weedies__UserNotActivelyRollingAWeedie();
+        }
+
+        if (msg.value < getMintPrice()) {
+            revert Weedies__YouShortedTheDealer();
+        }
+
+        s_mintCount++;
+        mintedTokenUriId[s_mintCount] = rolledTokenId;
+        s_rolledTokenId[msg.sender] = 0;
+        _mint(msg.sender, s_mintCount);
+    }
 
     function withdraw() external {
         (bool sent,) =
@@ -158,10 +132,7 @@ contract YourContract is AccessControl, ERC721 {
         return super.supportsInterface(interfaceId);
     }
 
-    mapping(address user => uint256 pregeneratedId) pregeneratedTokenForUser;
-    mapping(address user => bool isRolling) isUserRolling;
-
-    mapping(address user => uint256 id) s_rolledTokenId;
+    // mapping(address user => bool isRolling) isUserRolling;
 
     function getRolledTokenId(address user) public view returns (uint256) {
         return s_rolledTokenId[user];
@@ -191,11 +162,11 @@ contract YourContract is AccessControl, ERC721 {
 
         // write the last number of the array to the current position.
         // thus we take out the used number from the circulation and store the last number of the array for future use
-        s_randomNumbers[randomIndex] =
-            s_randomNumbers[s_randomNumbers.length - 1];
+        s_MintableTokenIds[randomIndex] =
+            s_MintableTokenIds[s_MintableTokenIds.length - 1];
 
         // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-        s_randomNumbers.pop();
+        s_MintableTokenIds.pop();
 
         return resultNumber;
     }
@@ -205,7 +176,7 @@ contract YourContract is AccessControl, ERC721 {
         view
         returns (uint256 randomIndex, uint256 resultNumber)
     {
-        if (s_randomNumbers.length == 0) {
+        if (s_MintableTokenIds.length == 0) {
             revert Weedies__AllWeediesAreTwisted();
         }
 
@@ -213,10 +184,10 @@ contract YourContract is AccessControl, ERC721 {
 
         // get the random number, divide it by our array size and store the mod of that division.
         // this is to make sure the generated random number fits into our required range
-        randomIndex = (randomSeed % s_randomNumbers.length);
+        randomIndex = (randomSeed % s_MintableTokenIds.length);
 
         // draw the current random number by taking the value at the random index
-        resultNumber = (s_randomNumbers[randomIndex]);
+        resultNumber = (s_MintableTokenIds[randomIndex]);
     }
 
     function generateRandomNumberWithIndexAccomodation(uint256 seed)
@@ -252,7 +223,10 @@ contract YourContract is AccessControl, ERC721 {
         override
         returns (string memory i)
     {
-        return string.concat(_baseURI(), Strings.toString(tokenUriId[tokenId]));
+        _requireOwned(tokenId);
+        return string.concat(
+            _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
+        );
     }
 
     function _baseURI() internal view override returns (string memory) {
@@ -271,19 +245,23 @@ contract YourContract is AccessControl, ERC721 {
         return s_mintRoyaltyRecipient;
     }
 
-    // function getAcitveMintingThreshold()
-    //     public
-    //     view
-    //     returns (MintingThreshold memory threshold)
-    // {
-    //     for (uint256 i = 0; i < mintingThresholds.length; i++) {
-    //         if (
-    //             (s_mintCount >= mintingThresholds[i].minThreshold)
-    //                 && (s_mintCount < mintingThresholds[i].maxThreshold)
-    //         ) {
-    //             threshold = mintingThresholds[i];
-    //             break;
-    //         }
-    //     }
-    // }
+    function getMintPrice() public view returns (uint256 mintPrice) {
+        mintPrice = getAcitveMintingThreshold().mintPrice;
+    }
+
+    function getAcitveMintingThreshold()
+        public
+        view
+        returns (MintingThreshold memory threshold)
+    {
+        for (uint256 i = 0; i < s_mintingThresholds.length; i++) {
+            if (
+                (s_mintCount >= s_mintingThresholds[i].minThreshold)
+                    && (s_mintCount < s_mintingThresholds[i].maxThreshold)
+            ) {
+                threshold = s_mintingThresholds[i];
+                break;
+            }
+        }
+    }
 }
