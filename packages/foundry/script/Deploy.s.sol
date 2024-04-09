@@ -14,19 +14,27 @@ contract DeployScript is ScaffoldETHDeploy {
                 "You don't have a deployer account. Make sure you have set DEPLOYER_PRIVATE_KEY in .env or use `yarn generate` to generate a new random account"
             );
         }
-        vm.startBroadcast(deployerPrivateKey);
-        YourContract yourContract = new YourContract(
-            0x3bEc6a181d6Ef7239F699DAf2fAa5FE3A5f01Edf, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
-            0x3bEc6a181d6Ef7239F699DAf2fAa5FE3A5f01Edf, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
-            24420,
-            24 hours
-        );
-        console.logString(
-            string.concat(
-                "YourContract deployed at: ",
-                vm.toString(address(yourContract))
-            )
-        );
+
+        // YourContract.MintingThreshold[] memory thresholds =
+        //     new YourContract.MintingThreshold[](2);
+        // thresholds[0] = YourContract.MintingThreshold(0, 1000, 0 ether);
+        // thresholds[1] = YourContract.MintingThreshold(
+        //     1000, type(uint256).max, 0.0006942 ether
+        // );
+
+        // vm.startBroadcast(deployerPrivateKey);
+        // YourContract yourContract = new YourContract(
+        //     0x2F15D4A66D22ecC6967928b6A76Ab06897b05676, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+        //     0x2F15D4A66D22ecC6967928b6A76Ab06897b05676, //0x4161f8A8DfF60aEdB63baFb7d5843b0988393eC9,
+        //     24420,
+        //     24 hours,
+        //     thresholds
+        // );
+        // console.logString(
+        //     string.concat(
+        //         "YourContract deployed at: ", vm.toString(address(yourContract))
+        //     )
+        // );
         vm.stopBroadcast();
 
         /**

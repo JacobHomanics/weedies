@@ -7,16 +7,20 @@ import nounie1 from "../public/carousel/1.png";
 import nounie2 from "../public/carousel/2.png";
 import nounie3 from "../public/carousel/3.png";
 import nounie4 from "../public/carousel/4.png";
+// import WeediesLogo from "../public/mint-assets/Weedies Logo.png";
+import WeediesLogo2 from "../public/mint-assets/Weedies logo-810px.png";
+import HeroImageWeedies from "../public/mint-assets/character line up-temp.png";
 // import nounie5 from "../public/carousel/5.png";
-import HeroImageCharacter from "../public/weedies-samples/Hero-Image-characters.png";
-import NouniesLogo from "../public/weedies-samples/Nounies_logo.png";
+// import HeroImageCharacter from "../public/weedies-samples/Hero-Image-characters.png";
+// import NouniesLogo from "../public/weedies-samples/Nounies_logo.png";
 import type { NextPage } from "next";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
-// import { useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 // import { useBalance } from "wagmi";
-// import { NftCard } from "~~/components/NftCard";
+import { NftCard } from "~~/components/NftCard";
 // import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract, useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
@@ -106,8 +110,12 @@ function useUris(contract: any, tokenIds: bigint[]) {
 // }
 
 const Home: NextPage = () => {
-  // const { address: connectedAddress } = useAccount();
+  const { address: connectedAddress } = useAccount();
   const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "mint" });
+  const { writeAsync: rollOneUp } = useScaffoldContractWrite({
+    contractName: "YourContract",
+    functionName: "rollOneUp",
+  });
   // const { writeAsync: withdraw } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "withdraw" });
   // const { writeAsync: startMint } = useScaffoldContractWrite({
   //   contractName: "YourContract",
@@ -132,6 +140,12 @@ const Home: NextPage = () => {
   const { data: mintDuration, refetch: refetchGetWindow } = useScaffoldContractRead({
     contractName: "YourContract",
     functionName: "getMintDuration",
+  });
+
+  const { data: pregenTokenURI, refetch: refetchPregen } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getPregeneratedTokenURI",
+    args: [connectedAddress],
   });
 
   // const { data: maxMintCount } = useScaffoldContractRead({
@@ -169,6 +183,10 @@ const Home: NextPage = () => {
   for (let i = 0; i < uris.length; i++) {
     uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
   }
+
+  const pregenTokenURIFormatted = pregenTokenURI?.replace("https://nft.bueno.art", "https://app.bueno.art");
+
+  const response = useFetch(pregenTokenURIFormatted);
 
   // const { responses, refetch: refetchResponses } = useFetches(uris);
 
@@ -213,18 +231,30 @@ const Home: NextPage = () => {
 
   const carouselImgClassName = "border-2 border-secondary";
 
+  //className="bg-[url('/mint-assets/Purple BG.png')]
   return (
     <>
-      <div className="relative">
-        <img src={NouniesLogo.src} className="absolute inset-y-5" />
-
-        <img src={HeroImageCharacter.src} />
+      <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
+        <img src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " /> {/* */}
+        <img src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
+        {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
       </div>
-      <div className="flex items-center justify-center text-center">
-        <p className="font-nouns font-black text-xl w-80 -mt-20 lg:text-6xl lg:w-7/12 lg:-mt-60">
+      <p className="grilledCheese text-xl text-center lg:text-8xl">
+        Nounies are Dreamers, Rebels, Creators, Artists, and Friends living their best life on the blockchain.
+      </p>
+
+      <div className="relative">
+        {/* <img src={NouniesLogo.src} className="absolute inset-y-5" /> */}
+        {/* <img src={WeediesLogo2.src} className="absolute inset-y-5 left-[300px]" /> */}
+        {/* <img src={WeediesLogo.src} className="absolute inset-y-5" /> */}
+
+        {/* <img src={HeroImageCharacter.src} /> */}
+      </div>
+      {/* <div className="flex items-center justify-center text-center">
+        <p className="grilledCheese text-xl w-80 -mt-20 lg:text-6xl lg:w-7/12 lg:-mt-60">
           Nounies are Dreamers, Rebels, Creators, Artists, and Friends living their best life on the blockchain.
         </p>
-      </div>
+      </div> */}
 
       <div className="flex items-center flex-col flex-grow pt-10 bg-base-100">
         <Carousel
@@ -281,19 +311,19 @@ const Home: NextPage = () => {
           slidesToSlide={1}
           swipeable
         >
-          <div>
+          <div className="m-10">
             <img src={nounie1.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
-          <div>
+          <div className="m-10">
             <img src={nounie2.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
-          <div>
+          <div className="m-10">
             <img src={nounie3.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
-          <div>
+          <div className="m-10">
             <img src={nounie4.src} alt="Fruits" className={carouselImgClassName} />
           </div>
         </Carousel>
@@ -328,9 +358,11 @@ const Home: NextPage = () => {
 
         <button
           onClick={async () => {
-            await mint({ value: activeThreshold?.mintPrice });
+            await rollOneUp();
+            // await mint({ value: activeThreshold?.mintPrice });
             await refetchMintCount();
             await refetchActiveThrehsold();
+            await refetchPregen();
             // await refetchBalance();
             await refetchTokenIds();
             await refetchUris();
@@ -339,10 +371,12 @@ const Home: NextPage = () => {
             // await refetchIsMintStarted();
             await refetchGetWindow();
           }}
-          className="btn btn-secondary btn-lg m-1"
+          className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
         >
-          Roll One!
+          Twist one up
         </button>
+
+        <NftCard data={response.data} />
 
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-nouns font-black text-xl">
@@ -351,6 +385,7 @@ const Home: NextPage = () => {
             }
           </p>
         </div>
+
         <button
           onClick={async () => {
             await mint({ value: activeThreshold?.mintPrice });
@@ -359,14 +394,16 @@ const Home: NextPage = () => {
             // await refetchBalance();
             await refetchTokenIds();
             await refetchUris();
+            await refetchPregen();
+
             // await refetchResponses();
             await refetchStartMintTimestamp();
             // await refetchIsMintStarted();
             await refetchGetWindow();
           }}
-          className="btn btn-secondary btn-lg m-1"
+          className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl mb-10"
         >
-          Twist One Out!
+          {"I'll toke it!"}
         </button>
 
         {/* <button
@@ -374,17 +411,21 @@ const Home: NextPage = () => {
             await startMint();
             await refetchMintCount();
             await refetchActiveThrehsold();
-            await refetchBalance();
+            // await refetchBalance();
+            await refetchPregen();
+
             await refetchTokenIds();
             await refetchUris();
-            await refetchResponses();
-            await refetchIsMintStarted();
+            // await refetchResponses();
+            // await refetchIsMintStarted();
             await refetchGetWindow();
           }}
           className="btn btn-secondary btn-sm"
         >
           Start Mint
-        </button>
+        </button> */}
+
+        {/*
 
         <div className="flex flex-col items-center justify-center text-center"></div>
 
@@ -477,10 +518,9 @@ const Home: NextPage = () => {
               <Address address={royaltyRecipient}></Address>
             </div>
           </div>
-
-          <p className="text-center text-2xl">All Weedies</p>
-          <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div>
-        </div> */}
+*/}
+        {/* <p className="text-center text-2xl">All Weedies</p>
+        <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div> */}
       </div>
     </>
   );

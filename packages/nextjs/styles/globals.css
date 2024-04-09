@@ -3,6 +3,15 @@
 @import "tailwindcss/utilities";
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&display=swap');
 
+@font-face {
+  font-family: "grilledCheese";
+  src: url('../fonts/GrilledCheese_20BTN_20Toasted.ttf');
+}
+
+.grilledCheese {
+  font-family: "grilledCheese";
+}
+
 :root,
 [data-theme] {
   background: oklch(var(--b2));

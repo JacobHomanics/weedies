@@ -87,6 +87,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomNumber",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getAcitveMintingThreshold",
           inputs: [],
           outputs: [
@@ -182,6 +201,44 @@ const deployedContracts = {
               name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPregeneratedId",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPregeneratedTokenURI",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "uri",
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -374,6 +431,13 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "rollOneUp",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "safeTransferFrom",
           inputs: [
             {
@@ -492,7 +556,7 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "",
+              name: "i",
               type: "string",
               internalType: "string",
             },
@@ -829,26 +893,7 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {
-        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-      },
+      inheritedFunctions: {},
     },
   },
   11155111: {
@@ -933,6 +978,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomNumber",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getAcitveMintingThreshold",
           inputs: [],
           outputs: [
@@ -1028,6 +1092,44 @@ const deployedContracts = {
               name: "mintDuration",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPregeneratedId",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPregeneratedTokenURI",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "uri",
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -1220,6 +1322,13 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "rollOneUp",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "safeTransferFrom",
           inputs: [
             {
@@ -1338,7 +1447,7 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "",
+              name: "i",
               type: "string",
               internalType: "string",
             },
@@ -1675,26 +1784,7 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {
-        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-      },
+      inheritedFunctions: {},
     },
   },
 } as const;
