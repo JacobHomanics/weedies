@@ -291,9 +291,9 @@ const Home: NextPage = () => {
     <>
       <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " /> {/* */}
+        <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " /> {/* */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
+        <img alt="Hero Image" src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
       </div>
       <p className="insanibc text-xl text-center lg:text-8xl">
