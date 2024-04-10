@@ -415,9 +415,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="insanibc text-xl">
-            {"First, roll up a weedie. If you don't like how it looks, then you can re-roll it!"}
-          </p>
+          <p className="insanibc text-xl">{"Roll up a Weedie. Don't like it? Make a re-roll!"}</p>
         </div>
 
         <NftCard data={response?.data} />
@@ -445,9 +443,7 @@ const Home: NextPage = () => {
 
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-nouns font-black text-xl">
-            {
-              "Finally, if you're satisfied with your roll job, then lick the paper, twist 'em up, and mint yourself a Weedie!"
-            }
+            {"Satisfied with your roll job? Lick the paper, twist it up, and mint yourself a Weedie!"}
           </p>
         </div>
 
