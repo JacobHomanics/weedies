@@ -173,10 +173,15 @@ const Home: NextPage = () => {
   //   functionName: "getRoyaltyRecipient",
   // });
 
-  const { data: activeThreshold, refetch: refetchActiveThrehsold } = useScaffoldContractRead({
+  const { data: mintPrice, refetch: refetchMintPrice } = useScaffoldContractRead({
     contractName: "YourContract",
-    functionName: "getAcitveMintingThreshold",
+    functionName: "getMintPrice",
   });
+
+  // const { data: activeThreshold, refetch: refetchActiveThrehsold } = useScaffoldContractRead({
+  //   contractName: "YourContract",
+  //   functionName: "getAcitveMintingThreshold",
+  // });
 
   const { data: yourContract } = useScaffoldContract({ contractName: "YourContract" });
   // const { data: balance, refetch: refetchBalance } = useBalance({ address: yourContract?.address });
@@ -344,7 +349,7 @@ const Home: NextPage = () => {
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="font-nouns font-black text-lg m-0">Mint Price</p>
-            <p className="text-md m-0">{formatEther(activeThreshold?.mintPrice || BigInt(0)).toString()}</p>
+            <p className="text-md m-0">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="font-nouns font-black text-lg m-0">Starts</p>
@@ -367,8 +372,9 @@ const Home: NextPage = () => {
             await rollOneUp();
             // await mint({ value: activeThreshold?.mintPrice });
             await refetchMintCount();
-            await refetchActiveThrehsold();
+            // await refetchActiveThrehsold();
             await refetchPregen();
+            await refetchMintPrice();
             // await refetchBalance();
             await refetchTokenIds();
             // await refetchUris();
@@ -394,13 +400,14 @@ const Home: NextPage = () => {
 
         <button
           onClick={async () => {
-            await mint({ value: activeThreshold?.mintPrice });
+            await mint({ value: mintPrice });
             await refetchMintCount();
-            await refetchActiveThrehsold();
+            // await refetchActiveThrehsold();
             // await refetchBalance();
             await refetchTokenIds();
             // await refetchUris();
             await refetchPregen();
+            await refetchMintPrice();
 
             // await refetchResponses();
             // await refetchStartMintTimestamp();

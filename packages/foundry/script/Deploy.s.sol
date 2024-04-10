@@ -29,9 +29,8 @@ contract DeployScript is ScaffoldETHDeploy {
 
             thresholds = new YourContract.MintingThreshold[](2);
             thresholds[0] = YourContract.MintingThreshold(0, 3, 0 ether);
-            thresholds[1] = YourContract.MintingThreshold(
-                1000, type(uint256).max, 0.1 ether
-            );
+            thresholds[1] =
+                YourContract.MintingThreshold(3, type(uint256).max, 0.1 ether);
         } else if (chainId == 8453) {
             maxMintCount = 24420;
 
