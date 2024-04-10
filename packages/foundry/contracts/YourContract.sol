@@ -11,11 +11,7 @@ contract YourContract is AccessControl, ERC721 {
     error Weedies__UserNotActivelyRollingAWeedie();
     error Weedies__YouShortedTheDealer();
     error Weedies__TheDealersNotAround();
-
-    error YourContract__PastMintWindow();
-    error YourContract__BeforeMintWindow();
-    error YourContract__MintNotStarted();
-    error YourContract__MintAlreadyStarted();
+    error Weedies__YouGottaHitUpTheWeedman();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -203,6 +199,11 @@ contract YourContract is AccessControl, ERC721 {
         view
         returns (string memory uri)
     {
+        uint256 tokenId = getRolledTokenId(user);
+        if (tokenId == 0) {
+            revert Weedies__YouGottaHitUpTheWeedman();
+        }
+
         uri =
             string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }

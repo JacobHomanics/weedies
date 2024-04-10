@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E",
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       abi: [
         {
           type: "constructor",
@@ -1035,27 +1035,12 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "Weedies__YouGottaHitUpTheWeedman",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "Weedies__YouShortedTheDealer",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__BeforeMintWindow",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__MintAlreadyStarted",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__MintNotStarted",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__PastMintWindow",
           inputs: [],
         },
       ],
@@ -2111,27 +2096,12 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "Weedies__YouGottaHitUpTheWeedman",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "Weedies__YouShortedTheDealer",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__BeforeMintWindow",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__MintAlreadyStarted",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__MintNotStarted",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "YourContract__PastMintWindow",
           inputs: [],
         },
       ],

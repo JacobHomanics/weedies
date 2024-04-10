@@ -34,7 +34,6 @@ function useTokenIds(numOfTokens: number) {
       }
     }
 
-    console.log(tokenIds);
     return { tokenIds };
   }, [numOfTokens]);
 
@@ -147,7 +146,11 @@ const Home: NextPage = () => {
   //   functionName: "getMintDuration",
   // });
 
-  const { data: pregenTokenURI, refetch: refetchPregen } = useScaffoldContractRead({
+  const {
+    data: pregenTokenURI,
+    refetch: refetchPregen,
+    error,
+  } = useScaffoldContractRead({
     contractName: "YourContract",
     functionName: "getRolledTokenURI",
     args: [connectedAddress],
@@ -388,7 +391,7 @@ const Home: NextPage = () => {
           Twist one up
         </button>
 
-        <NftCard data={response.data} />
+        {error !== null ? <></> : <NftCard data={response.data} />}
 
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-nouns font-black text-xl">
