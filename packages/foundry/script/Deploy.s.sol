@@ -31,11 +31,21 @@ contract DeployScript is ScaffoldETHDeploy {
             thresholds[0] = YourContract.MintingThreshold(0, 3, 0 ether);
             thresholds[1] =
                 YourContract.MintingThreshold(3, type(uint256).max, 0.1 ether);
+        } else if (chainId == 11155111) {
+            maxMintCount = 100;
+
+            mintStartTimestamp = (vm.unixTime() / 1000);
+            mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
+
+            thresholds = new YourContract.MintingThreshold[](2);
+            thresholds[0] = YourContract.MintingThreshold(0, 5, 0 ether);
+            thresholds[1] =
+                YourContract.MintingThreshold(5, type(uint256).max, 0.1 ether);
         } else if (chainId == 8453) {
             maxMintCount = 24420;
 
             mintStartTimestamp = 1713589200;
-            mintEndTimestamp = 1 days;
+            mintEndTimestamp = 1713675600;
 
             thresholds = new YourContract.MintingThreshold[](2);
             thresholds[0] = YourContract.MintingThreshold(0, 1000, 0);
