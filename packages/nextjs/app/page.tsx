@@ -290,7 +290,9 @@ const Home: NextPage = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " /> {/* */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
       </div>
@@ -367,18 +369,22 @@ const Home: NextPage = () => {
           swipeable
         >
           <div className="m-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={nounie1.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div className="m-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={nounie2.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div className="m-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={nounie3.src} alt="Fruits" className={carouselImgClassName} />
           </div>
 
           <div className="m-10">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={nounie4.src} alt="Fruits" className={carouselImgClassName} />
           </div>
         </Carousel>
