@@ -3,25 +3,16 @@
 import { useCallback, useEffect } from "react";
 import { useMemo } from "react";
 import { useState } from "react";
-import nounie1 from "../public/carousel/1.png";
-import nounie2 from "../public/carousel/2.png";
-import nounie3 from "../public/carousel/3.png";
-import nounie4 from "../public/carousel/4.png";
 import HeroImageWeedies from "../public/mint-assets/character line up-temp.png";
-// import WeediesLogo from "../public/mint-assets/Weedies Logo.png";
-import WeediesLogo2 from "../public/mint-assets/weedies-logo-810px.png";
-// import nounie5 from "../public/carousel/5.png";
-// import HeroImageCharacter from "../public/weedies-samples/Hero-Image-characters.png";
-// import NouniesLogo from "../public/weedies-samples/Nounies_logo.png";
+import WeediesLogo2 from "../public/mint-assets/weedies-logo-2.png";
 import type { NextPage } from "next";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
-// import { useBalance } from "wagmi";
+import { MyCarousel } from "~~/components/MyCarousel";
 import { NftCard } from "~~/components/NftCard";
-// import { Address } from "~~/components/scaffold-eth";
+import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract, useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 function useTokenIds(numOfTokens: number) {
@@ -39,14 +30,6 @@ function useTokenIds(numOfTokens: number) {
 
   const { tokenIds } = useMemo(() => {
     const { tokenIds } = refetch();
-    // const tokenIds: bigint[] = [];
-
-    // if (numOfTokens) {
-    //   for (let i = 1; i <= numOfTokens; i++) {
-    //     tokenIds.push(BigInt(i));
-    //   }
-    // }
-
     return { tokenIds, refetch };
   }, [refetch]);
 
@@ -115,11 +98,6 @@ const Home: NextPage = () => {
     contractName: "YourContract",
     functionName: "rollOneUp",
   });
-  // const { writeAsync: withdraw } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "withdraw" });
-  // const { writeAsync: startMint } = useScaffoldContractWrite({
-  //   contractName: "YourContract",
-  //   functionName: "startMint",
-  // });
 
   const { data: mintCount, refetch: refetchMintCount } = useScaffoldContractRead({
     contractName: "YourContract",
@@ -136,48 +114,12 @@ const Home: NextPage = () => {
     functionName: "getMintEndTimestamp",
   });
 
-  // const { data: isMintStarted, refetch: refetchIsMintStarted } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "getIsMintStarted",
-  // });
-
-  // const { data: mintDuration, refetch: refetchGetWindow } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "getMintDuration",
-  // });
-
-  // const { data: maxMintCount } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "getMaxMintCount",
-  // });
-
-  // const { data: tokenName } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "name",
-  // });
-
-  // const { data: tokenSymbol } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "symbol",
-  // });
-
-  // const { data: royaltyRecipient } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "getRoyaltyRecipient",
-  // });
-
   const { data: mintPrice, refetch: refetchMintPrice } = useScaffoldContractRead({
     contractName: "YourContract",
     functionName: "getMintPrice",
   });
 
-  // const { data: activeThreshold, refetch: refetchActiveThrehsold } = useScaffoldContractRead({
-  //   contractName: "YourContract",
-  //   functionName: "getAcitveMintingThreshold",
-  // });
-
   const { data: yourContract } = useScaffoldContract({ contractName: "YourContract" });
-  // const { data: balance, refetch: refetchBalance } = useBalance({ address: yourContract?.address });
 
   const { tokenIds, refetch: refetchTokenIds } = useTokenIds(Number(mintCount));
 
@@ -262,27 +204,25 @@ const Home: NextPage = () => {
 
   // const mintDurationFormatted = secondsToDhms(Number(mintDuration));
 
-  const carouselImgClassName = "border-2 border-secondary";
-
   let mintWindowOutput;
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="insanibc text-lg m-0">Mint starts in</p>
-        <p className="text-sm m-0 insanibc">{timeLeftTillMintFormatted}</p>
+        <p className="grilledCheese text-lg m-0">Mint starts in</p>
+        <p className="text-sm m-0 grilledCheese">{timeLeftTillMintFormatted}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="insanibc text-lg m-0 text-green-500">Mint ends in</p>
-        <p className="insanibc text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
+        <p className="grilledCheese text-lg m-0 text-green-500">Mint ends in</p>
+        <p className="grilledCheese text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
       </div>
     );
   } else {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="insanibc text-lg m-0 text-red-500">Mint ended</p>
+        <p className="grilledCheese text-lg m-0 text-red-500">Mint ended</p>
       </div>
     );
   }
@@ -296,7 +236,7 @@ const Home: NextPage = () => {
         <img alt="Hero Image" src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
       </div>
-      <p className="insanibc text-xl text-center lg:text-8xl">
+      <p className="grilledCheese text-xl text-center lg:text-8xl">
         Nounies are Dreamers, Rebels, Creators, Artists, and Friends living their best life on the blockchain.
       </p>
 
@@ -314,108 +254,40 @@ const Home: NextPage = () => {
       </div> */}
 
       <div className="flex items-center flex-col flex-grow pt-10 bg-base-100">
-        <Carousel
-          additionalTransfrom={0}
-          arrows
-          autoPlay
-          autoPlaySpeed={1000}
-          centerMode
-          className=""
-          containerClass="container"
-          dotListClass=""
-          draggable
-          focusOnSelect={false}
-          infinite
-          itemClass=""
-          keyBoardControl
-          minimumTouchDrag={80}
-          pauseOnHover
-          renderArrowsWhenDisabled={false}
-          renderButtonGroupOutside={false}
-          renderDotsOutside={false}
-          responsive={{
-            desktop: {
-              breakpoint: {
-                max: 3000,
-                min: 1024,
-              },
-              items: 1,
-              partialVisibilityGutter: 30,
-            },
-            mobile: {
-              breakpoint: {
-                max: 464,
-                min: 0,
-              },
-              items: 1,
-              partialVisibilityGutter: 20,
-            },
-            tablet: {
-              breakpoint: {
-                max: 1024,
-                min: 464,
-              },
-              items: 1,
-              partialVisibilityGutter: 20,
-            },
-          }}
-          rewind={false}
-          rewindWithAnimation={false}
-          rtl={false}
-          shouldResetAutoplay
-          showDots={false}
-          sliderClass=""
-          slidesToSlide={1}
-          swipeable
-        >
-          <div className="m-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={nounie1.src} alt="Fruits" className={carouselImgClassName} />
-          </div>
+        <MyCarousel />
 
-          <div className="m-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={nounie2.src} alt="Fruits" className={carouselImgClassName} />
-          </div>
-
-          <div className="m-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={nounie3.src} alt="Fruits" className={carouselImgClassName} />
-          </div>
-
-          <div className="m-10">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={nounie4.src} alt="Fruits" className={carouselImgClassName} />
-          </div>
-        </Carousel>
         <div className="flex items-center justify-center text-center">
-          <p className="insanibc text-2xl">Swipe around, find out.</p>
+          <p className="grilledCheese text-2xl">Swipe around, find out.</p>
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="insanibc text-4xl">Mint a Weedie</p>
+          <p className="grilledCheese text-4xl">Mint a Weedie</p>
         </div>
 
         <div className="flex flex-wrap justify-center">
+          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 m-1">
+            <p className="grilledCheese text-lg m-0">Contract Address</p>
+            <Address address={yourContract?.address} />
+          </div>
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="insanibc text-lg m-0">Mint Price</p>
-            <p className="text-md m-0 insanibc">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+            <p className="grilledCheese text-lg m-0">Mint Price</p>
+            <p className="text-md m-0 grilledCheese">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
         </div>
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="text-lg m-0 insanibc">Starts</p>
-            <p className="text-sm m-0 insanibc">{startDateLocale}</p>
+            <p className="text-lg m-0 grilledCheese">Starts</p>
+            <p className="text-sm m-0 grilledCheese">{startDateLocale}</p>
           </div>
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="insanibc text-lg m-0">Ends</p>
-            <p className="text-sm m-0 insanibc">{endDateLocale}</p>
+            <p className="grilledCheese text-lg m-0">Ends</p>
+            <p className="text-sm m-0 grilledCheese">{endDateLocale}</p>
           </div>
           {mintWindowOutput}
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="insanibc text-xl">{"Roll up a Weedie. Don't like it? Make a re-roll!"}</p>
+          <p className="grilledCheese text-xl">{"Roll up a Weedie. Don't like it? Make a re-roll!"}</p>
         </div>
 
         <NftCard data={response?.data} />
