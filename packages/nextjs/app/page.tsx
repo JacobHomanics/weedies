@@ -146,16 +146,6 @@ const Home: NextPage = () => {
   //   functionName: "getMintDuration",
   // });
 
-  const {
-    data: pregenTokenURI,
-    refetch: refetchPregen,
-    error,
-  } = useScaffoldContractRead({
-    contractName: "YourContract",
-    functionName: "getRolledTokenURI",
-    args: [connectedAddress],
-  });
-
   // const { data: maxMintCount } = useScaffoldContractRead({
   //   contractName: "YourContract",
   //   functionName: "getMaxMintCount",
@@ -197,15 +187,41 @@ const Home: NextPage = () => {
     uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
   }
 
+  const {
+    data: pregenTokenURI,
+    refetch: refetchPregen,
+    error,
+  } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getRolledTokenURI",
+    args: [connectedAddress],
+  });
+
   const pregenTokenURIFormatted = pregenTokenURI?.replace("https://nft.bueno.art", "https://app.bueno.art");
 
-  const response = useFetch(pregenTokenURIFormatted);
+  const res = useFetch(pregenTokenURIFormatted);
+
+  const response = error === null ? res : undefined;
 
   const { responses } = useFetches(uris);
 
   const allNfts = responses.map((response, index) => {
     return <NftCard key={index} data={response} />;
   });
+
+  const [currentDate, setTime] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setTime(Date.now());
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const mintTimeLeft = (Number(endMintTimestamp) * 1000 || currentDate.valueOf()) - currentDate.valueOf();
+  const timeLeftTillMint = Number(startMintTimestamp) * 1000 - currentDate.valueOf();
 
   const date = new Date(Number(startMintTimestamp) * 1000);
   const endDate = new Date(Number(endMintTimestamp) * 1000);
@@ -227,25 +243,50 @@ const Home: NextPage = () => {
     minute: "2-digit",
   });
 
-  // function secondsToDhms(seconds: number) {
-  //   seconds = Number(seconds);
-  //   const d = Math.floor(seconds / (3600 * 24));
-  //   const h = Math.floor((seconds % (3600 * 24)) / 3600);
-  //   const m = Math.floor((seconds % 3600) / 60);
-  //   const s = Math.floor(seconds % 60);
+  function secondsToDhms(seconds: number) {
+    seconds = Number(seconds);
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor((seconds % (3600 * 24)) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
 
-  //   const dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
-  //   const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-  //   const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-  //   const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-  //   return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
-  // }
+    const dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+    const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  }
+
+  const mintTimeLeftFormatted = secondsToDhms(mintTimeLeft / 1000);
+  const timeLeftTillMintFormatted = secondsToDhms(timeLeftTillMint / 1000);
 
   // const mintDurationFormatted = secondsToDhms(Number(mintDuration));
 
   const carouselImgClassName = "border-2 border-secondary";
 
-  //className="bg-[url('/mint-assets/Purple BG.png')]
+  let mintWindowOutput;
+  if (timeLeftTillMint >= 0) {
+    mintWindowOutput = (
+      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
+        <p className="font-nouns font-black text-lg m-0">Mint starts in</p>
+        <p className="text-sm m-0">{timeLeftTillMintFormatted}</p>
+      </div>
+    );
+  } else if (mintTimeLeft >= 0) {
+    mintWindowOutput = (
+      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
+        <p className="font-nouns font-black text-lg m-0 text-green-500">Mint ends in</p>
+        <p className="text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
+      </div>
+    );
+  } else {
+    mintWindowOutput = (
+      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
+        <p className="font-nouns font-black text-lg m-0 text-red-500">Mint ended</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
@@ -354,6 +395,8 @@ const Home: NextPage = () => {
             <p className="font-nouns font-black text-lg m-0">Mint Price</p>
             <p className="text-md m-0">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
+        </div>
+        <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="font-nouns font-black text-lg m-0">Starts</p>
             <p className="text-sm m-0">{startDateLocale}</p>
@@ -362,6 +405,7 @@ const Home: NextPage = () => {
             <p className="font-nouns font-black text-lg m-0">Ends</p>
             <p className="text-sm m-0">{endDateLocale}</p>
           </div>
+          {mintWindowOutput}
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
@@ -369,6 +413,8 @@ const Home: NextPage = () => {
             {"First, roll up a weedie. If you don't like how it looks, then you can re-roll it!"}
           </p>
         </div>
+
+        <NftCard data={response?.data} />
 
         <button
           onClick={async () => {
@@ -390,8 +436,6 @@ const Home: NextPage = () => {
         >
           Twist one up
         </button>
-
-        {error !== null ? <></> : <NftCard data={response.data} />}
 
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-nouns font-black text-xl">
