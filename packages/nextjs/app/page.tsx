@@ -314,7 +314,7 @@ const Home: NextPage = () => {
         </button>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="font-nouns font-black text-xl">
+          <p className="grilledCheese text-xl">
             {"Satisfied with your roll job? Lick the paper, twist it up, and mint yourself a Weedie!"}
           </p>
         </div>
