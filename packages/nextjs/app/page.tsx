@@ -268,21 +268,21 @@ const Home: NextPage = () => {
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="font-nouns font-black text-lg m-0">Mint starts in</p>
-        <p className="text-sm m-0">{timeLeftTillMintFormatted}</p>
+        <p className="insanibc text-lg m-0">Mint starts in</p>
+        <p className="text-sm m-0 insanibc">{timeLeftTillMintFormatted}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="font-nouns font-black text-lg m-0 text-green-500">Mint ends in</p>
-        <p className="text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
+        <p className="insanibc text-lg m-0 text-green-500">Mint ends in</p>
+        <p className="insanibc text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
       </div>
     );
   } else {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="font-nouns font-black text-lg m-0 text-red-500">Mint ended</p>
+        <p className="insanibc text-lg m-0 text-red-500">Mint ended</p>
       </div>
     );
   }
@@ -294,7 +294,7 @@ const Home: NextPage = () => {
         <img src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
       </div>
-      <p className="grilledCheese text-xl text-center lg:text-8xl">
+      <p className="insanibc text-xl text-center lg:text-8xl">
         Nounies are Dreamers, Rebels, Creators, Artists, and Friends living their best life on the blockchain.
       </p>
 
@@ -383,33 +383,33 @@ const Home: NextPage = () => {
           </div>
         </Carousel>
         <div className="flex items-center justify-center text-center">
-          <p className="font-nouns font-black text-2xl">Swipe around, find out.</p>
+          <p className="insanibc text-2xl">Swipe around, find out.</p>
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="font-nouns font-black text-4xl">Mint a Weedie</p>
+          <p className="insanibc text-4xl">Mint a Weedie</p>
         </div>
 
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="font-nouns font-black text-lg m-0">Mint Price</p>
-            <p className="text-md m-0">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+            <p className="insanibc text-lg m-0">Mint Price</p>
+            <p className="text-md m-0 insanibc">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
         </div>
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="font-nouns font-black text-lg m-0">Starts</p>
-            <p className="text-sm m-0">{startDateLocale}</p>
+            <p className="text-lg m-0 insanibc">Starts</p>
+            <p className="text-sm m-0 insanibc">{startDateLocale}</p>
           </div>
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="font-nouns font-black text-lg m-0">Ends</p>
-            <p className="text-sm m-0">{endDateLocale}</p>
+            <p className="insanibc text-lg m-0">Ends</p>
+            <p className="text-sm m-0 insanibc">{endDateLocale}</p>
           </div>
           {mintWindowOutput}
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
-          <p className="font-nouns font-black text-xl">
+          <p className="insanibc text-xl">
             {"First, roll up a weedie. If you don't like how it looks, then you can re-roll it!"}
           </p>
         </div>
@@ -432,7 +432,7 @@ const Home: NextPage = () => {
             // await refetchIsMintStarted();
             // await refetchGetWindow();
           }}
-          className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
+          className="insanibc btn btn-secondary btn-lg m-1 text-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
         >
           Twist one up
         </button>
@@ -461,7 +461,7 @@ const Home: NextPage = () => {
             // await refetchIsMintStarted();
             // await refetchGetWindow();
           }}
-          className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl mb-10"
+          className="insanibc btn btn-secondary btn-lg m-1 text-3xl mb-10"
         >
           {"I'll toke it!"}
         </button>

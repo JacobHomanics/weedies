@@ -8,8 +8,18 @@
   src: url('../fonts/GrilledCheese_20BTN_20Toasted.ttf');
 }
 
+@font-face {
+  font-family: "insanibc";
+  src: url('../fonts/Insanibc.ttf');
+}
+
+
 .grilledCheese {
   font-family: "grilledCheese";
+}
+
+.insanibc {
+  font-family: "insanibc";
 }
 
 :root,
