@@ -22,7 +22,7 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         if (chainId == 31337) {
-            maxMintCount = 100;
+            maxMintCount = 5;
 
             mintStartTimestamp = (vm.unixTime() / 1000) + 5 seconds;
             mintEndTimestamp = (vm.unixTime() / 1000) + 300 days;
@@ -72,7 +72,6 @@ contract DeployScript is ScaffoldETHDeploy {
 
         vm.startBroadcast(deployerPrivateKey);
         YourContract yourContract = new YourContract(
-            vm.addr(deployerPrivateKey),
             0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
             "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
             maxMintCount,
@@ -86,19 +85,6 @@ contract DeployScript is ScaffoldETHDeploy {
                 "YourContract deployed at: ", vm.toString(address(yourContract))
             )
         );
-
-        uint256 increments = 100;
-        uint256 remainingMintCount = maxMintCount;
-
-        while (remainingMintCount > 0) {
-            uint256 selectedIncrement = increments;
-            if (remainingMintCount < increments) {
-                selectedIncrement = remainingMintCount;
-            }
-
-            // yourContract.setUpMintableTokenIds(selectedIncrement);
-            remainingMintCount -= selectedIncrement;
-        }
 
         vm.stopBroadcast();
 

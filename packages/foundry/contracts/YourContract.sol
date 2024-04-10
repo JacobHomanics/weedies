@@ -6,13 +6,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "forge-std/Test.sol";
 
-contract YourContract is AccessControl, ERC721 {
-    error Weedies__AllWeediesAreTwisted();
-    error Weedies__UserNotActivelyRollingAWeedie();
+contract YourContract is ERC721 {
     error Weedies__YouShortedTheDealer();
     error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
-    error Weedies__TheDealersOuttaTheWeed();
+    error Weedies__TheDealersOutOfTheGoodStuff();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -21,7 +19,6 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     address immutable s_mintRoyaltyRecipient;
-    uint256 immutable s_mintDuration;
     uint256 immutable s_maxTokenCount;
     uint256 immutable s_mintStartTimestamp;
     uint256 immutable s_mintEndTimestamp;
@@ -31,14 +28,7 @@ contract YourContract is AccessControl, ERC721 {
 
     string s_baseURI;
 
-    uint256[] s_MintableTokenIds;
-    mapping(address user => uint256 id) s_rolledTokenId;
-    mapping(address user => uint256 index) s_rolledTokenIndex;
-
-    mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
-
     constructor(
-        address admin,
         address mintRoyaltyRecipient,
         string memory baseURI,
         uint256 maxTokenCount,
@@ -46,8 +36,6 @@ contract YourContract is AccessControl, ERC721 {
         uint256 mintEndTimestamp,
         MintingThreshold[] memory mintingThresholds
     ) ERC721("Weedies", "W") {
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -56,20 +44,6 @@ contract YourContract is AccessControl, ERC721 {
 
         for (uint256 i = 0; i < mintingThresholds.length; i++) {
             s_mintingThresholds.push(mintingThresholds[i]);
-        }
-    }
-
-    function setUpMintableTokenIds(uint256 numToMake)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-    {
-        uint256 lengthOfArrWithIndexAccomdation = s_MintableTokenIds.length + 1;
-
-        uint256 newEndIndex = lengthOfArrWithIndexAccomdation + numToMake;
-
-        for (uint256 i = lengthOfArrWithIndexAccomdation; i < newEndIndex; i++)
-        {
-            s_MintableTokenIds.push(i);
         }
     }
 
@@ -83,30 +57,10 @@ contract YourContract is AccessControl, ERC721 {
         }
 
         if (s_mintCount == s_maxTokenCount) {
-            revert Weedies__TheDealersOuttaTheWeed();
+            revert Weedies__TheDealersOutOfTheGoodStuff();
         }
-        // uint256 rolledTokenId = getRolledTokenId(msg.sender);
-        // uint256 rolledTokenIndex = getRolledTokenIndex(msg.sender);
-
-        // if (rolledTokenId == 0) {
-        //     revert Weedies__UserNotActivelyRollingAWeedie();
-        // }
 
         s_mintCount++;
-        // mintedTokenUriId[s_mintCount] = s_mintCount;
-        // s_rolledTokenId[msg.sender] = 0;
-        // s_rolledTokenIndex[msg.sender] = 0;
-
-        // write the last number of the array to the current position.
-        // thus we take out the used number from the circulation and store the last number of the array for future use
-        // if (s_MintableTokenIds.length > 1) {
-        //     s_MintableTokenIds[rolledTokenIndex] =
-        //         s_MintableTokenIds[s_MintableTokenIds.length - 1];
-        // }
-
-        // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-        // s_MintableTokenIds.pop();
-
         _mint(msg.sender, s_mintCount);
     }
 
@@ -116,28 +70,6 @@ contract YourContract is AccessControl, ERC721 {
         require(sent, "Failed to send Ether");
 
         return sent;
-    }
-
-    function getRolledTokenId(address user) public view returns (uint256) {
-        return s_rolledTokenId[user];
-    }
-
-    function getRolledTokenIndex(address user) public view returns (uint256) {
-        return s_rolledTokenIndex[user];
-    }
-
-    function getRolledTokenURI(address user)
-        public
-        view
-        returns (string memory uri)
-    {
-        uint256 tokenId = getRolledTokenId(user);
-        if (tokenId == 0) {
-            revert Weedies__YouGottaHitUpTheWeedman();
-        }
-
-        uri =
-            string.concat(_baseURI(), Strings.toString(getRolledTokenId(user)));
     }
 
     function isTimestampInWindow() public view returns (bool) {
@@ -155,10 +87,6 @@ contract YourContract is AccessControl, ERC721 {
 
     function getMintPrice() public view returns (uint256 mintPrice) {
         mintPrice = getAcitveMintingThreshold().mintPrice;
-    }
-
-    function getMintsLeft() public view returns (uint256) {
-        return s_MintableTokenIds.length;
     }
 
     function getAcitveMintingThreshold()
@@ -189,28 +117,7 @@ contract YourContract is AccessControl, ERC721 {
         return s_mintRoyaltyRecipient;
     }
 
-    // function tokenURI(uint256 tokenId)
-    //     public
-    //     view
-    //     override
-    //     returns (string memory i)
-    // {
-    //     _requireOwned(tokenId);
-    //     return string.concat(
-    //         _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
-    //     );
-    // }
-
     function _baseURI() internal view override returns (string memory) {
         return s_baseURI;
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, AccessControl)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
     }
 }

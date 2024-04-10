@@ -10,7 +10,6 @@ contract YourContractTest is Test {
 
     address mintRoyaltyRecipient = vm.addr(1);
     address USER = vm.addr(2);
-    address ADMIN = vm.addr(3);
 
     string BASE_URI =
         "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/";
@@ -26,7 +25,6 @@ contract YourContractTest is Test {
             YourContract.MintingThreshold(0, type(uint256).max, 0 ether);
 
         yourContract = new YourContract(
-            ADMIN,
             mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
@@ -34,9 +32,6 @@ contract YourContractTest is Test {
             MINT_END_TIMESTAMP,
             thresholds
         );
-
-        vm.prank(ADMIN);
-        yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
 
     function testMintTimestamps() public view {
@@ -73,7 +68,9 @@ contract YourContractTest is Test {
             yourContract.mint();
         }
 
-        vm.expectRevert(YourContract.Weedies__TheDealersOuttaTheWeed.selector);
+        vm.expectRevert(
+            YourContract.Weedies__TheDealersOutOfTheGoodStuff.selector
+        );
 
         yourContract.mint();
     }

@@ -7,16 +7,11 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       abi: [
         {
           type: "constructor",
           inputs: [
-            {
-              name: "admin",
-              type: "address",
-              internalType: "address",
-            },
             {
               name: "mintRoyaltyRecipient",
               type: "address",
@@ -69,19 +64,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "DEFAULT_ADMIN_ROLE",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "approve",
           inputs: [
             {
@@ -111,81 +93,6 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomHash",
-          inputs: [],
-          outputs: [
-            {
-              name: "randomHash",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumber",
-          inputs: [
-            {
-              name: "ceiling",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomNumber",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumberWithFilterNoWrite",
-          inputs: [
-            {
-              name: "seed",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomIndex",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "resultNumber",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumberWithIndexAccomodation",
-          inputs: [
-            {
-              name: "seed",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomNumberWithIndexAccomodation",
               type: "uint256",
               internalType: "uint256",
             },
@@ -334,124 +241,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getRoleAdmin",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenId",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenIndex",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenURI",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "uri",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "grantRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "hasRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "isApprovedForAll",
           inputs: [
             {
@@ -528,55 +317,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "renounceRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "callerConfirmation",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "revokeRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "rollOneUp",
-          inputs: [],
-          outputs: [
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "safeTransferFrom",
           inputs: [
             {
@@ -646,19 +386,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setUpMintableTokenIds",
-          inputs: [
-            {
-              name: "numToMake",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "supportsInterface",
           inputs: [
             {
@@ -701,7 +428,7 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "i",
+              name: "",
               type: "string",
               internalType: "string",
             },
@@ -796,81 +523,6 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "RoleAdminChanged",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "previousAdminRole",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "newAdminRole",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RoleGranted",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "sender",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RoleRevoked",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "sender",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
           name: "Transfer",
           inputs: [
             {
@@ -893,27 +545,6 @@ const deployedContracts = {
             },
           ],
           anonymous: false,
-        },
-        {
-          type: "error",
-          name: "AccessControlBadConfirmation",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "AccessControlUnauthorizedAccount",
-          inputs: [
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "neededRole",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
         },
         {
           type: "error",
@@ -1020,17 +651,12 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "Weedies__AllWeediesAreTwisted",
+          name: "Weedies__TheDealersNotAnsweringHisPhone",
           inputs: [],
         },
         {
           type: "error",
-          name: "Weedies__TheDealersNotAround",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "Weedies__UserNotActivelyRollingAWeedie",
+          name: "Weedies__TheDealersOutOfTheGoodStuff",
           inputs: [],
         },
         {
@@ -1045,13 +671,6 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
@@ -1060,6 +679,7 @@ const deployedContracts = {
         ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
@@ -1074,11 +694,6 @@ const deployedContracts = {
           type: "constructor",
           inputs: [
             {
-              name: "admin",
-              type: "address",
-              internalType: "address",
-            },
-            {
               name: "mintRoyaltyRecipient",
               type: "address",
               internalType: "address",
@@ -1130,19 +745,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "DEFAULT_ADMIN_ROLE",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "approve",
           inputs: [
             {
@@ -1172,81 +774,6 @@ const deployedContracts = {
           outputs: [
             {
               name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomHash",
-          inputs: [],
-          outputs: [
-            {
-              name: "randomHash",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumber",
-          inputs: [
-            {
-              name: "ceiling",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomNumber",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumberWithFilterNoWrite",
-          inputs: [
-            {
-              name: "seed",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomIndex",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "resultNumber",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "generateRandomNumberWithIndexAccomodation",
-          inputs: [
-            {
-              name: "seed",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [
-            {
-              name: "randomNumberWithIndexAccomodation",
               type: "uint256",
               internalType: "uint256",
             },
@@ -1395,124 +922,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getRoleAdmin",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenId",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenIndex",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getRolledTokenURI",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "uri",
-              type: "string",
-              internalType: "string",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "grantRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "hasRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "isApprovedForAll",
           inputs: [
             {
@@ -1589,55 +998,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "renounceRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "callerConfirmation",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "revokeRole",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "rollOneUp",
-          inputs: [],
-          outputs: [
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "safeTransferFrom",
           inputs: [
             {
@@ -1707,19 +1067,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "setUpMintableTokenIds",
-          inputs: [
-            {
-              name: "numToMake",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "supportsInterface",
           inputs: [
             {
@@ -1762,7 +1109,7 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "i",
+              name: "",
               type: "string",
               internalType: "string",
             },
@@ -1857,81 +1204,6 @@ const deployedContracts = {
         },
         {
           type: "event",
-          name: "RoleAdminChanged",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "previousAdminRole",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "newAdminRole",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RoleGranted",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "sender",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "RoleRevoked",
-          inputs: [
-            {
-              name: "role",
-              type: "bytes32",
-              indexed: true,
-              internalType: "bytes32",
-            },
-            {
-              name: "account",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "sender",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
           name: "Transfer",
           inputs: [
             {
@@ -1954,27 +1226,6 @@ const deployedContracts = {
             },
           ],
           anonymous: false,
-        },
-        {
-          type: "error",
-          name: "AccessControlBadConfirmation",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "AccessControlUnauthorizedAccount",
-          inputs: [
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "neededRole",
-              type: "bytes32",
-              internalType: "bytes32",
-            },
-          ],
         },
         {
           type: "error",
@@ -2081,17 +1332,12 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "Weedies__AllWeediesAreTwisted",
+          name: "Weedies__TheDealersNotAnsweringHisPhone",
           inputs: [],
         },
         {
           type: "error",
-          name: "Weedies__TheDealersNotAround",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "Weedies__UserNotActivelyRollingAWeedie",
+          name: "Weedies__TheDealersOutOfTheGoodStuff",
           inputs: [],
         },
         {
@@ -2106,13 +1352,6 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
@@ -2121,6 +1360,7 @@ const deployedContracts = {
         ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
