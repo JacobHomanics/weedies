@@ -188,7 +188,9 @@ const Home: NextPage = () => {
 
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="grilledCheese text-lg m-0">Supply</p>
-            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : ""}`}>{supply.toString()}</p>
+            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
+              {supply.toString()}
+            </p>
           </div>
         </div>
         <div className="flex flex-wrap justify-center">
