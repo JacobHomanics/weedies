@@ -96,7 +96,7 @@ contract DeployScript is ScaffoldETHDeploy {
                 selectedIncrement = remainingMintCount;
             }
 
-            yourContract.setUpMintableTokenIds(selectedIncrement);
+            // yourContract.setUpMintableTokenIds(selectedIncrement);
             remainingMintCount -= selectedIncrement;
         }
 

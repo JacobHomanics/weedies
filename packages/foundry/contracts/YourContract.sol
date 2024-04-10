@@ -10,8 +10,9 @@ contract YourContract is AccessControl, ERC721 {
     error Weedies__AllWeediesAreTwisted();
     error Weedies__UserNotActivelyRollingAWeedie();
     error Weedies__YouShortedTheDealer();
-    error Weedies__TheDealersNotAround();
+    error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
+    error Weedies__TheDealersOuttaTheWeed();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -72,108 +73,39 @@ contract YourContract is AccessControl, ERC721 {
         }
     }
 
-    function rollOneUp() external returns (uint256 tokenId) {
-        (uint256 index, uint256 result) =
-            generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
-        s_rolledTokenId[msg.sender] = result;
-        s_rolledTokenIndex[msg.sender] = index;
-        tokenId = result;
-    }
-
-    // function generateRandomNumberWithFilter(uint256 seed)
-    //     public
-    //     returns (uint256)
-    // {
-    //     (uint256 randomIndex, uint256 resultNumber) =
-    //         generateRandomNumberWithFilterNoWrite(seed);
-
-    //     // write the last number of the array to the current position.
-    //     // thus we take out the used number from the circulation and store the last number of the array for future use
-    //     s_MintableTokenIds[randomIndex] =
-    //         s_MintableTokenIds[s_MintableTokenIds.length - 1];
-
-    //     // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-    //     s_MintableTokenIds.pop();
-
-    //     return resultNumber;
-    // }
-
-    function generateRandomNumberWithFilterNoWrite(uint256 seed)
-        public
-        view
-        returns (uint256 randomIndex, uint256 resultNumber)
-    {
-        if (s_MintableTokenIds.length == 0) {
-            revert Weedies__AllWeediesAreTwisted();
-        }
-
-        uint256 randomSeed = generateRandomNumber(seed);
-
-        // get the random number, divide it by our array size and store the mod of that division.
-        // this is to make sure the generated random number fits into our required range
-        randomIndex = (randomSeed % s_MintableTokenIds.length);
-
-        // draw the current random number by taking the value at the random index
-        resultNumber = (s_MintableTokenIds[randomIndex]);
-    }
-
-    function generateRandomNumberWithIndexAccomodation(uint256 seed)
-        public
-        view
-        returns (uint256 randomNumberWithIndexAccomodation)
-    {
-        randomNumberWithIndexAccomodation = generateRandomNumber(seed) + 1;
-    }
-
-    function generateRandomNumber(uint256 ceiling)
-        public
-        view
-        returns (uint256 randomNumber)
-    {
-        uint256 randomHash = generateRandomHash();
-        randomNumber = (randomHash % ceiling);
-    }
-
-    function generateRandomHash() public view returns (uint256 randomHash) {
-        randomHash = uint256(
-            keccak256(
-                abi.encodePacked(
-                    msg.sender, blockhash(block.number - 1), block.timestamp
-                )
-            )
-        );
-    }
-
     function mint() external payable {
         if (!isTimestampInWindow()) {
-            revert Weedies__TheDealersNotAround();
+            revert Weedies__TheDealersNotAnsweringHisPhone();
         }
 
         if (msg.value < getMintPrice()) {
             revert Weedies__YouShortedTheDealer();
         }
 
-        uint256 rolledTokenId = getRolledTokenId(msg.sender);
-        uint256 rolledTokenIndex = getRolledTokenIndex(msg.sender);
-
-        if (rolledTokenId == 0) {
-            revert Weedies__UserNotActivelyRollingAWeedie();
+        if (s_mintCount == s_maxTokenCount) {
+            revert Weedies__TheDealersOuttaTheWeed();
         }
+        // uint256 rolledTokenId = getRolledTokenId(msg.sender);
+        // uint256 rolledTokenIndex = getRolledTokenIndex(msg.sender);
+
+        // if (rolledTokenId == 0) {
+        //     revert Weedies__UserNotActivelyRollingAWeedie();
+        // }
 
         s_mintCount++;
-        mintedTokenUriId[s_mintCount] = rolledTokenId;
-        s_rolledTokenId[msg.sender] = 0;
-        s_rolledTokenIndex[msg.sender] = 0;
+        // mintedTokenUriId[s_mintCount] = s_mintCount;
+        // s_rolledTokenId[msg.sender] = 0;
+        // s_rolledTokenIndex[msg.sender] = 0;
 
         // write the last number of the array to the current position.
         // thus we take out the used number from the circulation and store the last number of the array for future use
-        if (s_MintableTokenIds.length > 1) {
-            s_MintableTokenIds[rolledTokenIndex] =
-                s_MintableTokenIds[s_MintableTokenIds.length - 1];
-        }
+        // if (s_MintableTokenIds.length > 1) {
+        //     s_MintableTokenIds[rolledTokenIndex] =
+        //         s_MintableTokenIds[s_MintableTokenIds.length - 1];
+        // }
 
         // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-        s_MintableTokenIds.pop();
+        // s_MintableTokenIds.pop();
 
         _mint(msg.sender, s_mintCount);
     }
@@ -257,17 +189,17 @@ contract YourContract is AccessControl, ERC721 {
         return s_mintRoyaltyRecipient;
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
-        returns (string memory i)
-    {
-        _requireOwned(tokenId);
-        return string.concat(
-            _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
-        );
-    }
+    // function tokenURI(uint256 tokenId)
+    //     public
+    //     view
+    //     override
+    //     returns (string memory i)
+    // {
+    //     _requireOwned(tokenId);
+    //     return string.concat(
+    //         _baseURI(), Strings.toString(mintedTokenUriId[tokenId])
+    //     );
+    // }
 
     function _baseURI() internal view override returns (string memory) {
         return s_baseURI;

@@ -42,14 +42,10 @@ contract WeediesWithImmediatePriceThreshold is Test {
         vm.deal(USER, MINT_PRICE);
 
         vm.prank(USER);
-        yourContract.rollOneUp();
-        vm.prank(USER);
         yourContract.mint{value: MINT_PRICE}();
     }
 
     function testRevertMintShortedTheDealer() public {
-        vm.prank(USER);
-        yourContract.rollOneUp();
         vm.prank(USER);
         vm.expectRevert(YourContract.Weedies__YouShortedTheDealer.selector);
         yourContract.mint();

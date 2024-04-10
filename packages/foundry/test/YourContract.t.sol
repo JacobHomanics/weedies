@@ -44,91 +44,14 @@ contract YourContractTest is Test {
         assertEq(yourContract.getMintEndTimestamp(), MINT_END_TIMESTAMP);
     }
 
-    function testRollOneOut() public {
-        vm.prank(USER);
-        uint256 result = yourContract.rollOneUp();
-
-        assertEq(
-            yourContract.getRolledTokenURI(USER),
-            string.concat(BASE_URI, Strings.toString(result))
-        );
-        assertEq(yourContract.getRolledTokenId(USER), result);
-    }
-
-    function testRerollOneOut() public {
-        vm.prank(USER);
-        uint256 result = yourContract.rollOneUp();
-
-        assertEq(
-            yourContract.getRolledTokenURI(USER),
-            string.concat(BASE_URI, Strings.toString(result))
-        );
-        assertEq(yourContract.getRolledTokenId(USER), result);
-
-        vm.prank(USER);
-        uint256 result2 = yourContract.rollOneUp();
-
-        assertEq(
-            yourContract.getRolledTokenURI(USER),
-            string.concat(BASE_URI, Strings.toString(result2))
-        );
-        assertEq(yourContract.getRolledTokenId(USER), result2);
-    }
-
-    function testRevertGenerateRandomNumber() public {
-        console.log(yourContract.getMintsLeft());
-
-        for (uint256 i = 0; i < s_maxTokenCount; i++) {
-            vm.prank(USER);
-            yourContract.rollOneUp();
-            vm.prank(USER);
-            yourContract.mint();
-        }
-
-        console.log(yourContract.getMintsLeft());
-
-        vm.prank(USER);
-        vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
-        yourContract.rollOneUp();
-
-        // vm.prank(USER);
-        // yourContract.mint();
-
-        // vm.prank(USER);
-        // // vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
-        // yourContract.rollOneUp();
-    }
-
     function testMint() public {
-        vm.prank(USER);
-        uint256 result = yourContract.rollOneUp();
-        vm.prank(USER);
         yourContract.mint();
 
         assertEq(yourContract.getMintCount(), 1);
         assertEq(
             yourContract.tokenURI(1),
-            string.concat(BASE_URI, Strings.toString(result))
+            string.concat(BASE_URI, Strings.toString(1))
         );
-    }
-
-    function testRevertMintRepeatMint() public {
-        vm.prank(USER);
-        yourContract.rollOneUp();
-        vm.prank(USER);
-        yourContract.mint();
-
-        vm.expectRevert(
-            YourContract.Weedies__UserNotActivelyRollingAWeedie.selector
-        );
-        yourContract.mint();
-    }
-
-    function testRevertMintNeverRolled() public {
-        vm.expectRevert(
-            YourContract.Weedies__UserNotActivelyRollingAWeedie.selector
-        );
-        yourContract.mint();
     }
 
     function testRevertMintTheDealerIsNotAround(uint256 timestamp) public {
@@ -138,21 +61,25 @@ contract YourContractTest is Test {
 
         vm.warp(timestamp);
 
-        vm.prank(USER);
-        yourContract.rollOneUp();
+        vm.expectRevert(
+            YourContract.Weedies__TheDealersNotAnsweringHisPhone.selector
+        );
 
-        vm.expectRevert(YourContract.Weedies__TheDealersNotAround.selector);
+        yourContract.mint();
+    }
 
-        vm.prank(USER);
+    function testRevertTheDealerIsAllOuttaTheWeed() public {
+        for (uint256 i = 0; i < s_maxTokenCount; i++) {
+            yourContract.mint();
+        }
+
+        vm.expectRevert(YourContract.Weedies__TheDealersOuttaTheWeed.selector);
+
         yourContract.mint();
     }
 
     function testWithdrawRewards(uint256 mintAmount) public {
-        vm.deal(USER, mintAmount);
-
-        vm.prank(USER);
-        yourContract.rollOneUp();
-        vm.prank(USER);
+        vm.deal(address(this), mintAmount);
 
         yourContract.mint{value: mintAmount}();
 
