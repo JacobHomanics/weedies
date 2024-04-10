@@ -50,6 +50,11 @@ abstract contract YourContractBaseRandomness is Test {
             thresholds
         );
 
+        console.log("TestContract: ", address(this));
+
+        console.log("USER: ", address(USER));
+        console.log("YourContract: ", address(yourContract));
+
         vm.prank(ADMIN);
         yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
@@ -82,9 +87,10 @@ abstract contract YourContractBaseRandomness is Test {
             vm.roll(randomBlocks[i]);
 
             vm.prank(USER);
+            uint256[] memory tokenIds = yourContract.getMintableTokenIds();
+            vm.prank(USER);
             (, uint256 number) = yourContract
-                .generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
-
+                .generateRandomNumberWithFilterNoWrite(s_maxTokenCount, tokenIds);
             assertEq(number, answerSheetFilteredNoWrite[i]);
         }
     }
@@ -100,6 +106,4 @@ abstract contract YourContractBaseRandomness is Test {
     //         assertEq(number, answerSheetFiltered[i]);
     //     }
     // }
-
-   
 }

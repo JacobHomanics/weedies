@@ -22,7 +22,7 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         if (chainId == 31337) {
-            maxMintCount = 100;
+            maxMintCount = 24420;
 
             mintStartTimestamp = (vm.unixTime() / 1000) + 5 seconds;
             mintEndTimestamp = (vm.unixTime() / 1000) + 300 days;
@@ -32,7 +32,7 @@ contract DeployScript is ScaffoldETHDeploy {
             thresholds[1] =
                 YourContract.MintingThreshold(3, type(uint256).max, 0.1 ether);
         } else if (chainId == 11155111) {
-            maxMintCount = 100;
+            maxMintCount = 500;
 
             mintStartTimestamp = (vm.unixTime() / 1000);
             mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
@@ -74,7 +74,7 @@ contract DeployScript is ScaffoldETHDeploy {
         YourContract yourContract = new YourContract(
             vm.addr(deployerPrivateKey),
             0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
-            "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
+            "", //"https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
             maxMintCount,
             mintStartTimestamp,
             mintEndTimestamp,
@@ -87,7 +87,7 @@ contract DeployScript is ScaffoldETHDeploy {
             )
         );
 
-        uint256 increments = 100;
+        uint256 increments = 500;
         uint256 remainingMintCount = maxMintCount;
 
         while (remainingMintCount > 0) {

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0xc5a5C42992dECbae36851359345FE25997F5C42d",
+      address: "0xe970650DC9d7E0909Af7617F36B862dA931B76e9",
       abi: [
         {
           type: "constructor",
@@ -175,6 +175,35 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomNumberWithFilterNoWrite",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "pooledTokenIds",
+              type: "uint256[]",
+              internalType: "uint256[]",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomIndex",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "resultNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "generateRandomNumberWithIndexAccomodation",
           inputs: [
             {
@@ -315,6 +344,19 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintableTokenIds",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256[]",
+              internalType: "uint256[]",
             },
           ],
           stateMutability: "view",
@@ -1236,6 +1278,35 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomNumberWithFilterNoWrite",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "pooledTokenIds",
+              type: "uint256[]",
+              internalType: "uint256[]",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomIndex",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "resultNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "generateRandomNumberWithIndexAccomodation",
           inputs: [
             {
@@ -1376,6 +1447,19 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintableTokenIds",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256[]",
+              internalType: "uint256[]",
             },
           ],
           stateMutability: "view",

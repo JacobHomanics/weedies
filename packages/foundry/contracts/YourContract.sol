@@ -32,7 +32,9 @@ contract YourContract is AccessControl, ERC721 {
 
     uint256[] s_MintableTokenIds;
     mapping(address user => uint256 id) s_rolledTokenId;
+    mapping(address user => uint256[] ids) s_rolledTokenIds;
     mapping(address user => uint256 index) s_rolledTokenIndex;
+    mapping(address user => uint256[] indices) s_rolledTokenIndices;
 
     mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
 
@@ -72,12 +74,42 @@ contract YourContract is AccessControl, ERC721 {
         }
     }
 
+    // function rollUp() external returns (uint256 numToRoll) {
+    //     s_rolledTokenIds[msg.sender] = new uint256[](0);
+    //     s_rolledTokenIndices[msg.sender] = new uint256[](0);
+
+    //     uint256[] memory pooledTokenIds = s_MintableTokenIds;
+
+    //     for (uint256 i = 0; i < numToRoll; i++) {
+    //         (uint256 index, uint256 result) =
+    //         generateRandomNumberWithFilterNoWrite(
+    //             s_maxTokenCount, pooledTokenIds
+    //         );
+    //         s_rolledTokenIds[msg.sender].push(result);
+    //         s_rolledTokenIndices[msg.sender].push(index);
+    //     }
+    // }
+    // 120381147977
+    // 119910872780
+    // 116274327
+    // 440658470
+
     function rollOneUp() external returns (uint256 tokenId) {
         (uint256 index, uint256 result) =
             generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
         s_rolledTokenId[msg.sender] = result;
         s_rolledTokenIndex[msg.sender] = index;
         tokenId = result;
+
+        // uint256[] memory pooledTokenIds = s_MintableTokenIds;
+
+        // for (uint256 i = 0; i < 5; i++) {
+        //     (uint256 index, uint256 result) =
+        //         generateRandomNumberWithFilterNoWrite(s_maxTokenCount, pooledTokenIds);
+        //     s_rolledTokenId[msg.sender] = result;
+        //     s_rolledTokenIndex[msg.sender] = index;
+        //     tokenId = result;
+        // }
     }
 
     // function generateRandomNumberWithFilter(uint256 seed)
@@ -117,6 +149,24 @@ contract YourContract is AccessControl, ERC721 {
         resultNumber = (s_MintableTokenIds[randomIndex]);
     }
 
+    function generateRandomNumberWithFilterNoWrite(
+        uint256 seed,
+        uint256[] memory pooledTokenIds
+    ) public view returns (uint256 randomIndex, uint256 resultNumber) {
+        if (pooledTokenIds.length == 0) {
+            revert Weedies__AllWeediesAreTwisted();
+        }
+
+        uint256 randomSeed = generateRandomNumber(seed);
+
+        // get the random number, divide it by our array size and store the mod of that division.
+        // this is to make sure the generated random number fits into our required range
+        randomIndex = (randomSeed % pooledTokenIds.length);
+
+        // draw the current random number by taking the value at the random index
+        resultNumber = (pooledTokenIds[randomIndex]);
+    }
+
     function generateRandomNumberWithIndexAccomodation(uint256 seed)
         public
         view
@@ -135,6 +185,9 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     function generateRandomHash() public view returns (uint256 randomHash) {
+        console.log("origin: ", tx.origin);
+        console.log("sender: ", msg.sender);
+
         randomHash = uint256(
             keccak256(
                 abi.encodePacked(
@@ -142,6 +195,8 @@ contract YourContract is AccessControl, ERC721 {
                 )
             )
         );
+
+        console.log(randomHash);
     }
 
     function mint() external payable {
@@ -223,6 +278,10 @@ contract YourContract is AccessControl, ERC721 {
 
     function getMintPrice() public view returns (uint256 mintPrice) {
         mintPrice = getAcitveMintingThreshold().mintPrice;
+    }
+
+    function getMintableTokenIds() public view returns (uint256[] memory) {
+        return s_MintableTokenIds;
     }
 
     function getMintsLeft() public view returns (uint256) {

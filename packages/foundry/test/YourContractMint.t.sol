@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "../contracts/YourContract.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract YourContractTest is Test {
+contract YourContractMintTest is Test {
     YourContract public yourContract;
 
     address mintRoyaltyRecipient = vm.addr(1);

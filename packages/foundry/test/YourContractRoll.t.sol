@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "../contracts/YourContract.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract YourContractTest is Test {
+contract YourContractRollTest is Test {
     YourContract public yourContract;
 
     address mintRoyaltyRecipient = vm.addr(1);
@@ -39,65 +39,61 @@ contract YourContractTest is Test {
         yourContract.setUpMintableTokenIds(s_maxTokenCount);
     }
 
-    // function testMintTimestamps() public view {
-    //     assertEq(yourContract.getMintStartTimestamp(), MINT_START_TIMESTAMP);
-    //     assertEq(yourContract.getMintEndTimestamp(), MINT_END_TIMESTAMP);
-    // }
+    function testMintTimestamps() public view {
+        assertEq(yourContract.getMintStartTimestamp(), MINT_START_TIMESTAMP);
+        assertEq(yourContract.getMintEndTimestamp(), MINT_END_TIMESTAMP);
+    }
 
-    // function testRollOneOut() public {
-    //     vm.prank(USER);
-    //     uint256 result = yourContract.rollOneUp();
+    function testRollOneOut() public {
+        vm.prank(USER);
+        uint256 result = yourContract.rollOneUp();
 
-    //     assertEq(
-    //         yourContract.getRolledTokenURI(USER),
-    //         string.concat(BASE_URI, Strings.toString(result))
-    //     );
-    //     assertEq(yourContract.getRolledTokenId(USER), result);
-    // }
+        assertEq(
+            yourContract.getRolledTokenURI(USER),
+            string.concat(BASE_URI, Strings.toString(result))
+        );
+        assertEq(yourContract.getRolledTokenId(USER), result);
+    }
 
-    // function testRerollOneOut() public {
-    //     vm.prank(USER);
-    //     uint256 result = yourContract.rollOneUp();
+    function testRerollOneOut() public {
+        vm.prank(USER);
+        uint256 result = yourContract.rollOneUp();
 
-    //     assertEq(
-    //         yourContract.getRolledTokenURI(USER),
-    //         string.concat(BASE_URI, Strings.toString(result))
-    //     );
-    //     assertEq(yourContract.getRolledTokenId(USER), result);
+        assertEq(
+            yourContract.getRolledTokenURI(USER),
+            string.concat(BASE_URI, Strings.toString(result))
+        );
+        assertEq(yourContract.getRolledTokenId(USER), result);
 
-    //     vm.prank(USER);
-    //     uint256 result2 = yourContract.rollOneUp();
+        vm.prank(USER);
+        uint256 result2 = yourContract.rollOneUp();
 
-    //     assertEq(
-    //         yourContract.getRolledTokenURI(USER),
-    //         string.concat(BASE_URI, Strings.toString(result2))
-    //     );
-    //     assertEq(yourContract.getRolledTokenId(USER), result2);
-    // }
+        assertEq(
+            yourContract.getRolledTokenURI(USER),
+            string.concat(BASE_URI, Strings.toString(result2))
+        );
+        assertEq(yourContract.getRolledTokenId(USER), result2);
+    }
 
-    // function testRevertGenerateRandomNumber() public {
-    //     console.log(yourContract.getMintsLeft());
+    function testRevertGenerateRandomNumber() public {
+        vm.prank(USER);
+        yourContract.rollOneUp();
 
-    //     for (uint256 i = 0; i < s_maxTokenCount; i++) {
-    //         vm.prank(USER);
-    //         yourContract.rollOneUp();
-    //         vm.prank(USER);
-    //         yourContract.mint();
-    //     }
+        // console.log(yourContract.getMintsLeft());
 
-    //     console.log(yourContract.getMintsLeft());
+        for (uint256 i = 0; i < s_maxTokenCount; i++) {
+            vm.prank(USER);
+            yourContract.rollOneUp();
+            // vm.prank(USER);
+            // yourContract.mint();
+        }
 
-    //     vm.prank(USER);
-    //     vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
-    //     yourContract.rollOneUp();
+        // console.log(yourContract.getMintsLeft());
 
-    //     // vm.prank(USER);
-    //     // yourContract.mint();
-
-    //     // vm.prank(USER);
-    //     // // vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
-    //     // yourContract.rollOneUp();
-    // }
+        // vm.prank(USER);
+        // vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
+        // yourContract.rollOneUp();
+    }
 
     // function testMint() public {
     //     vm.prank(USER);
