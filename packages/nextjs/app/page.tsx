@@ -6,13 +6,23 @@ import HeroImageWeedies from "../public/mint-assets/character line up-temp.png";
 import WeediesLogo2 from "../public/mint-assets/weedies-logo-2.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
+import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
-import { AllNfts } from "~~/components/AllNfts";
+import { useAccount } from "wagmi";
+// import { AllNfts } from "~~/components/AllNfts";
 import { MyCarousel } from "~~/components/MyCarousel";
+import { NftCard } from "~~/components/NftCard";
 import { Address } from "~~/components/scaffold-eth";
-import { useScaffoldContract, useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import {
+  useScaffoldContract,
+  useScaffoldContractRead,
+  useScaffoldContractWrite,
+  useScaffoldEventSubscriber,
+} from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
+  const { address: connectedAddress } = useAccount();
+
   const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "mint" });
 
   const { data: startMintTimestamp } = useScaffoldContractRead({
@@ -117,6 +127,31 @@ const Home: NextPage = () => {
 
   const supply = Number(maxMintCount) - Number(mintCount);
 
+  const [mintedTokenId, setMintedTokenId] = useState<bigint>();
+
+  const { data: mintedTokenURI } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "tokenURI",
+    args: [mintedTokenId],
+  });
+
+  const response = useFetch<any>(mintedTokenURI?.replace("https://nft.bueno.art", "https://app.bueno.art"));
+  if (response.data !== undefined)
+    response.data.image = response?.data?.image?.replace("https://nft.bueno.art", "https://app.bueno.art");
+
+  useScaffoldEventSubscriber({
+    contractName: "YourContract",
+    eventName: "Minted",
+    listener: logs => {
+      logs.map(log => {
+        const { user, tokenId } = log.args;
+        if (user === connectedAddress) {
+          setMintedTokenId(tokenId);
+        }
+      });
+    },
+  });
+
   return (
     <>
       <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
@@ -153,7 +188,7 @@ const Home: NextPage = () => {
 
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="grilledCheese text-lg m-0">Supply</p>
-            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : ""}`}>{supply}</p>
+            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : ""}`}>{supply.toString()}</p>
           </div>
         </div>
         <div className="flex flex-wrap justify-center">
@@ -183,7 +218,15 @@ const Home: NextPage = () => {
         >
           {"Let's toke it!"}
         </button>
-        {<AllNfts />}
+        {response.data !== undefined ? (
+          <>
+            <p className="grilledCheese text-4xl">You rolled a good one!</p>
+            <NftCard data={response.data} />
+          </>
+        ) : (
+          <></>
+        )}
+        {/* {<AllNfts />} */}
       </div>
     </>
   );

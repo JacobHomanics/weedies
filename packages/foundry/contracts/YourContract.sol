@@ -18,6 +18,8 @@ contract YourContract is ERC721 {
         uint256 mintPrice;
     }
 
+    event Minted(address user, uint256 tokenId);
+
     address immutable s_mintRoyaltyRecipient;
     uint256 immutable s_maxTokenCount;
     uint256 immutable s_mintStartTimestamp;
@@ -25,7 +27,6 @@ contract YourContract is ERC721 {
     MintingThreshold[] s_mintingThresholds;
 
     uint256 s_mintCount;
-
     string s_baseURI;
 
     constructor(
@@ -61,6 +62,7 @@ contract YourContract is ERC721 {
         }
 
         s_mintCount++;
+        emit Minted(msg.sender, s_mintCount);
         _mint(msg.sender, s_mintCount);
     }
 
