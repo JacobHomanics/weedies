@@ -82,32 +82,32 @@ function useUris(contract: any, tokenIds: bigint[]) {
   return { uris, setUris, refetch };
 }
 
-// function useFetches(uris: string[]) {
-//   const [responses, setResponses] = useState<any[]>([]);
+function useFetches(uris: string[]) {
+  const [responses, setResponses] = useState<any[]>([]);
 
-//   const refetch = useCallback(async () => {
-//     const arr = [];
-//     for (let i = 0; i < uris.length; i++) {
-//       const response = await fetch(uris[i]);
-//       const responseJson = await response.json();
-//       arr.push(responseJson);
-//     }
+  const refetch = useCallback(async () => {
+    const arr = [];
+    for (let i = 0; i < uris.length; i++) {
+      const response = await fetch(uris[i]);
+      const responseJson = await response.json();
+      arr.push(responseJson);
+    }
 
-//     setResponses([...arr]);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [uris.length]);
+    setResponses([...arr]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uris.length]);
 
-//   useEffect(() => {
-//     async function get() {
-//       await refetch();
-//     }
+  useEffect(() => {
+    async function get() {
+      await refetch();
+    }
 
-//     get();
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [uris.length, refetch]);
+    get();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uris.length, refetch]);
 
-//   return { responses, refetch };
-// }
+  return { responses, refetch };
+}
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -127,9 +127,14 @@ const Home: NextPage = () => {
     functionName: "getMintCount",
   });
 
-  const { data: startMintTimestamp, refetch: refetchStartMintTimestamp } = useScaffoldContractRead({
+  const { data: startMintTimestamp } = useScaffoldContractRead({
     contractName: "YourContract",
-    functionName: "getStartMintTimestamp",
+    functionName: "getMintStartTimestamp",
+  });
+
+  const { data: endMintTimestamp } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getMintEndTimestamp",
   });
 
   // const { data: isMintStarted, refetch: refetchIsMintStarted } = useScaffoldContractRead({
@@ -137,14 +142,14 @@ const Home: NextPage = () => {
   //   functionName: "getIsMintStarted",
   // });
 
-  const { data: mintDuration, refetch: refetchGetWindow } = useScaffoldContractRead({
-    contractName: "YourContract",
-    functionName: "getMintDuration",
-  });
+  // const { data: mintDuration, refetch: refetchGetWindow } = useScaffoldContractRead({
+  //   contractName: "YourContract",
+  //   functionName: "getMintDuration",
+  // });
 
   const { data: pregenTokenURI, refetch: refetchPregen } = useScaffoldContractRead({
     contractName: "YourContract",
-    functionName: "getPregeneratedTokenURI",
+    functionName: "getRolledTokenURI",
     args: [connectedAddress],
   });
 
@@ -178,7 +183,7 @@ const Home: NextPage = () => {
 
   const { tokenIds, refetch: refetchTokenIds } = useTokenIds(Number(mintCount));
 
-  const { uris, refetch: refetchUris } = useUris(yourContract, tokenIds);
+  const { uris } = useUris(yourContract, tokenIds);
 
   for (let i = 0; i < uris.length; i++) {
     uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
@@ -188,14 +193,15 @@ const Home: NextPage = () => {
 
   const response = useFetch(pregenTokenURIFormatted);
 
-  // const { responses, refetch: refetchResponses } = useFetches(uris);
+  const { responses } = useFetches(uris);
 
-  // const allNfts = responses.map((response, index) => {
-  //   return <NftCard key={index} data={response} />;
-  // });
+  const allNfts = responses.map((response, index) => {
+    return <NftCard key={index} data={response} />;
+  });
 
   const date = new Date(Number(startMintTimestamp) * 1000);
-  const endDate = new Date((startMintTimestamp && mintDuration ? Number(startMintTimestamp + mintDuration) : 0) * 1000);
+  const endDate = new Date(Number(endMintTimestamp) * 1000);
+  // const endDate = new Date((startMintTimestamp && mintDuration ? Number(startMintTimestamp + mintDuration) : 0) * 1000);
 
   const startDateLocale = date.toLocaleString("en-US", {
     day: "2-digit",
@@ -365,11 +371,11 @@ const Home: NextPage = () => {
             await refetchPregen();
             // await refetchBalance();
             await refetchTokenIds();
-            await refetchUris();
+            // await refetchUris();
             // await refetchResponses();
-            await refetchStartMintTimestamp();
+            // await refetchStartMintTimestamp();
             // await refetchIsMintStarted();
-            await refetchGetWindow();
+            // await refetchGetWindow();
           }}
           className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]"
         >
@@ -393,13 +399,13 @@ const Home: NextPage = () => {
             await refetchActiveThrehsold();
             // await refetchBalance();
             await refetchTokenIds();
-            await refetchUris();
+            // await refetchUris();
             await refetchPregen();
 
             // await refetchResponses();
-            await refetchStartMintTimestamp();
+            // await refetchStartMintTimestamp();
             // await refetchIsMintStarted();
-            await refetchGetWindow();
+            // await refetchGetWindow();
           }}
           className="grilledCheese btn btn-secondary btn-lg m-1 text-3xl mb-10"
         >
@@ -519,8 +525,8 @@ const Home: NextPage = () => {
             </div>
           </div>
 */}
-        {/* <p className="text-center text-2xl">All Weedies</p>
-        <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div> */}
+        <p className="text-center text-2xl">All Weedies</p>
+        <div className="flex flex-wrap justify-center bg-base-100 rounded-lg m-4">{allNfts}</div>
       </div>
     </>
   );

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0xc5a5C42992dECbae36851359345FE25997F5C42d",
       abi: [
         {
           type: "constructor",
@@ -23,14 +23,46 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "maxMintCount",
+              name: "baseURI",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "maxTokenCount",
               type: "uint256",
               internalType: "uint256",
             },
             {
-              name: "mintDuration",
+              name: "mintStartTimestamp",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "mintEndTimestamp",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "mintingThresholds",
+              type: "tuple[]",
+              internalType: "struct YourContract.MintingThreshold[]",
+              components: [
+                {
+                  name: "minThreshold",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "maxThreshold",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "mintPrice",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+              ],
             },
           ],
           stateMutability: "nonpayable",
@@ -87,7 +119,39 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomHash",
+          inputs: [],
+          outputs: [
+            {
+              name: "randomHash",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "generateRandomNumber",
+          inputs: [
+            {
+              name: "ceiling",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "generateRandomNumberWithFilterNoWrite",
           inputs: [
             {
               name: "seed",
@@ -97,7 +161,31 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "",
+              name: "randomIndex",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "resultNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "generateRandomNumberWithIndexAccomodation",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomNumberWithIndexAccomodation",
               type: "uint256",
               internalType: "uint256",
             },
@@ -155,19 +243,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getIsMintStarted",
-          inputs: [],
-          outputs: [
-            {
-              name: "isMintStarted",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "getMaxMintCount",
           inputs: [],
           outputs: [
@@ -194,27 +269,8 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getMintDuration",
+          name: "getMintEndTimestamp",
           inputs: [],
-          outputs: [
-            {
-              name: "mintDuration",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getPregeneratedId",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
           outputs: [
             {
               name: "",
@@ -226,19 +282,52 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getPregeneratedTokenURI",
-          inputs: [
+          name: "getMintPrice",
+          inputs: [],
+          outputs: [
             {
-              name: "user",
+              name: "mintPrice",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintRoyaltyRecipient",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
               type: "address",
               internalType: "address",
             },
           ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintStartTimestamp",
+          inputs: [],
           outputs: [
             {
-              name: "uri",
-              type: "string",
-              internalType: "string",
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintsLeft",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -264,26 +353,57 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getRoyaltyRecipient",
-          inputs: [],
+          name: "getRolledTokenId",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
           outputs: [
             {
               name: "",
-              type: "address",
-              internalType: "address",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
         },
         {
           type: "function",
-          name: "getStartMintTimestamp",
-          inputs: [],
+          name: "getRolledTokenIndex",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
           outputs: [
             {
-              name: "startMintTimestamp",
+              name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getRolledTokenURI",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "uri",
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -345,6 +465,19 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isTimestampInWindow",
+          inputs: [],
           outputs: [
             {
               name: "",
@@ -433,7 +566,13 @@ const deployedContracts = {
           type: "function",
           name: "rollOneUp",
           inputs: [],
-          outputs: [],
+          outputs: [
+            {
+              name: "tokenId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
         },
         {
@@ -507,8 +646,14 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "startMint",
-          inputs: [],
+          name: "setUpMintableTokenIds",
+          inputs: [
+            {
+              name: "numToMake",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           outputs: [],
           stateMutability: "nonpayable",
         },
@@ -590,7 +735,13 @@ const deployedContracts = {
           type: "function",
           name: "withdraw",
           inputs: [],
-          outputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
           stateMutability: "nonpayable",
         },
         {
@@ -869,12 +1020,27 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "YourContract__BeforeMintWindow",
+          name: "Weedies__AllWeediesAreTwisted",
           inputs: [],
         },
         {
           type: "error",
-          name: "YourContract__DidNotSendEnoughEther",
+          name: "Weedies__TheDealersNotAround",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__UserNotActivelyRollingAWeedie",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__YouShortedTheDealer",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "YourContract__BeforeMintWindow",
           inputs: [],
         },
         {
@@ -893,7 +1059,26 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+      },
     },
   },
   11155111: {
@@ -914,14 +1099,46 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "maxMintCount",
+              name: "baseURI",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "maxTokenCount",
               type: "uint256",
               internalType: "uint256",
             },
             {
-              name: "mintDuration",
+              name: "mintStartTimestamp",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "mintEndTimestamp",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "mintingThresholds",
+              type: "tuple[]",
+              internalType: "struct YourContract.MintingThreshold[]",
+              components: [
+                {
+                  name: "minThreshold",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "maxThreshold",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+                {
+                  name: "mintPrice",
+                  type: "uint256",
+                  internalType: "uint256",
+                },
+              ],
             },
           ],
           stateMutability: "nonpayable",
@@ -978,7 +1195,39 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "generateRandomHash",
+          inputs: [],
+          outputs: [
+            {
+              name: "randomHash",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "generateRandomNumber",
+          inputs: [
+            {
+              name: "ceiling",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "generateRandomNumberWithFilterNoWrite",
           inputs: [
             {
               name: "seed",
@@ -988,7 +1237,31 @@ const deployedContracts = {
           ],
           outputs: [
             {
-              name: "",
+              name: "randomIndex",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "resultNumber",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "generateRandomNumberWithIndexAccomodation",
+          inputs: [
+            {
+              name: "seed",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "randomNumberWithIndexAccomodation",
               type: "uint256",
               internalType: "uint256",
             },
@@ -1046,19 +1319,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getIsMintStarted",
-          inputs: [],
-          outputs: [
-            {
-              name: "isMintStarted",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
           name: "getMaxMintCount",
           inputs: [],
           outputs: [
@@ -1085,27 +1345,8 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getMintDuration",
+          name: "getMintEndTimestamp",
           inputs: [],
-          outputs: [
-            {
-              name: "mintDuration",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "getPregeneratedId",
-          inputs: [
-            {
-              name: "user",
-              type: "address",
-              internalType: "address",
-            },
-          ],
           outputs: [
             {
               name: "",
@@ -1117,19 +1358,52 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getPregeneratedTokenURI",
-          inputs: [
+          name: "getMintPrice",
+          inputs: [],
+          outputs: [
             {
-              name: "user",
+              name: "mintPrice",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintRoyaltyRecipient",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
               type: "address",
               internalType: "address",
             },
           ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintStartTimestamp",
+          inputs: [],
           outputs: [
             {
-              name: "uri",
-              type: "string",
-              internalType: "string",
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getMintsLeft",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
@@ -1155,26 +1429,57 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getRoyaltyRecipient",
-          inputs: [],
+          name: "getRolledTokenId",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
           outputs: [
             {
               name: "",
-              type: "address",
-              internalType: "address",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           stateMutability: "view",
         },
         {
           type: "function",
-          name: "getStartMintTimestamp",
-          inputs: [],
+          name: "getRolledTokenIndex",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
           outputs: [
             {
-              name: "startMintTimestamp",
+              name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getRolledTokenURI",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "uri",
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -1236,6 +1541,19 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isTimestampInWindow",
+          inputs: [],
           outputs: [
             {
               name: "",
@@ -1324,7 +1642,13 @@ const deployedContracts = {
           type: "function",
           name: "rollOneUp",
           inputs: [],
-          outputs: [],
+          outputs: [
+            {
+              name: "tokenId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
         },
         {
@@ -1398,8 +1722,14 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "startMint",
-          inputs: [],
+          name: "setUpMintableTokenIds",
+          inputs: [
+            {
+              name: "numToMake",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           outputs: [],
           stateMutability: "nonpayable",
         },
@@ -1481,7 +1811,13 @@ const deployedContracts = {
           type: "function",
           name: "withdraw",
           inputs: [],
-          outputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
           stateMutability: "nonpayable",
         },
         {
@@ -1760,12 +2096,27 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "YourContract__BeforeMintWindow",
+          name: "Weedies__AllWeediesAreTwisted",
           inputs: [],
         },
         {
           type: "error",
-          name: "YourContract__DidNotSendEnoughEther",
+          name: "Weedies__TheDealersNotAround",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__UserNotActivelyRollingAWeedie",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__YouShortedTheDealer",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "YourContract__BeforeMintWindow",
           inputs: [],
         },
         {
@@ -1784,7 +2135,26 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        DEFAULT_ADMIN_ROLE: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        getRoleAdmin: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        grantRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        hasRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        renounceRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        revokeRole: "lib/openzeppelin-contracts/contracts/access/AccessControl.sol",
+        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+      },
     },
   },
 } as const;

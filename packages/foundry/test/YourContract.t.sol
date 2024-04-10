@@ -21,11 +21,10 @@ contract YourContractTest is Test {
 
     function setUp() public {
         YourContract.MintingThreshold[] memory thresholds =
-            new YourContract.MintingThreshold[](2);
-        thresholds[0] = YourContract.MintingThreshold(0, 1000, 0 ether);
-        thresholds[1] = YourContract.MintingThreshold(
-            1000, type(uint256).max, 0.0006942 ether
-        );
+            new YourContract.MintingThreshold[](1);
+        thresholds[0] =
+            YourContract.MintingThreshold(0, type(uint256).max, 0 ether);
+
         yourContract = new YourContract(
             ADMIN,
             mintRoyaltyRecipient,
@@ -74,6 +73,30 @@ contract YourContractTest is Test {
             string.concat(BASE_URI, Strings.toString(result2))
         );
         assertEq(yourContract.getRolledTokenId(USER), result2);
+    }
+
+    function testRevertGenerateRandomNumber() public {
+        console.log(yourContract.getMintsLeft());
+
+        for (uint256 i = 0; i < s_maxTokenCount; i++) {
+            vm.prank(USER);
+            yourContract.rollOneUp();
+            vm.prank(USER);
+            yourContract.mint();
+        }
+
+        console.log(yourContract.getMintsLeft());
+
+        vm.prank(USER);
+        vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
+        yourContract.rollOneUp();
+
+        // vm.prank(USER);
+        // yourContract.mint();
+
+        // vm.prank(USER);
+        // // vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
+        // yourContract.rollOneUp();
     }
 
     function testMint() public {

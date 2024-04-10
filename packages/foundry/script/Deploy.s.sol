@@ -9,8 +9,8 @@ contract DeployScript is ScaffoldETHDeploy {
 
     function getSetup()
         public
-        view
         returns (
+            uint256 maxMintCount,
             uint256 mintStartTimestamp,
             uint256 mintEndTimestamp,
             YourContract.MintingThreshold[] memory thresholds
@@ -22,15 +22,19 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         if (chainId == 31337) {
-            mintStartTimestamp = 1 minutes;
-            mintEndTimestamp = 1 days;
+            maxMintCount = 5;
+
+            mintStartTimestamp = vm.unixTime() / 1000;
+            mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
 
             thresholds = new YourContract.MintingThreshold[](2);
             thresholds[0] = YourContract.MintingThreshold(0, 3, 0 ether);
             thresholds[1] = YourContract.MintingThreshold(
-                1000, type(uint256).max, 0.0006942 ether
+                1000, type(uint256).max, 0.1 ether
             );
         } else if (chainId == 8453) {
+            maxMintCount = 24420;
+
             mintStartTimestamp = 1713589200;
             mintEndTimestamp = 1 days;
 
@@ -51,6 +55,7 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         (
+            uint256 maxMintCount,
             uint256 mintStartTimestamp,
             uint256 mintEndTimestamp,
             YourContract.MintingThreshold[] memory thresholds
@@ -58,19 +63,34 @@ contract DeployScript is ScaffoldETHDeploy {
 
         vm.startBroadcast(deployerPrivateKey);
         YourContract yourContract = new YourContract(
-            0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
+            vm.addr(deployerPrivateKey),
             0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
             "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
-            24420,
+            maxMintCount,
             mintStartTimestamp,
             mintEndTimestamp,
             thresholds
         );
+
         console.logString(
             string.concat(
                 "YourContract deployed at: ", vm.toString(address(yourContract))
             )
         );
+
+        uint256 increments = 100;
+        uint256 remainingMintCount = maxMintCount;
+
+        while (remainingMintCount > 0) {
+            uint256 selectedIncrement = increments;
+            if (remainingMintCount < increments) {
+                selectedIncrement = remainingMintCount;
+            }
+
+            yourContract.setUpMintableTokenIds(selectedIncrement);
+            remainingMintCount -= selectedIncrement;
+        }
+
         vm.stopBroadcast();
 
         /**

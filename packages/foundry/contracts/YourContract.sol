@@ -32,12 +32,12 @@ contract YourContract is AccessControl, ERC721 {
 
     uint256 s_mintCount;
 
-    uint256 s_startMintTimestamp;
-
     string s_baseURI;
 
     uint256[] s_MintableTokenIds;
     mapping(address user => uint256 id) s_rolledTokenId;
+    mapping(address user => uint256 index) s_rolledTokenIndex;
+
     mapping(uint256 tokenId => uint256 uriId) mintedTokenUriId;
 
     constructor(
@@ -77,28 +77,30 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     function rollOneUp() external returns (uint256 tokenId) {
-        uint256 result = generateRandomNumberWithFilter(s_maxTokenCount);
+        (uint256 index, uint256 result) =
+            generateRandomNumberWithFilterNoWrite(s_maxTokenCount);
         s_rolledTokenId[msg.sender] = result;
+        s_rolledTokenIndex[msg.sender] = index;
         tokenId = result;
     }
 
-    function generateRandomNumberWithFilter(uint256 seed)
-        public
-        returns (uint256)
-    {
-        (uint256 randomIndex, uint256 resultNumber) =
-            generateRandomNumberWithFilterNoWrite(seed);
+    // function generateRandomNumberWithFilter(uint256 seed)
+    //     public
+    //     returns (uint256)
+    // {
+    //     (uint256 randomIndex, uint256 resultNumber) =
+    //         generateRandomNumberWithFilterNoWrite(seed);
 
-        // write the last number of the array to the current position.
-        // thus we take out the used number from the circulation and store the last number of the array for future use
-        s_MintableTokenIds[randomIndex] =
-            s_MintableTokenIds[s_MintableTokenIds.length - 1];
+    //     // write the last number of the array to the current position.
+    //     // thus we take out the used number from the circulation and store the last number of the array for future use
+    //     s_MintableTokenIds[randomIndex] =
+    //         s_MintableTokenIds[s_MintableTokenIds.length - 1];
 
-        // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
-        s_MintableTokenIds.pop();
+    //     // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
+    //     s_MintableTokenIds.pop();
 
-        return resultNumber;
-    }
+    //     return resultNumber;
+    // }
 
     function generateRandomNumberWithFilterNoWrite(uint256 seed)
         public
@@ -156,6 +158,7 @@ contract YourContract is AccessControl, ERC721 {
         }
 
         uint256 rolledTokenId = getRolledTokenId(msg.sender);
+        uint256 rolledTokenIndex = getRolledTokenIndex(msg.sender);
 
         if (rolledTokenId == 0) {
             revert Weedies__UserNotActivelyRollingAWeedie();
@@ -164,6 +167,18 @@ contract YourContract is AccessControl, ERC721 {
         s_mintCount++;
         mintedTokenUriId[s_mintCount] = rolledTokenId;
         s_rolledTokenId[msg.sender] = 0;
+        s_rolledTokenIndex[msg.sender] = 0;
+
+        // write the last number of the array to the current position.
+        // thus we take out the used number from the circulation and store the last number of the array for future use
+        if (s_MintableTokenIds.length > 1) {
+            s_MintableTokenIds[rolledTokenIndex] =
+                s_MintableTokenIds[s_MintableTokenIds.length - 1];
+        }
+
+        // reduce the size of the array by 1 (this deletes the last record we’ve copied at the previous step)
+        s_MintableTokenIds.pop();
+
         _mint(msg.sender, s_mintCount);
     }
 
@@ -177,6 +192,10 @@ contract YourContract is AccessControl, ERC721 {
 
     function getRolledTokenId(address user) public view returns (uint256) {
         return s_rolledTokenId[user];
+    }
+
+    function getRolledTokenIndex(address user) public view returns (uint256) {
+        return s_rolledTokenIndex[user];
     }
 
     function getRolledTokenURI(address user)
@@ -194,7 +213,7 @@ contract YourContract is AccessControl, ERC721 {
     }
 
     function getMintStartTimestamp() public view returns (uint256) {
-        return s_startMintTimestamp;
+        return s_mintStartTimestamp;
     }
 
     function getMintEndTimestamp() public view returns (uint256) {
@@ -203,6 +222,10 @@ contract YourContract is AccessControl, ERC721 {
 
     function getMintPrice() public view returns (uint256 mintPrice) {
         mintPrice = getAcitveMintingThreshold().mintPrice;
+    }
+
+    function getMintsLeft() public view returns (uint256) {
+        return s_MintableTokenIds.length;
     }
 
     function getAcitveMintingThreshold()

@@ -89,26 +89,17 @@ abstract contract YourContractBaseRandomness is Test {
         }
     }
 
-    function testGenerateRandomNumberWithFilter() public {
-        for (uint256 i = 0; i < randomBlocks.length; i++) {
-            vm.roll(randomBlocks[i]);
+    // function testGenerateRandomNumberWithFilter() public {
+    //     for (uint256 i = 0; i < randomBlocks.length; i++) {
+    //         vm.roll(randomBlocks[i]);
 
-            vm.prank(USER);
-            uint256 number =
-                yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
+    //         vm.prank(USER);
+    //         uint256 number =
+    //             yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
 
-            assertEq(number, answerSheetFiltered[i]);
-        }
-    }
+    //         assertEq(number, answerSheetFiltered[i]);
+    //     }
+    // }
 
-    function testRevertGenerateRandomNumber() public {
-        for (uint256 i = 0; i < s_maxTokenCount; i++) {
-            vm.prank(USER);
-            yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
-        }
-
-        vm.prank(USER);
-        vm.expectRevert(YourContract.Weedies__AllWeediesAreTwisted.selector);
-        yourContract.generateRandomNumberWithFilter(s_maxTokenCount);
-    }
+   
 }
