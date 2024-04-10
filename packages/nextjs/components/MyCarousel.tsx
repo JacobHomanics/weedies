@@ -19,7 +19,7 @@ export const MyCarousel = () => {
       autoPlay
       autoPlaySpeed={1000}
       centerMode
-      className="w-[280px] lg:w-[480px] rounded-full bg-base-200"
+      className="w-[280px] lg:w-[480px] "
       containerClass="container"
       dotListClass="rounded-lg"
       draggable
