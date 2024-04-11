@@ -2,22 +2,17 @@
 
 import { useEffect } from "react";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import nounie1 from "../public/carousel/1.png";
 import hero from "../public/hero.jpg";
-import carouselImage1 from "../public/images-carousel/1.png";
-import carouselImage2 from "../public/images-carousel/2.png";
-import carouselImage3 from "../public/images-carousel/3.png";
-import carouselImage4 from "../public/images-carousel/4.png";
-import carouselImage5 from "../public/images-carousel/5.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
 import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import Card from "~~/components/Card";
 import CardMinted from "~~/components/CardMinted";
-import Carousel from "~~/components/Carousel";
+// import Carousel from "~~/components/Carousel";
 // import { AllNfts } from "~~/components/AllNfts";
 // import { MyCarousel } from "~~/components/Carousel";
 // import { NftCard } from "~~/components/NftCard";
@@ -29,53 +24,10 @@ import {
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
 
-const cards = [
-  {
-    key: 1,
-    content: (
-      <Card
-        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/convertplus_thumbnail.jpg"
-        image={carouselImage1.src}
-      />
-    ),
-  },
-  {
-    key: 2,
-    content: (
-      <Card
-        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/acf_pro.png"
-        image={carouselImage2.src}
-      />
-    ),
-  },
-  {
-    key: 3,
-    content: (
-      <Card
-        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/layer_slider_plugin_thumb.png"
-        image={carouselImage3.src}
-      />
-    ),
-  },
-  {
-    key: 4,
-    content: (
-      <Card
-        imagen="https://updates.theme-fusion.com/wp-content/uploads/2016/08/slider_revolution-1.png"
-        image={carouselImage4.src}
-      />
-    ),
-  },
-  {
-    key: 5,
-    content: (
-      <Card
-        imagen="https://updates.theme-fusion.com/wp-content/uploads/2016/08/slider_revolution-1.png"
-        image={carouselImage5.src}
-      />
-    ),
-  },
-];
+const DynamicCarousel = dynamic(() => import("../components/Carousel"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -236,7 +188,7 @@ const Home: NextPage = () => {
 
       <div className="flex items-center flex-col flex-grow bg-base-100">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={hero.src} className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" /> {/* 1366px x 870px*/}
+        <img src={hero.src} alt="Test" className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" /> {/* 1366px x 870px*/}
         {/* <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover"> */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " />  */}
@@ -247,7 +199,8 @@ const Home: NextPage = () => {
         <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
           A bunch of toasted fun loving Degens living their best life, one toke at a time!
         </p>
-        <Carousel cards={cards} height="200px" width="30%" margin="0 auto" offset={2} showArrows={false} />
+        <DynamicCarousel />
+        {/* <Carousel /> */}
         <p className="grilledCheese text-2xl lg:text-4xl">Twist one up!</p>
         <div className="flex flex-wrap justify-center w-[300px]">
           {/* <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">

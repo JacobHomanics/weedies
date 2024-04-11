@@ -21,7 +21,7 @@ function Card({ image }: Props) {
       onMouseLeave={() => setShown(false)}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={image} alt="" />
+      <img src={image} alt="Test" />
       {/* <h2>Title</h2>
       <p>
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
