@@ -20,6 +20,7 @@ function Card({ image }: Props) {
       onMouseEnter={() => setShown(true)}
       onMouseLeave={() => setShown(false)}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={image} alt="" />
       {/* <h2>Title</h2>
       <p>

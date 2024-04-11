@@ -235,6 +235,7 @@ const Home: NextPage = () => {
       {/* <MyCarousel /> */}
 
       <div className="flex items-center flex-col flex-grow bg-base-100">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={hero.src} className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" /> {/* 1366px x 870px*/}
         {/* <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover"> */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

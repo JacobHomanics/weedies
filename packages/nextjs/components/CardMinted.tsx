@@ -20,6 +20,7 @@ function CardMinted({ image, title }: Props) {
       onMouseEnter={() => setShown(true)}
       onMouseLeave={() => setShown(false)}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={image} alt="" />
       <p className="font-bold text-center text-xl">{title}</p>
       {/* <p>
