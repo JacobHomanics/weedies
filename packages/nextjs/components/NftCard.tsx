@@ -2,9 +2,10 @@
 
 type Props = {
   data: any;
+  imgSrc: any;
 };
 
-export const NftCard = ({ data }: Props) => {
+export const NftCard = ({ data, imgSrc }: Props) => {
   // let output;
 
   // if (data?.image) {
@@ -16,10 +17,10 @@ export const NftCard = ({ data }: Props) => {
   return (
     <>
       <div className="w-[275px] lg:w-[350px] flex flex-col items-center justify-center m-1 rounded-2xl">
-        {data?.image ? (
+        {imgSrc ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={data?.image} alt="Alt" className="m-2 rounded-lg" />
+            <img src={imgSrc} alt="Alt" className="m-2 rounded-lg" />
             <p className="font-bold text-center text-xl">{data?.name}</p>
           </>
         ) : (

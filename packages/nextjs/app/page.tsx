@@ -21,6 +21,7 @@ import {
   useScaffoldContractWrite,
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
+import bagOfWeed from "~~/public/weed-bag.png";
 
 const DynamicCarousel = dynamic(() => import("../components/Carousel"), {
   loading: () => <p>Loading...</p>,
@@ -193,7 +194,6 @@ const Home: NextPage = () => {
             {mintWindowOutput}
           </div>
         </div>
-
         {/* <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover"> */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " />  */}
@@ -212,6 +212,29 @@ const Home: NextPage = () => {
         {/* <div className="flex flex-col items-center justify-center text-center">
           <p className="grilledCheese text-4xl">{"Lick the paper, twist it up, and mint yourself a Weedie!"}</p>
         </div> */}
+
+        {response.data !== undefined ? (
+          <>
+            {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
+
+            <NftCard data={response.data} imgSrc={response.data.image} />
+          </>
+        ) : (
+          <NftCard data={response.data} imgSrc={bagOfWeed.src} />
+        )}
+
+        <button
+          onClick={async () => {
+            await mint({ value: mintPrice });
+            await refetchMintPrice();
+            await refetchMintCount();
+            await refetchMaxMintCount();
+          }}
+          className="insanibc btn btn-secondary btn-lg text-3xl mt-5"
+        >
+          {"Let's toke it!"}
+        </button>
+        <p className="m-0 mb-10">*Mint Token</p>
         <button
           onClick={async () => {
             await mint({ value: mintPrice });
@@ -223,15 +246,7 @@ const Home: NextPage = () => {
         >
           {"Let's toke (mint) it!"}
         </button>
-        {response.data !== undefined ? (
-          <>
-            {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
 
-            <NftCard data={response.data} />
-          </>
-        ) : (
-          <></>
-        )}
         {/* {<AllNfts />} */}
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-col text-center  border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
