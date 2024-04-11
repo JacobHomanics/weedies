@@ -102,7 +102,7 @@ export const Address = ({ address, disableAddressLink, format, size = "base" }: 
         </span>
       ) : (
         <a
-          className={`ml-1.5 text-${size} font-normal`}
+          className={`ml-1.5 text-${size} lg:text-base font-normal`}
           target="_blank"
           href={blockExplorerAddressLink}
           rel="noopener noreferrer"

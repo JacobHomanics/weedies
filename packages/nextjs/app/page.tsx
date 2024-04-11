@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import hero from "../public/hero.jpg";
+import hero from "../public/hero.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
 import { useFetch } from "usehooks-ts";
@@ -132,21 +132,21 @@ const Home: NextPage = () => {
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center  rounded-lg p-2 w-40 m-1">
-        <p className="text-lg m-0 grilledCheese">Starts</p>
-        <p className="text-sm m-0 grilledCheese">{startDateLocale}</p>
+        <p className="grilledCheese text-md lg:text-4xl m-0 text-green-500 -m-1">Starts</p>
+        <p className="text-md lg:text-4xl m-0 text-red-600 -m-1">{startDateLocale}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-40 lg:w-80 m-1">
-        <p className="grilledCheese text-lg lg:text-4xl m-0 text-green-500">Mint Time Left</p>
-        <p className="text-xl lg:text-4xl m-0 text-red-500">{mintTimeLeftFormatted}</p>
+      <div className="flex flex-col text-center bg-base-100 rounded-lg p-0 lg:p-2 w-40 lg:w-80 m-1">
+        <p className="grilledCheese text-md lg:text-4xl m-0 text-green-500 -m-1">Mint Time Left</p>
+        <p className="text-md lg:text-4xl m-0 text-red-600 -m-1">{mintTimeLeftFormatted}</p>
       </div>
     );
   } else {
     mintWindowOutput = (
       <div className="flex flex-col text-center rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-lg m-0 text-red-500">Mint ended</p>
+        <p className="grilledCheese text-lg m-0 text-red-600">Mint ended</p>
       </div>
     );
   }
@@ -185,8 +185,15 @@ const Home: NextPage = () => {
       {/* <MyCarousel /> */}
 
       <div className="flex items-center flex-col flex-grow bg-base-100">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={hero.src} alt="Test" className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" /> {/* 1366px x 870px*/}
+        <div className="relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={hero.src} alt="Test" className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" />{" "}
+          {/* 1366px x 870px*/}
+          <div className="flex flex-wrap justify-center w-[300px] absolute lg:inset-0 lg:h-[100px] left-[135px] lg:left-[600px] top-[60px] lg:top-[150px]">
+            {mintWindowOutput}
+          </div>
+        </div>
+
         {/* <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover"> */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {/* <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " />  */}
@@ -195,22 +202,13 @@ const Home: NextPage = () => {
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
         {/* </div> */}
         <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
-          24,420 toasted, fun-loving weirdos living their best life, one toke at a time!
+          <span className="text-red-600">24,420</span> toasted, fun-loving weirdos living their best life, one toke at a
+          time!
         </p>
+        <p className="grilledCheese text-2xl text-secondary lg:text-4xl">Tasty Samples</p>
         <DynamicCarousel />
         {/* <Carousel /> */}
         <p className="grilledCheese text-2xl lg:text-4xl">Twist one up!</p>
-        <div className="flex flex-wrap justify-center w-[300px]">
-          {/* <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="text-lg m-0 grilledCheese">Starts</p>
-            <p className="text-sm m-0 grilledCheese">{startDateLocale}</p>
-          </div>
-          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="grilledCheese text-lg m-0">Ends</p>
-            <p className="text-sm m-0 grilledCheese">{endDateLocale}</p>
-          </div> */}
-          {mintWindowOutput}
-        </div>
         {/* <div className="flex flex-col items-center justify-center text-center">
           <p className="grilledCheese text-4xl">{"Lick the paper, twist it up, and mint yourself a Weedie!"}</p>
         </div> */}
@@ -223,11 +221,10 @@ const Home: NextPage = () => {
           }}
           className="insanibc btn btn-secondary btn-lg m-1 text-3xl mb-10"
         >
-          {"Let's toke it!"}
+          {"Let's toke (mint) it!"}
         </button>
         {response.data !== undefined ? (
           <>
-            <p className="grilledCheese text-4xl">You rolled a good one!</p>
             {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
 
             <NftCard data={response.data} />
@@ -236,25 +233,38 @@ const Home: NextPage = () => {
           <></>
         )}
         {/* {<AllNfts />} */}
-        <p className="grilledCheese text-4xl">Contract</p>
         <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center  border-secondary border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
-            <p className="grilledCheese text-lg m-0 lg:text-4xl">Mint Price</p>
+          <div className="flex flex-col text-center  border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
+            <p className="grilledCheese text-md m-0 lg:text-4xl">Mint Price</p>
             <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
 
-          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
-            <p className="grilledCheese text-lg m-0 lg:text-4xl">Supply</p>
-            <p className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
+          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
+            <p className="grilledCheese text-md m-0 lg:text-4xl">Supply</p>
+            <p className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-600" : "text-green-500"}`}>
               {supply.toString()}
             </p>
           </div>
+
+          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
+            <p className="grilledCheese text-md m-0 lg:text-4xl">Contract</p>
+            <div className="flex items-center justify-center">
+              <Address address={yourContract?.address} size="xs" />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 m-1 mb-10">
-          <p className="grilledCheese text-lg m-0 lg:text-4xl">Contract Address</p>
-          <Address address={yourContract?.address} size="xl" />
-        </div>
-        <div className="flex justify-center items-center gap-2 mb-4">
+        <button
+          onClick={async () => {
+            await mint({ value: mintPrice });
+            await refetchMintPrice();
+            await refetchMintCount();
+            await refetchMaxMintCount();
+          }}
+          className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10"
+        >
+          {"MERCH"}
+        </button>
+        <div className="flex justify-center items-center gap-2 mb-4  mt-10">
           <p className="m-0 text-center">
             Built with <HeartIcon className="inline-block h-4 w-4" /> at
           </p>
@@ -265,7 +275,7 @@ const Home: NextPage = () => {
             rel="noreferrer"
           >
             {/* <BuidlGuidlLogo className="w-3 h-5 pb-1" /> */}
-            <span className="link">Big Shot Toy Works</span>
+            <span className="link text-red-600">Bigshot.wtf</span>
           </a>
         </div>
       </div>
