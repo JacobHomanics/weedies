@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import hero from "../public/hero.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
@@ -21,7 +22,13 @@ import {
   useScaffoldContractWrite,
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
+import jake from "~~/public/Jake-pfp.png";
+import klim from "~~/public/Klim-pfp.jpg";
+import mark from "~~/public/Mark-pfp.jpg";
+import fc from "~~/public/farcaster.png";
+import ig from "~~/public/instagram.png";
 import bagOfWeed from "~~/public/weed-bag.png";
+import twitter from "~~/public/x.png";
 
 const DynamicCarousel = dynamic(() => import("../components/Carousel"), {
   loading: () => <p>Loading...</p>,
@@ -190,7 +197,7 @@ const Home: NextPage = () => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={hero.src} alt="Test" className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" />{" "}
           {/* 1366px x 870px*/}
-          <div className="flex flex-wrap justify-center w-[300px] absolute lg:inset-0 lg:h-[100px] left-[135px] lg:left-[600px] top-[60px] lg:top-[150px]">
+          <div className="flex flex-wrap justify-center w-[150px] lg:w-[400px] absolute lg:inset-0 lg:h-[100px] left-[210px] lg:left-[575px] top-[60px] lg:top-[150px]">
             {mintWindowOutput}
           </div>
         </div>
@@ -201,6 +208,7 @@ const Home: NextPage = () => {
         {/* <img alt="Hero Image" src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
         {/* </div> */}
+
         <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
           <span className="text-red-600">24,420</span> toasted, fun-loving weirdos living their best life, one toke at a
           time!
@@ -279,6 +287,63 @@ const Home: NextPage = () => {
         >
           {"MERCH"}
         </button>
+
+        <p className="grilledCheese text-4xl m-0 text-pink-500">Team</p>
+        <div className="flex text-center">
+          <div>
+            <img src={mark.src} alt="mark" className="p-3" />
+            <p className="m-0 grilledCheese lg:text-4xl">Mark</p>
+            <p className="m-0 grilledCheese">{`"Grape Kush"`}</p>
+            <div className="flex space-x-1 items-center justify-center">
+              <Link href="https://twitter.com/gbombstudios">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={twitter.src} alt="x" className="w-7" />
+              </Link>
+
+              <Link href="https://www.instagram.com/greenbomb/">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={ig.src} alt="ig" className="w-7" />
+              </Link>
+            </div>
+          </div>
+          <div>
+            <img src={klim.src} alt="klim" className="p-3" />
+            <p className="m-0 grilledCheese lg:text-4xl">Klim</p>
+            <p className="m-0 grilledCheese">{`"OG Bush"`}</p>
+            <div className="flex space-x-1 items-center justify-center">
+              <Link href="https://www.twitter.com/bigshottoyworks">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={twitter.src} alt="x" className="w-7" />
+              </Link>
+
+              <Link href="https://www.warpcast.com/bigshotklim">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={fc.src} alt="fc" className="w-7" />
+              </Link>
+              <Link href="https://www.instagram.com/bigshottoyworks/">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={ig.src} alt="ig" className="w-7" />
+              </Link>
+            </div>
+          </div>
+          <div>
+            <img src={jake.src} alt="jake" className=" p-3" />
+            <p className="m-0 grilledCheese lg:text-4xl">Jake</p>
+            <p className="m-0 grilledCheese">{`"Acapulco Gold"`}</p>
+            <div className="flex space-x-1 items-center justify-center">
+              <Link href="https://twitter.com/homanics">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={twitter.src} alt="x" className="w-7" />
+              </Link>
+
+              <Link href="https://warpcast.com/hotmanics">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={fc.src} alt="fc" className="w-7" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-center items-center gap-2 mb-4  mt-10">
           <p className="m-0 text-center">
             Built with <HeartIcon className="inline-block h-4 w-4" /> at

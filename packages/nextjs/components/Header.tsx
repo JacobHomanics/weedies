@@ -100,26 +100,27 @@ export const Header = () => {
             <span className="text-xs">Somebody pass the joint!</span>
           </div>
         </Link>
+
+        <div className="flex space-x-1 ml-5">
+          <Link href="https://twitter.com/Nounies1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={twitter.src} alt="x" className="w-5" />
+          </Link>
+
+          <Link href="https://warpcast.com/~/channel/weedies">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={fc.src} alt="fc" className="w-5" />
+          </Link>
+          <Link href="https://www.instagram.com/bigshottoyworks/">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={ig.src} alt="ig" className="w-5" />
+          </Link>
+        </div>
         {/* <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
           <HeaderMenuLinks />
         </ul> */}
       </div>
       <div className="navbar-end flex-grow mr-4">
-        <div className="flex space-x-1">
-          <Link href="https://twitter.com/Nounies1">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={twitter.src} alt="x" className="w-10" />
-          </Link>
-
-          <Link href="https://warpcast.com/~/channel/weedies">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={fc.src} alt="fc" className="w-10" />
-          </Link>
-          <Link href="https://www.instagram.com/bigshottoyworks/">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={ig.src} alt="ig" className="w-10" />
-          </Link>
-        </div>
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>
