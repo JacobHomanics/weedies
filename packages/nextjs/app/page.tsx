@@ -142,19 +142,19 @@ const Home: NextPage = () => {
   //   minute: "2-digit",
   // });
 
-  function secondsToDhms2(seconds: number) {
-    seconds = Number(seconds);
-    const d = Math.floor(seconds / (3600 * 24));
-    const h = Math.floor((seconds % (3600 * 24)) / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
+  // function secondsToDhms2(seconds: number) {
+  //   seconds = Number(seconds);
+  //   const d = Math.floor(seconds / (3600 * 24));
+  //   const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  //   const m = Math.floor((seconds % 3600) / 60);
+  //   const s = Math.floor(seconds % 60);
 
-    const dDisplay = d > 0 ? d + (d == 1 ? " : " : " : ") : "";
-    const hDisplay = h > 0 ? h + (h == 1 ? " : " : " : ") : "";
-    const mDisplay = m > 0 ? m + (m == 1 ? " : " : " : ") : "";
-    const sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "";
-    return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
-  }
+  //   const dDisplay = d > 0 ? d + (d == 1 ? " : " : " : ") : "";
+  //   const hDisplay = h > 0 ? h + (h == 1 ? " : " : " : ") : "";
+  //   const mDisplay = m > 0 ? m + (m == 1 ? " : " : " : ") : "";
+  //   const sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "";
+  //   return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  // }
 
   // function secondsToDhms(seconds: number) {
   //   seconds = Number(seconds);
@@ -170,7 +170,12 @@ const Home: NextPage = () => {
   //   return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
   // }
 
-  const mintTimeLeftFormatted = secondsToDhms2(mintTimeLeft / 1000);
+  // let mintTimeLeftFormatted = secondsToDhms2(mintTimeLeft / 1000);
+
+  const aDate = new Date(0);
+  aDate.setSeconds(mintTimeLeft / 1000); // specify value for SECONDS here
+  const mintTimeLeftFormatted = aDate.toISOString().substring(11, 19);
+
   // const timeLeftTillMintFormatted = secondsToDhms(timeLeftTillMint / 1000);
 
   let mintWindowOutput;
@@ -183,9 +188,9 @@ const Home: NextPage = () => {
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-lg m-0 text-green-500">Mint Time Left</p>
-        <p className="text-xl m-0 text-red-500">{mintTimeLeftFormatted}</p>
+      <div className="flex flex-col text-center rounded-lg p-2 w-40 lg:w-80 m-1">
+        <p className="grilledCheese text-lg lg:text-4xl m-0 text-green-500">Mint Time Left</p>
+        <p className="text-xl lg:text-4xl m-0 text-red-500">{mintTimeLeftFormatted}</p>
       </div>
     );
   } else {
@@ -242,9 +247,7 @@ const Home: NextPage = () => {
           A bunch of toasted fun loving Degens living their best life, one toke at a time!
         </p>
         <Carousel cards={cards} height="200px" width="30%" margin="0 auto" offset={2} showArrows={false} />
-        <div className="flex items-center justify-center text-center">
-          <p className="grilledCheese text-2xl m-0">Twist one up!</p>
-        </div>
+        <p className="grilledCheese text-2xl lg:text-4xl">Twist one up!</p>
         <div className="flex flex-wrap justify-center w-[300px]">
           {/* <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="text-lg m-0 grilledCheese">Starts</p>
@@ -281,21 +284,21 @@ const Home: NextPage = () => {
         {/* {<AllNfts />} */}
         <p className="grilledCheese text-4xl">Contract</p>
         <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center  border-green-500 border-4 rounded-lg p-2 w-40 m-1">
-            <p className="grilledCheese text-lg m-0">Mint Price</p>
-            <p className="text-md m-0 grilledCheese">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+          <div className="flex flex-col text-center  border-green-500 border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
+            <p className="grilledCheese text-lg m-0 lg:text-4xl">Mint Price</p>
+            <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
 
-          <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 w-40 m-1">
-            <p className="grilledCheese text-lg m-0">Supply</p>
-            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
+          <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
+            <p className="grilledCheese text-lg m-0 lg:text-4xl">Supply</p>
+            <p className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
               {supply.toString()}
             </p>
           </div>
         </div>
         <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 m-1 mb-10">
-          <p className="grilledCheese text-lg m-0">Contract Address</p>
-          <Address address={yourContract?.address} />
+          <p className="grilledCheese text-lg m-0 lg:text-4xl">Contract Address</p>
+          <Address address={yourContract?.address} size="xl" />
         </div>
         <div className="flex justify-center items-center gap-2 mb-4">
           <p className="m-0 text-center">
