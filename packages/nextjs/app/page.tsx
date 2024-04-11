@@ -2,16 +2,25 @@
 
 import { useEffect } from "react";
 import { useState } from "react";
-import HeroImageWeedies from "../public/mint-assets/character line up-temp.png";
-import WeediesLogo2 from "../public/mint-assets/weedies-logo-2.png";
+import nounie1 from "../public/carousel/1.png";
+import hero from "../public/hero.jpg";
+import carouselImage1 from "../public/images-carousel/1.png";
+import carouselImage2 from "../public/images-carousel/2.png";
+import carouselImage3 from "../public/images-carousel/3.png";
+import carouselImage4 from "../public/images-carousel/4.png";
+import carouselImage5 from "../public/images-carousel/5.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
 import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import Card from "~~/components/Card";
+import CardMinted from "~~/components/CardMinted";
+import Carousel from "~~/components/Carousel";
 // import { AllNfts } from "~~/components/AllNfts";
-import { MyCarousel } from "~~/components/MyCarousel";
-import { NftCard } from "~~/components/NftCard";
+// import { MyCarousel } from "~~/components/Carousel";
+// import { NftCard } from "~~/components/NftCard";
 import { Address } from "~~/components/scaffold-eth";
 import {
   useScaffoldContract,
@@ -19,6 +28,54 @@ import {
   useScaffoldContractWrite,
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
+
+const cards = [
+  {
+    key: 1,
+    content: (
+      <Card
+        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/convertplus_thumbnail.jpg"
+        image={carouselImage1.src}
+      />
+    ),
+  },
+  {
+    key: 2,
+    content: (
+      <Card
+        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/acf_pro.png"
+        image={carouselImage2.src}
+      />
+    ),
+  },
+  {
+    key: 3,
+    content: (
+      <Card
+        imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/layer_slider_plugin_thumb.png"
+        image={carouselImage3.src}
+      />
+    ),
+  },
+  {
+    key: 4,
+    content: (
+      <Card
+        imagen="https://updates.theme-fusion.com/wp-content/uploads/2016/08/slider_revolution-1.png"
+        image={carouselImage4.src}
+      />
+    ),
+  },
+  {
+    key: 5,
+    content: (
+      <Card
+        imagen="https://updates.theme-fusion.com/wp-content/uploads/2016/08/slider_revolution-1.png"
+        image={carouselImage5.src}
+      />
+    ),
+  },
+];
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -67,7 +124,7 @@ const Home: NextPage = () => {
   const timeLeftTillMint = Number(startMintTimestamp) * 1000 - currentDate.valueOf();
 
   const date = new Date(Number(startMintTimestamp) * 1000);
-  const endDate = new Date(Number(endMintTimestamp) * 1000);
+  // const endDate = new Date(Number(endMintTimestamp) * 1000);
 
   const startDateLocale = date.toLocaleString("en-US", {
     day: "2-digit",
@@ -77,49 +134,63 @@ const Home: NextPage = () => {
     minute: "2-digit",
   });
 
-  const endDateLocale = endDate.toLocaleString("en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  // const endDateLocale = endDate.toLocaleString("en-US", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "2-digit",
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  // });
 
-  function secondsToDhms(seconds: number) {
+  function secondsToDhms2(seconds: number) {
     seconds = Number(seconds);
     const d = Math.floor(seconds / (3600 * 24));
     const h = Math.floor((seconds % (3600 * 24)) / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = Math.floor(seconds % 60);
 
-    const dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
-    const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-    const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-    const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    const dDisplay = d > 0 ? d + (d == 1 ? " : " : " : ") : "";
+    const hDisplay = h > 0 ? h + (h == 1 ? " : " : " : ") : "";
+    const mDisplay = m > 0 ? m + (m == 1 ? " : " : " : ") : "";
+    const sDisplay = s > 0 ? s + (s == 1 ? "" : "") : "";
     return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
   }
 
-  const mintTimeLeftFormatted = secondsToDhms(mintTimeLeft / 1000);
-  const timeLeftTillMintFormatted = secondsToDhms(timeLeftTillMint / 1000);
+  // function secondsToDhms(seconds: number) {
+  //   seconds = Number(seconds);
+  //   const d = Math.floor(seconds / (3600 * 24));
+  //   const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  //   const m = Math.floor((seconds % 3600) / 60);
+  //   const s = Math.floor(seconds % 60);
+
+  //   const dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+  //   const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+  //   const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+  //   const sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+  //   return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  // }
+
+  const mintTimeLeftFormatted = secondsToDhms2(mintTimeLeft / 1000);
+  // const timeLeftTillMintFormatted = secondsToDhms(timeLeftTillMint / 1000);
 
   let mintWindowOutput;
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-lg m-0">Mint starts in</p>
-        <p className="text-sm m-0 grilledCheese">{timeLeftTillMintFormatted}</p>
+      <div className="flex flex-col text-center  rounded-lg p-2 w-40 m-1">
+        <p className="text-lg m-0 grilledCheese">Starts</p>
+        <p className="text-sm m-0 grilledCheese">{startDateLocale}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-lg m-0 text-green-500">Mint ends in</p>
-        <p className="grilledCheese text-sm m-0 text-green-500">{mintTimeLeftFormatted}</p>
+      <div className="flex flex-col text-center rounded-lg p-2 w-40 m-1">
+        <p className="grilledCheese text-lg m-0 text-green-500">Mint Time Left</p>
+        <p className="text-xl m-0 text-red-500">{mintTimeLeftFormatted}</p>
       </div>
     );
   } else {
     mintWindowOutput = (
-      <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
+      <div className="flex flex-col text-center rounded-lg p-2 w-40 m-1">
         <p className="grilledCheese text-lg m-0 text-red-500">Mint ended</p>
       </div>
     );
@@ -154,61 +225,40 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover">
+      {/* <MyCarousel /> */}
+
+      {/* <MyCarousel /> */}
+
+      <div className="flex items-center flex-col flex-grow bg-base-100">
+        <img src={hero.src} className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" /> {/* 1366px x 870px*/}
+        {/* <div className="flex flex-col items-center justify-center bg-[url('../public/purple.png')] bg-cover"> */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " /> {/* */}
+        {/* <img alt="Weedies Logo" src={WeediesLogo2.src} className="my-3  w-[373px] lg:w-[810px] " />  */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="Hero Image" src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> {/* w-[393px] */}
+        {/* <img alt="Hero Image" src={HeroImageWeedies.src} className=" w-[393px] lg:w-[1366px]" /> */}
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
-      </div>
-      <p className="grilledCheese text-xl text-center lg:text-8xl">
-        Nounies are Dreamers, Rebels, Creators, Artists, and Friends living their best life on the blockchain.
-      </p>
-
-      <div className="flex items-center flex-col flex-grow pt-10 bg-base-100">
-        <MyCarousel />
-
+        {/* </div> */}
+        <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
+          A bunch of toasted fun loving Degens living their best life, one toke at a time!
+        </p>
+        <Carousel cards={cards} height="200px" width="30%" margin="0 auto" offset={2} showArrows={false} />
         <div className="flex items-center justify-center text-center">
-          <p className="grilledCheese text-2xl">Swipe around, find out.</p>
+          <p className="grilledCheese text-2xl m-0">Twist one up!</p>
         </div>
-
-        <div className="flex flex-col items-center justify-center text-center">
-          <p className="grilledCheese text-4xl">Mint a Weedie</p>
-        </div>
-
-        <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 m-1">
-            <p className="grilledCheese text-lg m-0">Contract Address</p>
-            <Address address={yourContract?.address} />
-          </div>
-          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="grilledCheese text-lg m-0">Mint Price</p>
-            <p className="text-md m-0 grilledCheese">{formatEther(mintPrice || BigInt(0)).toString()}</p>
-          </div>
-
-          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
-            <p className="grilledCheese text-lg m-0">Supply</p>
-            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
-              {supply.toString()}
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
+        <div className="flex flex-wrap justify-center w-[300px]">
+          {/* <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="text-lg m-0 grilledCheese">Starts</p>
             <p className="text-sm m-0 grilledCheese">{startDateLocale}</p>
           </div>
           <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
             <p className="grilledCheese text-lg m-0">Ends</p>
             <p className="text-sm m-0 grilledCheese">{endDateLocale}</p>
-          </div>
+          </div> */}
           {mintWindowOutput}
         </div>
-
-        <div className="flex flex-col items-center justify-center text-center">
+        {/* <div className="flex flex-col items-center justify-center text-center">
           <p className="grilledCheese text-4xl">{"Lick the paper, twist it up, and mint yourself a Weedie!"}</p>
-        </div>
-
+        </div> */}
         <button
           onClick={async () => {
             await mint({ value: mintPrice });
@@ -223,12 +273,44 @@ const Home: NextPage = () => {
         {response.data !== undefined ? (
           <>
             <p className="grilledCheese text-4xl">You rolled a good one!</p>
-            <NftCard data={response.data} />
+            <CardMinted image={nounie1.src} title={response.data.name} /> {/* <NftCard data={response.data} /> */}
           </>
         ) : (
           <></>
         )}
         {/* {<AllNfts />} */}
+        <p className="grilledCheese text-4xl">Contract</p>
+        <div className="flex flex-wrap justify-center">
+          <div className="flex flex-col text-center  border-green-500 border-4 rounded-lg p-2 w-40 m-1">
+            <p className="grilledCheese text-lg m-0">Mint Price</p>
+            <p className="text-md m-0 grilledCheese">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+          </div>
+
+          <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 w-40 m-1">
+            <p className="grilledCheese text-lg m-0">Supply</p>
+            <p className={`text-md m-0 grilledCheese ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
+              {supply.toString()}
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 m-1 mb-10">
+          <p className="grilledCheese text-lg m-0">Contract Address</p>
+          <Address address={yourContract?.address} />
+        </div>
+        <div className="flex justify-center items-center gap-2 mb-4">
+          <p className="m-0 text-center">
+            Built with <HeartIcon className="inline-block h-4 w-4" /> at
+          </p>
+          <a
+            className="flex justify-center items-center gap-1"
+            href="https://www.bigshot.wtf/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {/* <BuidlGuidlLogo className="w-3 h-5 pb-1" /> */}
+            <span className="link">Big Shot Toy Works</span>
+          </a>
+        </div>
       </div>
     </>
   );

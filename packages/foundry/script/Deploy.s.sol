@@ -25,7 +25,7 @@ contract DeployScript is ScaffoldETHDeploy {
             maxMintCount = 5;
 
             mintStartTimestamp = (vm.unixTime() / 1000) + 5 seconds;
-            mintEndTimestamp = (vm.unixTime() / 1000) + 300 days;
+            mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
 
             thresholds = new YourContract.MintingThreshold[](2);
             thresholds[0] = YourContract.MintingThreshold(0, 3, 0 ether);
