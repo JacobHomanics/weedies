@@ -138,7 +138,7 @@ const Home: NextPage = () => {
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center rounded-lg p-2 w-40 lg:w-80 m-1">
+      <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-40 lg:w-80 m-1">
         <p className="grilledCheese text-lg lg:text-4xl m-0 text-green-500">Mint Time Left</p>
         <p className="text-xl lg:text-4xl m-0 text-red-500">{mintTimeLeftFormatted}</p>
       </div>
