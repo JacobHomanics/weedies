@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     description: "Somebody pass the joint!",
   },
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/weedies-favicon.png", sizes: "32x32", type: "image/png" }],
   },
 };
 

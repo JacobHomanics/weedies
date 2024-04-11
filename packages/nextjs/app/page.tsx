@@ -195,7 +195,7 @@ const Home: NextPage = () => {
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
         {/* </div> */}
         <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
-          A bunch of toasted fun loving Degens living their best life, one toke at a time!
+          24,420 toasted, fun-loving weirdos living their best life, one toke at a time!
         </p>
         <DynamicCarousel />
         {/* <Carousel /> */}
@@ -238,19 +238,19 @@ const Home: NextPage = () => {
         {/* {<AllNfts />} */}
         <p className="grilledCheese text-4xl">Contract</p>
         <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center  border-green-500 border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
+          <div className="flex flex-col text-center  border-secondary border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
             <p className="grilledCheese text-lg m-0 lg:text-4xl">Mint Price</p>
             <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
           </div>
 
-          <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
+          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-40 lg:w-72 m-1">
             <p className="grilledCheese text-lg m-0 lg:text-4xl">Supply</p>
             <p className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-500" : "text-green-500"}`}>
               {supply.toString()}
             </p>
           </div>
         </div>
-        <div className="flex flex-col text-center border-green-500 border-4 rounded-lg p-2 m-1 mb-10">
+        <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 m-1 mb-10">
           <p className="grilledCheese text-lg m-0 lg:text-4xl">Contract Address</p>
           <Address address={yourContract?.address} size="xl" />
         </div>
