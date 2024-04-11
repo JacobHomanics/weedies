@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import nounie1 from "../public/carousel/1.png";
 import hero from "../public/hero.jpg";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
@@ -11,11 +10,10 @@ import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import CardMinted from "~~/components/CardMinted";
 // import Carousel from "~~/components/Carousel";
 // import { AllNfts } from "~~/components/AllNfts";
 // import { MyCarousel } from "~~/components/Carousel";
-// import { NftCard } from "~~/components/NftCard";
+import { NftCard } from "~~/components/NftCard";
 import { Address } from "~~/components/scaffold-eth";
 import {
   useScaffoldContract,
@@ -230,7 +228,9 @@ const Home: NextPage = () => {
         {response.data !== undefined ? (
           <>
             <p className="grilledCheese text-4xl">You rolled a good one!</p>
-            <CardMinted image={nounie1.src} title={response.data.name} /> {/* <NftCard data={response.data} /> */}
+            {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
+
+            <NftCard data={response.data} />
           </>
         ) : (
           <></>

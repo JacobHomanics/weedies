@@ -22,7 +22,7 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         if (chainId == 31337) {
-            maxMintCount = 5;
+            maxMintCount = 1000;
 
             mintStartTimestamp = (vm.unixTime() / 1000) + 5 seconds;
             mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;

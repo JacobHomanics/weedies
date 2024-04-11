@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import carouselImage1 from "../public/images-carousel/1.png";
 import carouselImage2 from "../public/images-carousel/2.png";
 import carouselImage3 from "../public/images-carousel/3.png";
 import carouselImage4 from "../public/images-carousel/4.png";
@@ -14,7 +13,7 @@ const staticCards = [
     content: (
       <Card
         imagen="https://updates.theme-fusion.com/wp-content/uploads/2017/12/convertplus_thumbnail.jpg"
-        image={carouselImage1.src}
+        image={carouselImage2.src}
       />
     ),
   },
