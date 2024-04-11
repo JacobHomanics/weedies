@@ -299,7 +299,10 @@ const Home: NextPage = () => {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={twitter.src} alt="x" className="w-7" />
               </Link>
-
+              <Link href="https://www.warpcast.com/greenbomb">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={fc.src} alt="fc" className="w-7" />
+              </Link>
               <Link href="https://www.instagram.com/greenbomb/">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={ig.src} alt="ig" className="w-7" />
