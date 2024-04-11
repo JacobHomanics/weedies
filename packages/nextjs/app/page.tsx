@@ -2,8 +2,6 @@
 
 import { useEffect } from "react";
 import { useState } from "react";
-import dynamic from "next/dynamic";
-import nounie1 from "../public/carousel/1.png";
 import hero from "../public/hero.jpg";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
@@ -11,8 +9,8 @@ import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import CardMinted from "~~/components/CardMinted";
-// import Carousel from "~~/components/Carousel";
+import Carousel from "~~/components/Carousel";
+import { NftCard } from "~~/components/NftCard";
 // import { AllNfts } from "~~/components/AllNfts";
 // import { MyCarousel } from "~~/components/Carousel";
 // import { NftCard } from "~~/components/NftCard";
@@ -23,11 +21,6 @@ import {
   useScaffoldContractWrite,
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
-
-const DynamicCarousel = dynamic(() => import("../components/Carousel"), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-});
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -199,8 +192,8 @@ const Home: NextPage = () => {
         <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
           A bunch of toasted fun loving Degens living their best life, one toke at a time!
         </p>
-        <DynamicCarousel />
-        {/* <Carousel /> */}
+        {/* <DynamicCarousel /> */}
+        <Carousel />
         <p className="grilledCheese text-2xl lg:text-4xl">Twist one up!</p>
         <div className="flex flex-wrap justify-center w-[300px]">
           {/* <div className="flex flex-col text-center bg-base-200 rounded-lg p-2 w-40 m-1">
@@ -230,7 +223,7 @@ const Home: NextPage = () => {
         {response.data !== undefined ? (
           <>
             <p className="grilledCheese text-4xl">You rolled a good one!</p>
-            <CardMinted image={nounie1.src} title={response.data.name} /> {/* <NftCard data={response.data} /> */}
+            <NftCard data={response.data} />
           </>
         ) : (
           <></>

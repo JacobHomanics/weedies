@@ -15,12 +15,12 @@ export const NftCard = ({ data }: Props) => {
 
   return (
     <>
-      <div className="w-[128px] lg:w-[350px] flex flex-col items-center justify-center m-1 rounded-2xl">
+      <div className="w-[256px] lg:w-[430px]  flex flex-col items-center justify-center m-1 rounded-2xl">
         {data?.image ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={data?.image} alt="Alt" className="w-[128px] h-[128px] lg:w-[128px] lg:h-[128px] m-2 rounded-lg" />
-            <p className="font-bold text-center text-xl">{data?.name}</p>
+            <img src={data?.image} alt="Alt" className="m-2 rounded-lg" />
+            <p className="font-bold text-center text-2xl lg:text-3xl">{data?.name}</p>
           </>
         ) : (
           <>
