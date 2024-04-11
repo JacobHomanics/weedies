@@ -242,8 +242,8 @@ const Home: NextPage = () => {
         >
           {"Let's toke it!"}
         </button>
-        <p className="m-0 mb-10">*Mint Token</p>
-        <button
+        <p className="m-0 mb-10 grilledCheese">*Mint</p>
+        {/* <button
           onClick={async () => {
             await mint({ value: mintPrice });
             await refetchMintPrice();
@@ -253,7 +253,7 @@ const Home: NextPage = () => {
           className="insanibc btn btn-secondary btn-lg m-1 text-3xl mb-10"
         >
           {"Let's toke (mint) it!"}
-        </button>
+        </button> */}
 
         {/* {<AllNfts />} */}
         <div className="flex flex-wrap justify-center">
@@ -297,15 +297,15 @@ const Home: NextPage = () => {
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://twitter.com/gbombstudios">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={twitter.src} alt="x" className="w-7" />
+                <img src={twitter.src} alt="x" className="w-7 lg:w-10" />
               </Link>
               <Link href="https://www.warpcast.com/greenbomb">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={fc.src} alt="fc" className="w-7" />
+                <img src={fc.src} alt="fc" className="w-7 lg:w-10" />
               </Link>
               <Link href="https://www.instagram.com/greenbomb/">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={ig.src} alt="ig" className="w-7" />
+                <img src={ig.src} alt="ig" className="w-7 lg:w-10" />
               </Link>
             </div>
           </div>
@@ -316,16 +316,16 @@ const Home: NextPage = () => {
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://www.twitter.com/bigshottoyworks">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={twitter.src} alt="x" className="w-7" />
+                <img src={twitter.src} alt="x" className="w-7 lg:w-10" />
               </Link>
 
               <Link href="https://www.warpcast.com/bigshotklim">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={fc.src} alt="fc" className="w-7" />
+                <img src={fc.src} alt="fc" className="w-7 lg:w-10" />
               </Link>
               <Link href="https://www.instagram.com/bigshottoyworks/">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={ig.src} alt="ig" className="w-7" />
+                <img src={ig.src} alt="ig" className="w-7 lg:w-10" />
               </Link>
             </div>
           </div>
@@ -336,12 +336,12 @@ const Home: NextPage = () => {
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://twitter.com/homanics">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={twitter.src} alt="x" className="w-7" />
+                <img src={twitter.src} alt="x" className="w-7 lg:w-10" />
               </Link>
 
               <Link href="https://warpcast.com/hotmanics">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={fc.src} alt="fc" className="w-7" />
+                <img src={fc.src} alt="fc" className="w-7 lg:w-10" />
               </Link>
             </div>
           </div>
