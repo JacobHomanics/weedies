@@ -104,16 +104,16 @@ export const Header = () => {
         <div className="flex space-x-1 ml-5">
           <Link href="https://twitter.com/Nounies1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={twitter.src} alt="x" className="w-5" />
+            <img src={twitter.src} alt="x" className="w-7 lg:w-10" />
           </Link>
 
           <Link href="https://warpcast.com/~/channel/weedies">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={fc.src} alt="fc" className="w-5" />
+            <img src={fc.src} alt="fc" className="w-7 lg:w-10" />
           </Link>
           <Link href="https://www.instagram.com/bigshottoyworks/">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={ig.src} alt="ig" className="w-5" />
+            <img src={ig.src} alt="ig" className="w-7 lg:w-10" />
           </Link>
         </div>
         {/* <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
