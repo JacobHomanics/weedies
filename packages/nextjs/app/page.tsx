@@ -140,14 +140,14 @@ const Home: NextPage = () => {
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center  rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-md lg:text-4xl m-0 text-green-500 -m-1">Starts</p>
+        <p className="grilledCheese text-md lg:text-4xl m-0 text-secondary -m-1">Starts</p>
         <p className="text-md lg:text-4xl m-0 text-red-600 -m-1">{startDateLocale}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
     mintWindowOutput = (
       <div className="flex flex-col text-center bg-base-100 rounded-lg p-0 lg:p-2 w-40 lg:w-80 m-1">
-        <p className="grilledCheese text-md lg:text-4xl m-0 text-green-500 -m-1">Mint Time Left</p>
+        <p className="grilledCheese text-md lg:text-4xl m-0 text-secondary -m-1">Mint Time Left</p>
         <p className="text-md lg:text-4xl m-0 text-red-600 -m-1">{mintTimeLeftFormatted}</p>
       </div>
     );
@@ -288,12 +288,12 @@ const Home: NextPage = () => {
           {"MERCH"}
         </button>
 
-        <p className="grilledCheese text-4xl m-0 text-pink-500">Team</p>
+        <p className="grilledCheese text-4xl m-0 text-violet-800">Team</p>
         <div className="flex text-center">
-          <div>
-            <img src={mark.src} alt="mark" className="p-3" />
-            <p className="m-0 grilledCheese lg:text-4xl">Mark</p>
-            <p className="m-0 grilledCheese">{`"Grape Kush"`}</p>
+          <div className="m-5">
+            <img src={mark.src} alt="mark" className="lg:w-[275px]" />
+            <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Mark</p>
+            {/* <p className="m-0 grilledCheese">{`"Grape Kush"`}</p> */}
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://twitter.com/gbombstudios">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -309,10 +309,10 @@ const Home: NextPage = () => {
               </Link>
             </div>
           </div>
-          <div>
-            <img src={klim.src} alt="klim" className="p-3" />
-            <p className="m-0 grilledCheese lg:text-4xl">Klim</p>
-            <p className="m-0 grilledCheese">{`"OG Bush"`}</p>
+          <div className="m-5 ">
+            <img src={klim.src} alt="klim" className="lg:w-[275px]" />
+            <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Klim</p>
+            {/* <p className="m-0 grilledCheese">{`"OG Bush"`}</p> */}
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://www.twitter.com/bigshottoyworks">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -329,10 +329,10 @@ const Home: NextPage = () => {
               </Link>
             </div>
           </div>
-          <div>
-            <img src={jake.src} alt="jake" className=" p-3" />
-            <p className="m-0 grilledCheese lg:text-4xl">Jake</p>
-            <p className="m-0 grilledCheese">{`"Acapulco Gold"`}</p>
+          <div className="m-5">
+            <img src={jake.src} alt="jake" className="lg:w-[275px]" />
+            <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Jake</p>
+            {/* <p className="m-0 grilledCheese">{`"Acapulco Gold"`}</p> */}
             <div className="flex space-x-1 items-center justify-center">
               <Link href="https://twitter.com/homanics">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
