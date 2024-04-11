@@ -56,9 +56,6 @@ const staticCards = [
 ];
 
 export default function Carroussel() {
-  const height = "200px";
-  const width = "30%";
-  const margin = "0 auto";
   const offset = 2;
 
   const table = staticCards.map((element: any, index: any) => {
@@ -76,7 +73,7 @@ export default function Carroussel() {
   }, [offset, showArrows]);
 
   return (
-    <div style={{ width: width, height: height, margin: margin }}>
+    <div className="w-[330px] lg:w-[600px] h-[200px] m-auto">
       <Carousel
         slides={cards}
         goToSlide={goToSlide}
