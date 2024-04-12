@@ -64,13 +64,22 @@ contract YourContractTest is Test {
     }
 
     function testRevertTheDealerIsAllOuttaTheWeed() public {
-        for (uint256 i = 0; i < s_maxTokenCount; i++) {
+        for (uint256 j = 0; j < s_maxTokenCount; j++) {
+            vm.prank(vm.addr(j + 1));
             yourContract.mint();
         }
 
         vm.expectRevert(
             YourContract.Weedies__TheDealersOutOfTheGoodStuff.selector
         );
+
+        yourContract.mint();
+    }
+
+    function testRevertTooGreedy() public {
+        yourContract.mint();
+
+        vm.expectRevert(YourContract.Weedies__NowNowNotTooGreedy.selector);
 
         yourContract.mint();
     }
