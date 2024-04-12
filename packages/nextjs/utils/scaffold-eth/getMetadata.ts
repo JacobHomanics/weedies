@@ -9,7 +9,7 @@ export const getMetadata = ({
   description: string;
   imageRelativePath?: string;
 }): Metadata => {
-  const baseUrl = "https://www.weedies-nextjs.vercel.app/";
+  const baseUrl = "https://weedies-nextjs.vercel.app/";
   // ? `https://${process.env.VERCEL_URL}`
   // : `http://localhost:${process.env.PORT || 3000}`;
   const imageUrl = `${baseUrl}${imageRelativePath}`;
