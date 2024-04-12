@@ -153,8 +153,8 @@ const Home: NextPage = () => {
     );
   } else {
     mintWindowOutput = (
-      <div className="flex flex-col text-center rounded-lg p-2 w-40 m-1">
-        <p className="grilledCheese text-lg m-0 text-red-600">Mint ended</p>
+      <div className="flex flex-col text-center rounded-lg w-64 lg:w-96">
+        <p className="grilledCheese text-xl lg:text-4xl m-0 text-red-600">All the weed has been smoked!</p>
       </div>
     );
   }
@@ -228,7 +228,16 @@ const Home: NextPage = () => {
             <NftCard data={response.data} imgSrc={response.data.image} />
           </>
         ) : (
-          <NftCard data={response.data} imgSrc={bagOfWeed.src} />
+          <button
+            onClick={async () => {
+              await mint({ value: mintPrice });
+              await refetchMintPrice();
+              await refetchMintCount();
+              await refetchMaxMintCount();
+            }}
+          >
+            <NftCard data={response.data} imgSrc={bagOfWeed.src} />
+          </button>
         )}
 
         <button
