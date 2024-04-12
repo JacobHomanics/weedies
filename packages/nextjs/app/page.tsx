@@ -286,7 +286,7 @@ const Home: NextPage = () => {
           <div className="w-32 lg:w-72 m-1">
             <div className="flex flex-col text-center border-secondary border-4 rounded-lg">
               <p className="grilledCheese text-md m-0 lg:text-4xl">Contract</p>
-              <div className="flex items-center justify-center m-[0.75px] lg:m-1">
+              <div className="flex items-center justify-center lg:m-1">
                 <Address address={yourContract?.address} size="xs" />
               </div>
             </div>
