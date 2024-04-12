@@ -265,23 +265,30 @@ const Home: NextPage = () => {
         </button> */}
 
         {/* {<AllNfts />} */}
-        <div className="flex flex-wrap justify-center">
-          <div className="flex flex-col text-center  border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
-            <p className="grilledCheese text-md m-0 lg:text-4xl">Mint Price</p>
-            <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+        <div className="flex items-end">
+          <div className="w-32 lg:w-72 m-1">
+            <p className="text-xs lg:text-lg m-0 grilledCheese">First 1000 mints free!</p>
+            <div className="flex flex-col text-center  border-secondary border-4 rounded-lg">
+              <p className="grilledCheese text-md m-0 lg:text-4xl">Mint Price</p>
+              <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
+            </div>
           </div>
-
-          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
-            <p className="grilledCheese text-md m-0 lg:text-4xl">Supply</p>
-            <p className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-600" : "text-green-500"}`}>
-              {supply.toString()}
-            </p>
+          <div className="w-32 lg:w-72 m-1">
+            <div className="flex flex-col text-center border-secondary border-4 rounded-lg">
+              <p className="grilledCheese text-md m-0 lg:text-4xl">Supply</p>
+              <p
+                className={`text-md m-0 grilledCheese lg:text-4xl ${supply === 0 ? "text-red-600" : "text-green-500"}`}
+              >
+                {supply.toString()}
+              </p>
+            </div>
           </div>
-
-          <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
-            <p className="grilledCheese text-md m-0 lg:text-4xl">Contract</p>
-            <div className="flex items-center justify-center">
-              <Address address={yourContract?.address} size="xs" />
+          <div className="w-32 lg:w-72 m-1">
+            <div className="flex flex-col text-center border-secondary border-4 rounded-lg">
+              <p className="grilledCheese text-md m-0 lg:text-4xl">Contract</p>
+              <div className="flex items-center justify-center m-[0.75px] lg:m-1">
+                <Address address={yourContract?.address} size="xs" />
+              </div>
             </div>
           </div>
         </div>
