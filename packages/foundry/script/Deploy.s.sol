@@ -13,7 +13,8 @@ contract DeployScript is ScaffoldETHDeploy {
             uint256 maxMintCount,
             uint256 mintStartTimestamp,
             uint256 mintEndTimestamp,
-            YourContract.MintingThreshold[] memory thresholds
+            YourContract.MintingThreshold[] memory thresholds,
+            address[] memory initialMintRecipients
         )
     {
         uint256 chainId;
@@ -22,7 +23,7 @@ contract DeployScript is ScaffoldETHDeploy {
         }
 
         if (chainId == 31337) {
-            maxMintCount = 1000;
+            maxMintCount = 24420;
 
             mintStartTimestamp = (vm.unixTime() / 1000);
             mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
@@ -31,6 +32,10 @@ contract DeployScript is ScaffoldETHDeploy {
             thresholds[0] = YourContract.MintingThreshold(
                 0, type(uint256).max, 0.0006942 ether
             );
+
+            initialMintRecipients = new address[](1);
+            initialMintRecipients[0] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
         } else if (chainId == 11155111) {
             maxMintCount = 100;
 
@@ -51,6 +56,14 @@ contract DeployScript is ScaffoldETHDeploy {
             thresholds[0] = YourContract.MintingThreshold(
                 0, type(uint256).max, 0.0006942 ether
             );
+
+            initialMintRecipients = new address[](3);
+            initialMintRecipients[0] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
+            initialMintRecipients[1] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
+            initialMintRecipients[2] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
         }
     }
 
@@ -66,17 +79,19 @@ contract DeployScript is ScaffoldETHDeploy {
             uint256 maxMintCount,
             uint256 mintStartTimestamp,
             uint256 mintEndTimestamp,
-            YourContract.MintingThreshold[] memory thresholds
+            YourContract.MintingThreshold[] memory thresholds,
+            address[] memory initialMintRecipients
         ) = getSetup();
 
         vm.startBroadcast(deployerPrivateKey);
         YourContract yourContract = new YourContract(
             0x2F15D4A66D22ecC6967928b6A76Ab06897b05676,
-            "https://nft.bueno.art/api/contract/0zJlzGVsEKj7cALqS-QMX/chain/1/metadata/",
+            "ipfs://bafybeicpvzgkhgyhwggrtctzvztuk2mftmt56xogv6pi7mx2v42go35ltu/",
             maxMintCount,
             mintStartTimestamp,
             mintEndTimestamp,
-            thresholds
+            thresholds,
+            initialMintRecipients
         );
 
         console.logString(

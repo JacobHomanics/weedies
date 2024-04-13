@@ -93,7 +93,7 @@
 //   const { uris } = useUris(yourContract, tokenIds);
 
 //   for (let i = 0; i < uris.length; i++) {
-//     uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
+//     uris[i] = uris[i].replace("ipfs://", "nftstorage.link/ipfs/");
 //   }
 
 //   const { responses } = useFetches(uris);

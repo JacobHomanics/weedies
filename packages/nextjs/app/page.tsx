@@ -7,7 +7,6 @@ import Link from "next/link";
 import hero from "../public/hero.png";
 import type { NextPage } from "next";
 import "react-multi-carousel/lib/styles.css";
-import { useFetch } from "usehooks-ts";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -170,18 +169,18 @@ const Home: NextPage = () => {
 
   const supply = Number(maxMintCount) - Number(mintCount);
 
-  const [mintedTokenId, setMintedTokenId] = useState<bigint>();
+  // const [mintedTokenId, setMintedTokenId] = useState<bigint>();
   const [mintedTokenIds, setMintedTokenIds] = useState<bigint[]>([]);
 
-  const { data: mintedTokenURI } = useScaffoldContractRead({
-    contractName: "YourContract",
-    functionName: "tokenURI",
-    args: [mintedTokenId],
-  });
+  // const { data: mintedTokenURI } = useScaffoldContractRead({
+  //   contractName: "YourContract",
+  //   functionName: "tokenURI",
+  //   args: [mintedTokenId],
+  // });
 
-  const response = useFetch<any>(mintedTokenURI?.replace("https://nft.bueno.art", "https://app.bueno.art"));
-  if (response.data !== undefined)
-    response.data.image = response?.data?.image?.replace("https://nft.bueno.art", "https://app.bueno.art");
+  // const response = useFetch<any>(mintedTokenURI?.replace("ipfs://", "nftstorage.link/ipfs/"));
+  // if (response.data !== undefined)
+  //   response.data.image = response?.data?.image?.replace("ipfs://", "nftstorage.link/ipfs/");
 
   useScaffoldEventSubscriber({
     contractName: "YourContract",
@@ -196,7 +195,7 @@ const Home: NextPage = () => {
 
         if (user === connectedAddress) {
           tokenIds.push(tokenId || BigInt(0));
-          setMintedTokenId(tokenId);
+          // setMintedTokenId(tokenId);
         }
       });
 
@@ -232,13 +231,20 @@ const Home: NextPage = () => {
   const { uris } = useUris(yourContract, mintedTokenIds);
 
   for (let i = 0; i < uris.length; i++) {
-    uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
+    uris[i] = uris[i].replace("ipfs://", "https://nftstorage.link/ipfs/");
   }
 
   const { responses } = useFetches(uris);
 
   const allNfts = responses.map((response, index) => {
-    return <NftCard key={index} data={response} imgSrc={response.image} />;
+    return (
+      <NftCard
+        key={index}
+        data={response}
+        attributes={response.attributes}
+        imgSrc={response.image.replace("ipfs://", "https://nftstorage.link/ipfs/")}
+      />
+    );
   });
 
   return (
@@ -276,7 +282,7 @@ const Home: NextPage = () => {
           <p className="grilledCheese text-4xl">{"Lick the paper, twist it up, and mint yourself a Weedie!"}</p>
         </div> */}
 
-        {response.data !== undefined ? (
+        {responses.length > 0 ? (
           <>
             {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
             <div className="flex flex-wrap items-center justify-center"> {allNfts}</div>
@@ -291,15 +297,15 @@ const Home: NextPage = () => {
               await refetchMaxMintCount();
             }}
           >
-            <NftCard data={response.data} imgSrc={bagOfWeed.src} />
+            <NftCard imgSrc={bagOfWeed.src} />
           </button>
         )}
 
         <form onSubmit={onSubmit} className="flex flex-col p-2 m-2">
           <p className="text-center grilledCheese text-4xl">Number of Nugs (to mint)</p>
-          <div className="flex">
-            <button onClick={DecreaseItem} className="grilledCheese text-2xl">
-              Decrease
+          <div className="flex items-center justify-center">
+            <button onClick={DecreaseItem} className="grilledCheese text-4xl">
+              {"<"}
             </button>
             <input
               name="input"
@@ -308,8 +314,8 @@ const Home: NextPage = () => {
               value={nugsToMint.toString()}
               onChange={onChange}
             ></input>
-            <button onClick={IncrementItem} className="grilledCheese text-2xl">
-              Increase
+            <button onClick={IncrementItem} className="grilledCheese text-4xl">
+              {">"}
             </button>
           </div>
         </form>

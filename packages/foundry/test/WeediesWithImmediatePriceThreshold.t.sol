@@ -23,15 +23,19 @@ contract WeediesWithImmediatePriceThreshold is Test {
             new YourContract.MintingThreshold[](1);
         thresholds[0] =
             YourContract.MintingThreshold(0, type(uint256).max, MINT_PRICE);
+
+        address[] memory users = new address[](1);
+        users[0] = USER;
+
         yourContract = new YourContract(
             mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
             0,
             100,
-            thresholds
+            thresholds,
+            users
         );
-
     }
 
     function testMint() public {

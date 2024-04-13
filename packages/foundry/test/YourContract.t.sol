@@ -24,13 +24,17 @@ contract YourContractTest is Test {
         thresholds[0] =
             YourContract.MintingThreshold(0, type(uint256).max, 0 ether);
 
+        address[] memory users = new address[](1);
+        users[0] = USER;
+
         yourContract = new YourContract(
             mintRoyaltyRecipient,
             BASE_URI,
             s_maxTokenCount,
             MINT_START_TIMESTAMP,
             MINT_END_TIMESTAMP,
-            thresholds
+            thresholds,
+            users
         );
     }
 
@@ -42,10 +46,10 @@ contract YourContractTest is Test {
     function testMint() public {
         yourContract.mint();
 
-        assertEq(yourContract.getMintCount(), 1);
+        assertEq(yourContract.getMintCount(), 2);
         assertEq(
-            yourContract.tokenURI(1),
-            string.concat(BASE_URI, Strings.toString(1))
+            yourContract.tokenURI(2),
+            string.concat(BASE_URI, Strings.toString(2))
         );
     }
 
@@ -64,7 +68,7 @@ contract YourContractTest is Test {
     }
 
     function testRevertTheDealerIsAllOuttaTheWeed() public {
-        for (uint256 j = 0; j < s_maxTokenCount; j++) {
+        for (uint256 j = 0; j < s_maxTokenCount - 1; j++) {
             vm.prank(vm.addr(j + 1));
             yourContract.mint();
         }

@@ -35,7 +35,8 @@ contract YourContract is ERC721 {
         uint256 maxTokenCount,
         uint256 mintStartTimestamp,
         uint256 mintEndTimestamp,
-        MintingThreshold[] memory mintingThresholds
+        MintingThreshold[] memory mintingThresholds,
+        address[] memory initialMintRecipients
     ) ERC721("Weedies", "W") {
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
@@ -45,6 +46,10 @@ contract YourContract is ERC721 {
 
         for (uint256 i = 0; i < mintingThresholds.length; i++) {
             s_mintingThresholds.push(mintingThresholds[i]);
+        }
+
+        for (uint256 i = 0; i < initialMintRecipients.length; i++) {
+            _mint(initialMintRecipients[i]);
         }
     }
 
@@ -67,9 +72,13 @@ contract YourContract is ERC721 {
             revert Weedies__TheDealersOutOfTheGoodStuff();
         }
 
+        _mint(msg.sender);
+    }
+
+    function _mint(address mintTo) internal {
         s_mintCount++;
-        emit Minted(msg.sender, s_mintCount);
-        _mint(msg.sender, s_mintCount);
+        emit Minted(mintTo, s_mintCount);
+        super._mint(mintTo, s_mintCount);
     }
 
     function withdraw() external returns (bool) {
