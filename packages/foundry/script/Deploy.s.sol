@@ -24,7 +24,7 @@ contract DeployScript is ScaffoldETHDeploy {
         if (chainId == 31337) {
             maxMintCount = 1000;
 
-            mintStartTimestamp = (vm.unixTime() / 1000) + 5 seconds;
+            mintStartTimestamp = (vm.unixTime() / 1000) + 5 minutes;
             mintEndTimestamp = (vm.unixTime() / 1000) + 1 days;
 
             thresholds = new YourContract.MintingThreshold[](1);

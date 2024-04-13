@@ -139,9 +139,9 @@ const Home: NextPage = () => {
   let mintWindowOutput;
   if (timeLeftTillMint >= 0) {
     mintWindowOutput = (
-      <div className="flex flex-col text-center  rounded-lg p-2 w-40 m-1">
+      <div className="flex flex-col text-center bg-base-100 rounded-lg p-0 lg:p-2 w-40 lg:w-96 m-1">
         <p className="grilledCheese text-md lg:text-4xl m-0 text-secondary -m-1">Starts</p>
-        <p className="text-md lg:text-4xl m-0 text-red-600 -m-1">{startDateLocale}</p>
+        <p className="text-sm lg:text-4xl m-0 text-red-600 -m-1 font-bold">{startDateLocale}</p>
       </div>
     );
   } else if (mintTimeLeft >= 0) {
