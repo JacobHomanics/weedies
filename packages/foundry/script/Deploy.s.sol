@@ -46,6 +46,14 @@ contract DeployScript is ScaffoldETHDeploy {
             thresholds[0] = YourContract.MintingThreshold(
                 0, type(uint256).max, 0.0006942 ether
             );
+
+            initialMintRecipients = new address[](3);
+            initialMintRecipients[0] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
+            initialMintRecipients[1] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
+            initialMintRecipients[2] =
+                0x2F15D4A66D22ecC6967928b6A76Ab06897b05676;
         } else if (chainId == 8453) {
             maxMintCount = 24420;
 
