@@ -36,9 +36,16 @@ const DynamicCarousel = dynamic(() => import("../components/Carousel"), {
 });
 
 const Home: NextPage = () => {
+  const [nugsToMint, setNugsToMint] = useState<number>(1);
+
   const { address: connectedAddress } = useAccount();
 
   const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "mint" });
+  const { writeAsync: mintBatch } = useScaffoldContractWrite({
+    contractName: "YourContract",
+    functionName: "batchMint",
+    args: [BigInt(nugsToMint)],
+  });
 
   const { data: startMintTimestamp } = useScaffoldContractRead({
     contractName: "YourContract",
@@ -179,12 +186,40 @@ const Home: NextPage = () => {
     listener: logs => {
       logs.map(log => {
         const { user, tokenId } = log.args;
+
+        console.log(tokenId);
+
         if (user === connectedAddress) {
           setMintedTokenId(tokenId);
         }
       });
     },
   });
+
+  function IncrementItem() {
+    setNugsToMint(nugsToMint + 1);
+  }
+
+  function DecreaseItem() {
+    if (nugsToMint < 1) {
+      setNugsToMint(0);
+    } else {
+      setNugsToMint(nugsToMint - 1);
+    }
+  }
+
+  function onSubmit(event: any) {
+    event.preventDefault();
+    const target = event.target;
+    console.log(target.input.value);
+  }
+
+  function onChange(event: any) {
+    event.preventDefault();
+    const target = event.target;
+
+    setNugsToMint(Number(target.value));
+  }
 
   return (
     <>
@@ -240,9 +275,32 @@ const Home: NextPage = () => {
           </button>
         )}
 
+        <form onSubmit={onSubmit} className="flex flex-col p-2 m-2">
+          <p className="text-center grilledCheese text-4xl">Number of Nugs (to mint)</p>
+          <div className="flex">
+            <button onClick={DecreaseItem} className="grilledCheese text-2xl">
+              Decrease
+            </button>
+            <input
+              name="input"
+              type="number"
+              className="m-1 p-2 bg-white text-black font-mono botder-2 border-black"
+              value={nugsToMint.toString()}
+              onChange={onChange}
+            ></input>
+            <button onClick={IncrementItem} className="grilledCheese text-2xl">
+              Increase
+            </button>
+          </div>
+        </form>
+
         <button
           onClick={async () => {
-            await mint({ value: mintPrice });
+            // await mint({ value: mintPrice });
+            await mintBatch({
+              args: [BigInt(nugsToMint)],
+              value: mintPrice ? mintPrice * BigInt(nugsToMint) : BigInt(0),
+            });
             await refetchMintPrice();
             await refetchMintCount();
             await refetchMaxMintCount();
