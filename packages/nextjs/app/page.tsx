@@ -22,6 +22,8 @@ import {
   useScaffoldContractWrite,
   useScaffoldEventSubscriber,
 } from "~~/hooks/scaffold-eth";
+import { useFetches } from "~~/hooks/useFetches";
+import { useUris } from "~~/hooks/useUris";
 import jake from "~~/public/Jake-pfp.png";
 import klim from "~~/public/Klim-pfp.jpg";
 import mark from "~~/public/Mark-pfp.jpg";
@@ -169,6 +171,7 @@ const Home: NextPage = () => {
   const supply = Number(maxMintCount) - Number(mintCount);
 
   const [mintedTokenId, setMintedTokenId] = useState<bigint>();
+  const [mintedTokenIds, setMintedTokenIds] = useState<bigint[]>([]);
 
   const { data: mintedTokenURI } = useScaffoldContractRead({
     contractName: "YourContract",
@@ -184,15 +187,20 @@ const Home: NextPage = () => {
     contractName: "YourContract",
     eventName: "Minted",
     listener: logs => {
+      const tokenIds: bigint[] = [];
+
       logs.map(log => {
         const { user, tokenId } = log.args;
 
         console.log(tokenId);
 
         if (user === connectedAddress) {
+          tokenIds.push(tokenId || BigInt(0));
           setMintedTokenId(tokenId);
         }
       });
+
+      setMintedTokenIds([...tokenIds]);
     },
   });
 
@@ -220,6 +228,18 @@ const Home: NextPage = () => {
 
     setNugsToMint(Number(target.value));
   }
+
+  const { uris } = useUris(yourContract, mintedTokenIds);
+
+  for (let i = 0; i < uris.length; i++) {
+    uris[i] = uris[i].replace("https://nft.bueno.art", "https://app.bueno.art");
+  }
+
+  const { responses } = useFetches(uris);
+
+  const allNfts = responses.map((response, index) => {
+    return <NftCard key={index} data={response} imgSrc={response.image} />;
+  });
 
   return (
     <>
@@ -259,8 +279,8 @@ const Home: NextPage = () => {
         {response.data !== undefined ? (
           <>
             {/* <CardMinted image={response.data.image} title={response.data.name} />{" "} */}
-
-            <NftCard data={response.data} imgSrc={response.data.image} />
+            <div className="flex flex-wrap items-center justify-center"> {allNfts}</div>
+            {/* <NftCard data={response.data} imgSrc={response.data.image} /> */}
           </>
         ) : (
           <button
