@@ -267,7 +267,6 @@ const Home: NextPage = () => {
         {/* {<AllNfts />} */}
         <div className="flex items-end">
           <div className="w-32 lg:w-72 m-1">
-            <p className="text-xs lg:text-lg m-0 grilledCheese">First 1000 mints free!</p>
             <div className="flex flex-col text-center  border-secondary border-4 rounded-lg">
               <p className="grilledCheese text-md m-0 lg:text-4xl">Mint Price</p>
               <p className="text-md m-0 grilledCheese lg:text-4xl">{formatEther(mintPrice || BigInt(0)).toString()}</p>
