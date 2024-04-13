@@ -76,14 +76,6 @@ contract YourContractTest is Test {
         yourContract.mint();
     }
 
-    function testRevertTooGreedy() public {
-        yourContract.mint();
-
-        vm.expectRevert(YourContract.Weedies__NowNowNotTooGreedy.selector);
-
-        yourContract.mint();
-    }
-
     function testWithdrawRewards(uint256 mintAmount) public {
         vm.deal(address(this), mintAmount);
 

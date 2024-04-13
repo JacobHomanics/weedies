@@ -11,7 +11,6 @@ contract YourContract is ERC721 {
     error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
     error Weedies__TheDealersOutOfTheGoodStuff();
-    error Weedies__NowNowNotTooGreedy();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -49,13 +48,13 @@ contract YourContract is ERC721 {
         }
     }
 
-    mapping(address user => bool) s_hasMinted;
-
-    function mint() external payable {
-        if (s_hasMinted[msg.sender] && s_mintCount < 1000) {
-            revert Weedies__NowNowNotTooGreedy();
+    function batchMint(uint256 amount) external payable {
+        for (uint256 i = 0; i < amount; i++) {
+            mint();
         }
+    }
 
+    function mint() public payable {
         if (!isTimestampInWindow()) {
             revert Weedies__TheDealersNotAnsweringHisPhone();
         }
@@ -68,7 +67,6 @@ contract YourContract is ERC721 {
             revert Weedies__TheDealersOutOfTheGoodStuff();
         }
 
-        s_hasMinted[msg.sender] = true;
         s_mintCount++;
         emit Minted(msg.sender, s_mintCount);
         _mint(msg.sender, s_mintCount);
