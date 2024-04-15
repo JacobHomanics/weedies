@@ -36,7 +36,6 @@ export const NftCard = ({ data, imgSrc, attributes }: Props) => {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={imgSrc} alt="Alt" className="m-2 rounded-lg" />
             <p className="font-bold text-center text-xl m-0">{data?.name}</p>
-            <p className="m-0">Attributes</p>
             <div className="flex flex-wrap space-x-2 space-y-1 items-center justify-center">{allAttributes}</div>
           </>
         ) : (
