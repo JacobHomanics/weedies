@@ -20,9 +20,9 @@ export const NftCard = ({ data, imgSrc, attributes }: Props) => {
   if (attributes) {
     allAttributes = attributes.map((attribute: any, index: number) => {
       return (
-        <div key={index} className="flex space-x-2  border-secondary border-4 rounded-lg p-1">
-          <p className="text-xs grilledCheese">{attribute["trait_type"]}:</p>
-          <p className="text-xs grilledCheese">{attribute["value"]}</p>
+        <div key={index} className="flex space-x-2 bg-[#033900] rounded-lg p-1">
+          <p className="text-xs text-yellow-500">{attribute["trait_type"]}:</p>
+          <p className="text-xs">{attribute["value"]}</p>
         </div>
       );
     });
@@ -37,7 +37,7 @@ export const NftCard = ({ data, imgSrc, attributes }: Props) => {
             <img src={imgSrc} alt="Alt" className="m-2 rounded-lg" />
             <p className="font-bold text-center text-xl m-0">{data?.name}</p>
             <p className="m-0">Attributes</p>
-            <div className="flex flex-wrap space-x-2 items-center justify-center">{allAttributes}</div>
+            <div className="flex flex-wrap space-x-2 space-y-1 items-center justify-center">{allAttributes}</div>
           </>
         ) : (
           <>

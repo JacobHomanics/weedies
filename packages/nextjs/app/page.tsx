@@ -162,7 +162,9 @@ const Home: NextPage = () => {
   } else {
     mintWindowOutput = (
       <div className="flex flex-col text-center rounded-lg w-64 lg:w-96">
-        <p className="grilledCheese text-xl lg:text-4xl m-0 text-red-600">All the weed has been smoked!</p>
+        <p className="grilledCheese text-xl lg:text-4xl m-0 text-red-600 leading-none">
+          The weedman has vanished in smoke.
+        </p>
       </div>
     );
   }
@@ -258,7 +260,7 @@ const Home: NextPage = () => {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={hero.src} alt="Test" className="w-[400px] lg:w-[1051px] lg:h-[670px] lg:mb-4" />{" "}
           {/* 1366px x 870px*/}
-          <div className="flex flex-wrap justify-center w-[150px] lg:w-[400px] absolute lg:inset-0 lg:h-[100px] left-[210px] lg:left-[575px] top-[60px] lg:top-[150px]">
+          <div className="flex flex-wrap justify-center w-[150px] lg:w-[400px] absolute lg:inset-0 lg:h-[100px] left-[210px] lg:left-[575px] top-[50px] lg:top-[125px]">
             {mintWindowOutput}
           </div>
         </div>
@@ -270,7 +272,7 @@ const Home: NextPage = () => {
         {/* <img src={HeroImageCharacter.src} className="h-96" /> */}
         {/* </div> */}
 
-        <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10">
+        <p className="grilledCheese text-xl text-center lg:text-4xl m-4 lg:mb-10 w-[375px] lg:w-[675px]">
           <span className="text-red-600">24,420</span> toasted, fun-loving weirdos living their best life, one toke at a
           time!
         </p>
@@ -369,17 +371,11 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <button
-          onClick={async () => {
-            await mint({ value: mintPrice });
-            await refetchMintPrice();
-            await refetchMintCount();
-            await refetchMaxMintCount();
-          }}
-          className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10"
-        >
-          {"MERCH"}
-        </button>
+        <Link href={"https://bigshottoyshop.com/collections/weedies"}>
+          <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
+            {"MERCH"}
+          </button>
+        </Link>
 
         <p className="grilledCheese text-4xl m-0 text-violet-800">Team</p>
         <div className="flex text-center">
