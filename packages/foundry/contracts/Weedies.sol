@@ -14,6 +14,7 @@ contract Weedies is ERC721A, Ownable {
     error Weedies__YouGottaHitUpTheWeedman();
     error Weedies__TheDealersOutOfTheGoodStuff();
     error Weedies__DontHarshOurMellowDude();
+    error Weedies__AddressNotZero();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -27,16 +28,16 @@ contract Weedies is ERC721A, Ownable {
     uint256 immutable s_maxTokenCount;
     uint256 immutable s_mintStartTimestamp;
     uint256 immutable s_mintEndTimestamp;
+    uint256 immutable s_maxMintAmountPerUser;
     MintingThreshold[] s_mintingThresholds;
 
     mapping(address user => uint256) s_mintAmount;
-    uint256 s_maxMintAmountPerUser;
     // uint256 s_mintCount;
 
     string s_baseURI;
 
     constructor(
-        address owner,
+        address newOwner,
         address mintRoyaltyRecipient,
         string memory baseURI,
         uint256 maxTokenCount,
@@ -45,7 +46,11 @@ contract Weedies is ERC721A, Ownable {
         MintingThreshold[] memory mintingThresholds,
         uint256 maxMintAmount,
         address[] memory initialMintRecipients
-    ) ERC721A("Weedies", "W") Ownable(owner) {
+    ) ERC721A("Weedies", "W") Ownable(newOwner) {
+        if (mintRoyaltyRecipient == address(0)) {
+            revert Weedies__AddressNotZero();
+        }
+
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -58,6 +63,10 @@ contract Weedies is ERC721A, Ownable {
         }
 
         for (uint256 i = 0; i < initialMintRecipients.length; i++) {
+            if (initialMintRecipients[i] == address(0)) {
+                revert Weedies__AddressNotZero();
+            }
+
             _mint(initialMintRecipients[i], 1);
         }
     }
@@ -67,7 +76,7 @@ contract Weedies is ERC721A, Ownable {
             revert Weedies__TheDealersNotAnsweringHisPhone();
         }
 
-        if (msg.value < getMintPrice()) {
+        if (msg.value < getMintPrice() * amount) {
             revert Weedies__YouShortedTheDealer();
         }
 

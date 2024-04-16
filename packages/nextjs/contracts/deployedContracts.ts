@@ -7,13 +7,13 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     Weedies: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
       abi: [
         {
           type: "constructor",
           inputs: [
             {
-              name: "owner",
+              name: "_owner",
               type: "address",
               internalType: "address",
             },
@@ -819,6 +819,11 @@ const deployedContracts = {
         {
           type: "error",
           name: "URIQueryForNonexistentToken",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__AddressNotZero",
           inputs: [],
         },
         {
@@ -875,7 +880,7 @@ const deployedContracts = {
           type: "constructor",
           inputs: [
             {
-              name: "owner",
+              name: "_owner",
               type: "address",
               internalType: "address",
             },
@@ -1681,6 +1686,11 @@ const deployedContracts = {
         {
           type: "error",
           name: "URIQueryForNonexistentToken",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "Weedies__AddressNotZero",
           inputs: [],
         },
         {
