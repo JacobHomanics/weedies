@@ -42,7 +42,7 @@ contract DeployScript is ScaffoldETHDeploy {
         } else if (chainId == 11155111) {
             maxMintCount = 24420;
 
-            mintStartTimestamp = 1713589200;
+            mintStartTimestamp = (vm.unixTime() / 1000) + 20 seconds;
             mintEndTimestamp = 0;
 
             thresholds = new Weedies.MintingThreshold[](1);

@@ -13,7 +13,7 @@ const deployedContracts = {
           type: "constructor",
           inputs: [
             {
-              name: "_owner",
+              name: "newOwner",
               type: "address",
               internalType: "address",
             },
@@ -874,13 +874,13 @@ const deployedContracts = {
   },
   11155111: {
     Weedies: {
-      address: "0x444aC4Caff83138877c78b4a3eE0dF745981FEb6",
+      address: "0x8D1D7829D27830F5B1936bCFd294de57d511De63",
       abi: [
         {
           type: "constructor",
           inputs: [
             {
-              name: "_owner",
+              name: "newOwner",
               type: "address",
               internalType: "address",
             },
