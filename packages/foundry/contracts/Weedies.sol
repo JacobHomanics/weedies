@@ -1,13 +1,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "forge-std/Test.sol";
+import "../lib/ERC721A/contracts/ERC721A.sol";
 
-contract Weedies is ERC721, Ownable {
+contract Weedies is ERC721A, Ownable {
     error Weedies__YouShortedTheDealer();
     error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
@@ -20,7 +21,7 @@ contract Weedies is ERC721, Ownable {
         uint256 mintPrice;
     }
 
-    event Minted(address user, uint256 tokenId);
+    event Minted(address user, uint256 startIndex, uint256 endIndex);
 
     address immutable s_mintRoyaltyRecipient;
     uint256 immutable s_maxTokenCount;
@@ -30,7 +31,7 @@ contract Weedies is ERC721, Ownable {
 
     mapping(address user => uint256) s_mintAmount;
     uint256 s_maxMintAmountPerUser;
-    uint256 s_mintCount;
+    // uint256 s_mintCount;
 
     string s_baseURI;
 
@@ -44,7 +45,7 @@ contract Weedies is ERC721, Ownable {
         MintingThreshold[] memory mintingThresholds,
         uint256 maxMintAmount,
         address[] memory initialMintRecipients
-    ) ERC721("Weedies", "W") Ownable(owner) {
+    ) ERC721A("Weedies", "W") Ownable(owner) {
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
@@ -57,17 +58,11 @@ contract Weedies is ERC721, Ownable {
         }
 
         for (uint256 i = 0; i < initialMintRecipients.length; i++) {
-            _mint(initialMintRecipients[i]);
+            _mint(initialMintRecipients[i], 1);
         }
     }
 
-    function batchMint(uint256 amount) external payable {
-        for (uint256 i = 0; i < amount; i++) {
-            mint();
-        }
-    }
-
-    function mint() public payable {
+    function mint(address target, uint256 amount) public payable {
         if (!isWithinConstraints()) {
             revert Weedies__TheDealersNotAnsweringHisPhone();
         }
@@ -76,22 +71,21 @@ contract Weedies is ERC721, Ownable {
             revert Weedies__YouShortedTheDealer();
         }
 
-        if (s_mintCount == s_maxTokenCount) {
+        if (_totalMinted() == s_maxTokenCount) {
             revert Weedies__TheDealersOutOfTheGoodStuff();
         }
 
-        if (s_mintAmount[msg.sender] > s_maxMintAmountPerUser) {
+        if (s_mintAmount[target] + amount > s_maxMintAmountPerUser) {
             revert Weedies__DontHarshOurMellowDude();
         }
 
-        _mint(msg.sender);
+        _mint(target, amount);
     }
 
-    function _mint(address mintTo) internal {
-        s_mintCount++;
-        s_mintAmount[mintTo]++;
-        emit Minted(mintTo, s_mintCount);
-        super._mint(mintTo, s_mintCount);
+    function _mint(address mintTo, uint256 amount) internal override {
+        s_mintAmount[mintTo] += amount;
+        emit Minted(mintTo, _nextTokenId(), _nextTokenId() + amount);
+        super._mint(mintTo, amount);
     }
 
     function withdraw() external returns (bool) {
@@ -148,8 +142,8 @@ contract Weedies is ERC721, Ownable {
     {
         for (uint256 i = 0; i < s_mintingThresholds.length; i++) {
             if (
-                (s_mintCount >= s_mintingThresholds[i].minThreshold)
-                    && (s_mintCount < s_mintingThresholds[i].maxThreshold)
+                (_totalMinted() >= s_mintingThresholds[i].minThreshold)
+                    && (_totalMinted() < s_mintingThresholds[i].maxThreshold)
             ) {
                 threshold = s_mintingThresholds[i];
                 break;
@@ -162,7 +156,7 @@ contract Weedies is ERC721, Ownable {
     }
 
     function getMintCount() external view returns (uint256 mintCount) {
-        mintCount = s_mintCount;
+        mintCount = _totalMinted();
     }
 
     function getMintRoyaltyRecipient() external view returns (address) {
@@ -171,5 +165,9 @@ contract Weedies is ERC721, Ownable {
 
     function _baseURI() internal view override returns (string memory) {
         return s_baseURI;
+    }
+
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
     }
 }

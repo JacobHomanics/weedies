@@ -41,11 +41,11 @@ const Home: NextPage = () => {
 
   const { address: connectedAddress } = useAccount();
 
-  const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "Weedies", functionName: "mint" });
-  const { writeAsync: mintBatch } = useScaffoldContractWrite({
+  // const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "Weedies", functionName: "mint" });
+  const { writeAsync: mint } = useScaffoldContractWrite({
     contractName: "Weedies",
-    functionName: "batchMint",
-    args: [BigInt(nugsToMint)],
+    functionName: "mint",
+    args: [connectedAddress, BigInt(nugsToMint)],
   });
 
   const { data: startMintTimestamp } = useScaffoldContractRead({
@@ -182,12 +182,12 @@ const Home: NextPage = () => {
       const tokenIds: bigint[] = [];
 
       logs.map(log => {
-        const { user, tokenId } = log.args;
-
-        console.log(tokenId);
+        const { user, startIndex, endIndex } = log.args;
 
         if (user === connectedAddress) {
-          tokenIds.push(tokenId || BigInt(0));
+          for (let i = Number(startIndex) || 0; i < Number(endIndex); i++) {
+            tokenIds.push(BigInt(i) || BigInt(0));
+          }
           // setMintedTokenId(tokenId);
         }
       });
@@ -284,7 +284,7 @@ const Home: NextPage = () => {
         ) : (
           <button
             onClick={async () => {
-              await mint({ value: mintPrice });
+              await mint({ args: [connectedAddress, BigInt(nugsToMint)], value: mintPrice });
               await refetchMintPrice();
               await refetchMintCount();
               await refetchMaxMintCount();
@@ -316,8 +316,8 @@ const Home: NextPage = () => {
         <button
           onClick={async () => {
             // await mint({ value: mintPrice });
-            await mintBatch({
-              args: [BigInt(nugsToMint)],
+            await mint({
+              args: [connectedAddress, BigInt(nugsToMint)],
               value: mintPrice ? mintPrice * BigInt(nugsToMint) : BigInt(0),
             });
             await refetchMintPrice();

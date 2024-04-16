@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     Weedies: {
-      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
         {
           type: "constructor",
@@ -93,7 +93,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -113,19 +113,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "batchMint",
-          inputs: [
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "payable",
         },
         {
           type: "function",
@@ -323,7 +310,18 @@ const deployedContracts = {
         {
           type: "function",
           name: "mint",
-          inputs: [],
+          inputs: [
+            {
+              name: "target",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           outputs: [],
           stateMutability: "payable",
         },
@@ -400,7 +398,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -422,13 +420,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "data",
+              name: "_data",
               type: "bytes",
               internalType: "bytes",
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -501,6 +499,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "totalSupply",
+          inputs: [],
+          outputs: [
+            {
+              name: "result",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "transferFrom",
           inputs: [
             {
@@ -520,7 +531,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -600,6 +611,37 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "ConsecutiveTransfer",
+          inputs: [
+            {
+              name: "fromTokenId",
+              type: "uint256",
+              indexed: true,
+              internalType: "uint256",
+            },
+            {
+              name: "toTokenId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "Minted",
           inputs: [
             {
@@ -609,7 +651,13 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "tokenId",
+              name: "startIndex",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "endIndex",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
@@ -663,106 +711,38 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "ERC721IncorrectOwner",
-          inputs: [
-            {
-              name: "sender",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "ApprovalCallerNotOwnerNorApproved",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InsufficientApproval",
-          inputs: [
-            {
-              name: "operator",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
+          name: "ApprovalQueryForNonexistentToken",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidApprover",
-          inputs: [
-            {
-              name: "approver",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "BalanceQueryForZeroAddress",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidOperator",
-          inputs: [
-            {
-              name: "operator",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintERC2309QuantityExceedsLimit",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidOwner",
-          inputs: [
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintToZeroAddress",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidReceiver",
-          inputs: [
-            {
-              name: "receiver",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintZeroQuantity",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidSender",
-          inputs: [
-            {
-              name: "sender",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "ERC721NonexistentToken",
-          inputs: [
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
+          name: "NotCompatibleWithSpotMints",
+          inputs: [],
         },
         {
           type: "error",
@@ -785,6 +765,61 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+        },
+        {
+          type: "error",
+          name: "OwnerQueryForNonexistentToken",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "OwnershipNotInitializedForExtraData",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SequentialMintExceedsLimit",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SequentialUpToTooSmall",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SpotMintTokenIdTooSmall",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TokenAlreadyExists",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferCallerNotOwnerNorApproved",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferFromIncorrectOwner",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferToNonERC721ReceiverImplementer",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferToZeroAddress",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "URIQueryForNonexistentToken",
+          inputs: [],
         },
         {
           type: "error",
@@ -813,18 +848,19 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        approve: "lib/ERC721A/contracts/ERC721A.sol",
+        balanceOf: "lib/ERC721A/contracts/ERC721A.sol",
+        getApproved: "lib/ERC721A/contracts/ERC721A.sol",
+        isApprovedForAll: "lib/ERC721A/contracts/ERC721A.sol",
+        name: "lib/ERC721A/contracts/ERC721A.sol",
+        ownerOf: "lib/ERC721A/contracts/ERC721A.sol",
+        safeTransferFrom: "lib/ERC721A/contracts/ERC721A.sol",
+        setApprovalForAll: "lib/ERC721A/contracts/ERC721A.sol",
+        supportsInterface: "lib/ERC721A/contracts/ERC721A.sol",
+        symbol: "lib/ERC721A/contracts/ERC721A.sol",
+        tokenURI: "lib/ERC721A/contracts/ERC721A.sol",
+        totalSupply: "lib/ERC721A/contracts/ERC721A.sol",
+        transferFrom: "lib/ERC721A/contracts/ERC721A.sol",
         owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
@@ -833,7 +869,7 @@ const deployedContracts = {
   },
   11155111: {
     Weedies: {
-      address: "0x4325D7049d4E1819a4E0274C60f155F0D34181a0",
+      address: "0x444aC4Caff83138877c78b4a3eE0dF745981FEb6",
       abi: [
         {
           type: "constructor",
@@ -919,7 +955,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -939,19 +975,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "batchMint",
-          inputs: [
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "payable",
         },
         {
           type: "function",
@@ -1149,7 +1172,18 @@ const deployedContracts = {
         {
           type: "function",
           name: "mint",
-          inputs: [],
+          inputs: [
+            {
+              name: "target",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           outputs: [],
           stateMutability: "payable",
         },
@@ -1226,7 +1260,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -1248,13 +1282,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "data",
+              name: "_data",
               type: "bytes",
               internalType: "bytes",
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -1327,6 +1361,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "totalSupply",
+          inputs: [],
+          outputs: [
+            {
+              name: "result",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "transferFrom",
           inputs: [
             {
@@ -1346,7 +1393,7 @@ const deployedContracts = {
             },
           ],
           outputs: [],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
         },
         {
           type: "function",
@@ -1426,6 +1473,37 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "ConsecutiveTransfer",
+          inputs: [
+            {
+              name: "fromTokenId",
+              type: "uint256",
+              indexed: true,
+              internalType: "uint256",
+            },
+            {
+              name: "toTokenId",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "from",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "to",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "Minted",
           inputs: [
             {
@@ -1435,7 +1513,13 @@ const deployedContracts = {
               internalType: "address",
             },
             {
-              name: "tokenId",
+              name: "startIndex",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+            {
+              name: "endIndex",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
@@ -1489,106 +1573,38 @@ const deployedContracts = {
         },
         {
           type: "error",
-          name: "ERC721IncorrectOwner",
-          inputs: [
-            {
-              name: "sender",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "ApprovalCallerNotOwnerNorApproved",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InsufficientApproval",
-          inputs: [
-            {
-              name: "operator",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
+          name: "ApprovalQueryForNonexistentToken",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidApprover",
-          inputs: [
-            {
-              name: "approver",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "BalanceQueryForZeroAddress",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidOperator",
-          inputs: [
-            {
-              name: "operator",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintERC2309QuantityExceedsLimit",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidOwner",
-          inputs: [
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintToZeroAddress",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidReceiver",
-          inputs: [
-            {
-              name: "receiver",
-              type: "address",
-              internalType: "address",
-            },
-          ],
+          name: "MintZeroQuantity",
+          inputs: [],
         },
         {
           type: "error",
-          name: "ERC721InvalidSender",
-          inputs: [
-            {
-              name: "sender",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "ERC721NonexistentToken",
-          inputs: [
-            {
-              name: "tokenId",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
+          name: "NotCompatibleWithSpotMints",
+          inputs: [],
         },
         {
           type: "error",
@@ -1611,6 +1627,61 @@ const deployedContracts = {
               internalType: "address",
             },
           ],
+        },
+        {
+          type: "error",
+          name: "OwnerQueryForNonexistentToken",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "OwnershipNotInitializedForExtraData",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SequentialMintExceedsLimit",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SequentialUpToTooSmall",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "SpotMintTokenIdTooSmall",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TokenAlreadyExists",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferCallerNotOwnerNorApproved",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferFromIncorrectOwner",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferToNonERC721ReceiverImplementer",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "TransferToZeroAddress",
+          inputs: [],
+        },
+        {
+          type: "error",
+          name: "URIQueryForNonexistentToken",
+          inputs: [],
         },
         {
           type: "error",
@@ -1639,18 +1710,19 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        approve: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        balanceOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        getApproved: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        isApprovedForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        name: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        ownerOf: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        safeTransferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        setApprovalForAll: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        supportsInterface: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
-        transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        approve: "lib/ERC721A/contracts/ERC721A.sol",
+        balanceOf: "lib/ERC721A/contracts/ERC721A.sol",
+        getApproved: "lib/ERC721A/contracts/ERC721A.sol",
+        isApprovedForAll: "lib/ERC721A/contracts/ERC721A.sol",
+        name: "lib/ERC721A/contracts/ERC721A.sol",
+        ownerOf: "lib/ERC721A/contracts/ERC721A.sol",
+        safeTransferFrom: "lib/ERC721A/contracts/ERC721A.sol",
+        setApprovalForAll: "lib/ERC721A/contracts/ERC721A.sol",
+        supportsInterface: "lib/ERC721A/contracts/ERC721A.sol",
+        symbol: "lib/ERC721A/contracts/ERC721A.sol",
+        tokenURI: "lib/ERC721A/contracts/ERC721A.sol",
+        totalSupply: "lib/ERC721A/contracts/ERC721A.sol",
+        transferFrom: "lib/ERC721A/contracts/ERC721A.sol",
         owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
         transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",

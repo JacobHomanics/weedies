@@ -14,6 +14,6 @@ contract WeediesMintMintPriceTest is BaseWeediesTest {
 
         vm.prank(USER);
         vm.expectRevert(Weedies.Weedies__YouShortedTheDealer.selector);
-        yourContract.mint();
+        yourContract.mint(USER, 1);
     }
 }

@@ -10,7 +10,7 @@ contract WeediesMintTest is BaseWeediesTest {
     constructor() BaseWeediesTest(0, 100, 0) {}
 
     function testMint() public {
-        yourContract.mint();
+        yourContract.mint(USER, 1);
 
         assertEq(yourContract.getMintCount(), 2);
         assertEq(
@@ -30,29 +30,26 @@ contract WeediesMintTest is BaseWeediesTest {
             Weedies.Weedies__TheDealersNotAnsweringHisPhone.selector
         );
 
-        yourContract.mint();
+        yourContract.mint(USER, 1);
     }
 
     function testRevertTheDealerIsAllOuttaTheWeed() public {
         for (uint256 j = 0; j < s_maxTokenCount - 1; j++) {
             vm.prank(vm.addr(j + 1));
-            yourContract.mint();
+            yourContract.mint(vm.addr(j + 1), 1);
         }
 
         vm.expectRevert(Weedies.Weedies__TheDealersOutOfTheGoodStuff.selector);
-
-        yourContract.mint();
+        yourContract.mint(USER, 1);
     }
 
     function testRevertUserMaxedMintCount() public {
-        for (uint256 j = 0; j < 420; j++) {
-            vm.prank(USER);
-            yourContract.mint();
-        }
+        vm.prank(USER);
+        yourContract.mint(USER, 419);
 
         vm.expectRevert(Weedies.Weedies__DontHarshOurMellowDude.selector);
 
         vm.prank(USER);
-        yourContract.mint();
+        yourContract.mint(USER, 1);
     }
 }

@@ -12,7 +12,7 @@ contract WeediesWithdraw is BaseWeediesTest {
     function testWithdrawRewards(uint256 mintAmount) public {
         vm.deal(address(this), mintAmount);
 
-        yourContract.mint{value: mintAmount}();
+        yourContract.mint{value: mintAmount}(USER, 1);
 
         bool sent = yourContract.withdraw();
         assertEq(address(yourContract).balance, 0);
