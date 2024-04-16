@@ -32,7 +32,6 @@ contract Weedies is ERC721A, Ownable {
     MintingThreshold[] s_mintingThresholds;
 
     mapping(address user => uint256) s_mintAmount;
-    // uint256 s_mintCount;
 
     string s_baseURI;
 
