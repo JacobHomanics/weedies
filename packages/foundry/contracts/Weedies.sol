@@ -13,6 +13,7 @@ contract Weedies is ERC721A, Ownable {
     error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
     error Weedies__TheDealersOutOfTheGoodStuff();
+    error Weedies__TheDealerDoesNotHaveThatMuch();
     error Weedies__DontHarshOurMellowDude();
     error Weedies__AddressNotZero();
 
@@ -79,8 +80,12 @@ contract Weedies is ERC721A, Ownable {
             revert Weedies__YouShortedTheDealer();
         }
 
-        if (_totalMinted() + amount > s_maxTokenCount) {
+        if (_totalMinted() >= s_maxTokenCount) {
             revert Weedies__TheDealersOutOfTheGoodStuff();
+        }
+
+        if (_totalMinted() + amount > s_maxTokenCount) {
+            revert Weedies__TheDealerDoesNotHaveThatMuch();
         }
 
         if (s_mintAmount[target] + amount > s_maxMintAmountPerUser) {

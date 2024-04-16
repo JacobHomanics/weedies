@@ -43,6 +43,16 @@ contract WeediesMintTest is BaseWeediesTest {
         yourContract.mint(USER, 1);
     }
 
+    function testRevertTheDealerIsGonnaBeOutOfWeed() public {
+        for (uint256 j = 0; j < s_maxTokenCount - 5; j++) {
+            vm.prank(vm.addr(j + 1));
+            yourContract.mint(vm.addr(j + 1), 1);
+        }
+
+        vm.expectRevert(Weedies.Weedies__TheDealerDoesNotHaveThatMuch.selector);
+        yourContract.mint(USER, 20);
+    }
+
     function testRevertUserMaxedMintCount() public {
         vm.prank(USER);
         yourContract.mint(USER, 419);
