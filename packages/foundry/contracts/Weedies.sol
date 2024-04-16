@@ -79,7 +79,7 @@ contract Weedies is ERC721A, Ownable {
             revert Weedies__YouShortedTheDealer();
         }
 
-        if (_totalMinted() == s_maxTokenCount) {
+        if (_totalMinted() + amount > s_maxTokenCount) {
             revert Weedies__TheDealersOutOfTheGoodStuff();
         }
 
