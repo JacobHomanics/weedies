@@ -41,39 +41,39 @@ const Home: NextPage = () => {
 
   const { address: connectedAddress } = useAccount();
 
-  const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "YourContract", functionName: "mint" });
+  const { writeAsync: mint } = useScaffoldContractWrite({ contractName: "Weedies", functionName: "mint" });
   const { writeAsync: mintBatch } = useScaffoldContractWrite({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "batchMint",
     args: [BigInt(nugsToMint)],
   });
 
   const { data: startMintTimestamp } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "getMintStartTimestamp",
   });
 
   const { data: endMintTimestamp } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "getMintEndTimestamp",
   });
 
   const { data: mintPrice, refetch: refetchMintPrice } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "getMintPrice",
   });
 
   const { data: mintCount, refetch: refetchMintCount } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "getMintCount",
   });
 
   const { data: maxMintCount, refetch: refetchMaxMintCount } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "Weedies",
     functionName: "getMaxMintCount",
   });
 
-  const { data: yourContract } = useScaffoldContract({ contractName: "YourContract" });
+  const { data: Weedies } = useScaffoldContract({ contractName: "Weedies" });
 
   const [currentDate, setTime] = useState(Date.now());
 
@@ -140,7 +140,7 @@ const Home: NextPage = () => {
 
   const aDate = new Date(0);
   aDate.setSeconds(mintTimeLeft / 1000); // specify value for SECONDS here
-  const mintTimeLeftFormatted = aDate.toISOString().substring(11, 19);
+  // const mintTimeLeftFormatted = aDate.toISOString().substring(11, 19);
 
   // const timeLeftTillMintFormatted = secondsToDhms(timeLeftTillMint / 1000);
 
@@ -152,19 +152,10 @@ const Home: NextPage = () => {
         <p className="text-sm lg:text-4xl m-0 text-red-600 -m-1 font-bold">{startDateLocale}</p>
       </div>
     );
-  } else if (mintTimeLeft >= 0) {
-    mintWindowOutput = (
-      <div className="flex flex-col text-center bg-base-100 rounded-lg p-0 lg:p-2 w-40 lg:w-80 m-1">
-        <p className="grilledCheese text-md lg:text-4xl m-0 text-secondary -m-1">Mint Time Left</p>
-        <p className="text-xl lg:text-4xl m-0 text-red-600 -m-1 font-bold">{mintTimeLeftFormatted}</p>
-      </div>
-    );
   } else {
     mintWindowOutput = (
-      <div className="flex flex-col text-center rounded-lg w-64 lg:w-96">
-        <p className="grilledCheese text-xl lg:text-4xl m-0 text-red-600 leading-none">
-          The weedman has vanished in smoke.
-        </p>
+      <div className="flex flex-col text-center bg-base-100 rounded-lg p-0 lg:p-2 w-40 lg:w-96 m-1">
+        <p className="grilledCheese text-md lg:text-4xl m-0 text-secondary -m-1">The Weedman has arrived!</p>
       </div>
     );
   }
@@ -175,7 +166,7 @@ const Home: NextPage = () => {
   const [mintedTokenIds, setMintedTokenIds] = useState<bigint[]>([]);
 
   // const { data: mintedTokenURI } = useScaffoldContractRead({
-  //   contractName: "YourContract",
+  //   contractName: "Weedies",
   //   functionName: "tokenURI",
   //   args: [mintedTokenId],
   // });
@@ -185,7 +176,7 @@ const Home: NextPage = () => {
   //   response.data.image = response?.data?.image?.replace("ipfs://", "nftstorage.link/ipfs/");
 
   useScaffoldEventSubscriber({
-    contractName: "YourContract",
+    contractName: "Weedies",
     eventName: "Minted",
     listener: logs => {
       const tokenIds: bigint[] = [];
@@ -230,7 +221,7 @@ const Home: NextPage = () => {
     setNugsToMint(Number(target.value));
   }
 
-  const { uris } = useUris(yourContract, mintedTokenIds);
+  const { uris } = useUris(Weedies, mintedTokenIds);
 
   for (let i = 0; i < uris.length; i++) {
     uris[i] = uris[i].replace("ipfs://", "https://nftstorage.link/ipfs/");
@@ -367,7 +358,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col text-center border-secondary border-4 rounded-lg p-2 w-32 lg:w-72 m-1">
             <p className="grilledCheese text-md m-0 lg:text-4xl">Contract</p>
             <div className="flex items-center justify-center">
-              <Address address={yourContract?.address} size="xs" />
+              <Address address={Weedies?.address} size="xs" />
             </div>
           </div>
         </div>

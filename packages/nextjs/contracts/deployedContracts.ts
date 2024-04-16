@@ -6,12 +6,17 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    YourContract: {
-      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    Weedies: {
+      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
       abi: [
         {
           type: "constructor",
           inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
             {
               name: "mintRoyaltyRecipient",
               type: "address",
@@ -40,7 +45,7 @@ const deployedContracts = {
             {
               name: "mintingThresholds",
               type: "tuple[]",
-              internalType: "struct YourContract.MintingThreshold[]",
+              internalType: "struct Weedies.MintingThreshold[]",
               components: [
                 {
                   name: "minThreshold",
@@ -58,6 +63,11 @@ const deployedContracts = {
                   internalType: "uint256",
                 },
               ],
+            },
+            {
+              name: "maxMintAmount",
+              type: "uint256",
+              internalType: "uint256",
             },
             {
               name: "initialMintRecipients",
@@ -125,7 +135,7 @@ const deployedContracts = {
             {
               name: "threshold",
               type: "tuple",
-              internalType: "struct YourContract.MintingThreshold",
+              internalType: "struct Weedies.MintingThreshold",
               components: [
                 {
                   name: "minThreshold",
@@ -270,16 +280,45 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isTimestampInWindow",
+          name: "isWithinConstraints",
           inputs: [],
           outputs: [
             {
-              name: "",
+              name: "isWithin",
               type: "bool",
               internalType: "bool",
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isWithinConstraints",
+          inputs: [
+            {
+              name: "a",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "b",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "c",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "isWithin",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "pure",
         },
         {
           type: "function",
@@ -303,6 +342,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "ownerOf",
           inputs: [
             {
@@ -319,6 +371,13 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -465,6 +524,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "withdraw",
           inputs: [],
           outputs: [
@@ -541,6 +613,25 @@ const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
             },
           ],
           anonymous: false,
@@ -675,6 +766,33 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "Weedies__DontHarshOurMellowDude",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "Weedies__TheDealersNotAnsweringHisPhone",
           inputs: [],
         },
@@ -707,16 +825,24 @@ const deployedContracts = {
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },
   11155111: {
-    YourContract: {
-      address: "0xbf48aE101979e5825FD0AB1c51434bAdac8A18F8",
+    Weedies: {
+      address: "0x4325D7049d4E1819a4E0274C60f155F0D34181a0",
       abi: [
         {
           type: "constructor",
           inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
             {
               name: "mintRoyaltyRecipient",
               type: "address",
@@ -745,7 +871,7 @@ const deployedContracts = {
             {
               name: "mintingThresholds",
               type: "tuple[]",
-              internalType: "struct YourContract.MintingThreshold[]",
+              internalType: "struct Weedies.MintingThreshold[]",
               components: [
                 {
                   name: "minThreshold",
@@ -763,6 +889,11 @@ const deployedContracts = {
                   internalType: "uint256",
                 },
               ],
+            },
+            {
+              name: "maxMintAmount",
+              type: "uint256",
+              internalType: "uint256",
             },
             {
               name: "initialMintRecipients",
@@ -830,7 +961,7 @@ const deployedContracts = {
             {
               name: "threshold",
               type: "tuple",
-              internalType: "struct YourContract.MintingThreshold",
+              internalType: "struct Weedies.MintingThreshold",
               components: [
                 {
                   name: "minThreshold",
@@ -975,16 +1106,45 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "isTimestampInWindow",
+          name: "isWithinConstraints",
           inputs: [],
           outputs: [
             {
-              name: "",
+              name: "isWithin",
               type: "bool",
               internalType: "bool",
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isWithinConstraints",
+          inputs: [
+            {
+              name: "a",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "b",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "c",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "isWithin",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "pure",
         },
         {
           type: "function",
@@ -1008,6 +1168,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "owner",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "ownerOf",
           inputs: [
             {
@@ -1024,6 +1197,13 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "renounceOwnership",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -1170,6 +1350,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "transferOwnership",
+          inputs: [
+            {
+              name: "newOwner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "withdraw",
           inputs: [],
           outputs: [
@@ -1246,6 +1439,25 @@ const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "OwnershipTransferred",
+          inputs: [
+            {
+              name: "previousOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "newOwner",
+              type: "address",
+              indexed: true,
+              internalType: "address",
             },
           ],
           anonymous: false,
@@ -1380,6 +1592,33 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "OwnableInvalidOwner",
+          inputs: [
+            {
+              name: "owner",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "OwnableUnauthorizedAccount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+        },
+        {
+          type: "error",
+          name: "Weedies__DontHarshOurMellowDude",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "Weedies__TheDealersNotAnsweringHisPhone",
           inputs: [],
         },
@@ -1412,6 +1651,9 @@ const deployedContracts = {
         symbol: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         tokenURI: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
         transferFrom: "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol",
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
       },
     },
   },

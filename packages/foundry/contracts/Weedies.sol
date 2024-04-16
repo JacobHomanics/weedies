@@ -2,15 +2,17 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "forge-std/Test.sol";
 
-contract YourContract is ERC721 {
+contract Weedies is ERC721, Ownable {
     error Weedies__YouShortedTheDealer();
     error Weedies__TheDealersNotAnsweringHisPhone();
     error Weedies__YouGottaHitUpTheWeedman();
     error Weedies__TheDealersOutOfTheGoodStuff();
+    error Weedies__DontHarshOurMellowDude();
 
     struct MintingThreshold {
         uint256 minThreshold;
@@ -26,23 +28,29 @@ contract YourContract is ERC721 {
     uint256 immutable s_mintEndTimestamp;
     MintingThreshold[] s_mintingThresholds;
 
+    mapping(address user => uint256) s_mintAmount;
+    uint256 s_maxMintAmountPerUser;
     uint256 s_mintCount;
+
     string s_baseURI;
 
     constructor(
+        address owner,
         address mintRoyaltyRecipient,
         string memory baseURI,
         uint256 maxTokenCount,
         uint256 mintStartTimestamp,
         uint256 mintEndTimestamp,
         MintingThreshold[] memory mintingThresholds,
+        uint256 maxMintAmount,
         address[] memory initialMintRecipients
-    ) ERC721("Weedies", "W") {
+    ) ERC721("Weedies", "W") Ownable(owner) {
         s_mintRoyaltyRecipient = mintRoyaltyRecipient;
         s_baseURI = baseURI;
         s_maxTokenCount = maxTokenCount;
         s_mintStartTimestamp = mintStartTimestamp;
         s_mintEndTimestamp = mintEndTimestamp;
+        s_maxMintAmountPerUser = maxMintAmount;
 
         for (uint256 i = 0; i < mintingThresholds.length; i++) {
             s_mintingThresholds.push(mintingThresholds[i]);
@@ -60,7 +68,7 @@ contract YourContract is ERC721 {
     }
 
     function mint() public payable {
-        if (!isTimestampInWindow()) {
+        if (!isWithinConstraints()) {
             revert Weedies__TheDealersNotAnsweringHisPhone();
         }
 
@@ -72,11 +80,16 @@ contract YourContract is ERC721 {
             revert Weedies__TheDealersOutOfTheGoodStuff();
         }
 
+        if (s_mintAmount[msg.sender] > s_maxMintAmountPerUser) {
+            revert Weedies__DontHarshOurMellowDude();
+        }
+
         _mint(msg.sender);
     }
 
     function _mint(address mintTo) internal {
         s_mintCount++;
+        s_mintAmount[mintTo]++;
         emit Minted(mintTo, s_mintCount);
         super._mint(mintTo, s_mintCount);
     }
@@ -89,9 +102,31 @@ contract YourContract is ERC721 {
         return sent;
     }
 
-    function isTimestampInWindow() public view returns (bool) {
-        return block.timestamp >= getMintStartTimestamp()
-            && block.timestamp <= getMintEndTimestamp();
+    function isWithinConstraints() public view returns (bool isWithin) {
+        isWithin = isWithinConstraints(
+            block.timestamp, getMintStartTimestamp(), getMintEndTimestamp()
+        );
+    }
+
+    function isWithinConstraints(
+        uint256 a,
+        uint256 b,
+        uint256 c
+    ) public pure returns (bool isWithin) {
+        if (b == 0 && c == 0) {
+            isWithin = true;
+        }
+        if (b != 0 && c != 0) {
+            isWithin = a >= b && a <= c;
+        }
+
+        if (b == 0) {
+            isWithin = a <= c;
+        }
+
+        if (c == 0) {
+            isWithin = a >= b;
+        }
     }
 
     function getMintStartTimestamp() public view returns (uint256) {
