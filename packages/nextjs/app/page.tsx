@@ -362,11 +362,20 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-        <Link href={"https://bigshottoyshop.com/collections/weedies"}>
-          <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
-            {"MERCH"}
-          </button>
-        </Link>
+
+        <div className="flex">
+          <Link href={"https://bigshottoyshop.com/collections/weedies"}>
+            <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
+              {"MERCH"}
+            </button>
+          </Link>
+
+          <Link href={"https://www.nounworks.wtf/weedies"}>
+            <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
+              {"MORE INFO"}
+            </button>
+          </Link>
+        </div>
 
         <p className="grilledCheese text-4xl m-0 text-violet-800">Team</p>
         <div className="flex text-center">
