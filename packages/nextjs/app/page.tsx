@@ -363,7 +363,7 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex flex-wrap justify-center">
           <Link href={"https://bigshottoyshop.com/collections/weedies"}>
             <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
               {"MERCH"}
@@ -371,7 +371,7 @@ const Home: NextPage = () => {
           </Link>
 
           <Link href={"https://www.nounworks.wtf/weedies"}>
-            <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl m-10">
+            <button className="insanibc btn-lg bg-violet-800  hover:bg-blue-500 text-white-700 font-semibold hover:text-white py-2 text-4xl lg:text-4xl m-10">
               {"MORE INFO"}
             </button>
           </Link>
