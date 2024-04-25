@@ -380,6 +380,7 @@ const Home: NextPage = () => {
         <p className="grilledCheese text-4xl m-0 text-violet-800">Team</p>
         <div className="flex text-center">
           <div className="m-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={mark.src} alt="mark" className="lg:w-[275px]" />
             <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Mark</p>
             {/* <p className="m-0 grilledCheese">{`"Grape Kush"`}</p> */}
@@ -399,6 +400,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="m-5 ">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={klim.src} alt="klim" className="lg:w-[275px]" />
             <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Klim</p>
             {/* <p className="m-0 grilledCheese">{`"OG Bush"`}</p> */}
@@ -419,6 +421,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="m-5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={jake.src} alt="jake" className="lg:w-[275px]" />
             <p className="m-1 lg:m-4 grilledCheese lg:text-4xl">Jake</p>
             {/* <p className="m-0 grilledCheese">{`"Acapulco Gold"`}</p> */}
